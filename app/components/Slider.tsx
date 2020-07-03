@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import { Bold } from 'app/components'
 import { colors } from 'app/config/constants'
 import { PanGestureHandler } from 'react-native-gesture-handler'
@@ -14,6 +14,8 @@ import Animated, {
 
 type Props = {
   number: number
+  response?: number
+  updateVal: (val: number) => void
 }
 
 function clamp(x: number, min: number, max: number) {
@@ -23,7 +25,7 @@ function clamp(x: number, min: number, max: number) {
   else return x
 }
 
-function Slider({ number }: Props) {
+function Slider({ number, response = -1, updateVal = () => {} }: Props) {
   const [value, setValue] = useState(50)
   const lineStart = useSharedValue(0)
   const lineEnd = useSharedValue(0)
@@ -50,6 +52,14 @@ function Slider({ number }: Props) {
       x.value = clamped
     },
     onEnd: _ => {
+      const clamped = clamp(x.value, lineStart.value, lineEnd.value)
+      const percentageValue = interpolate(
+        clamped,
+        [lineStart.value, lineEnd.value],
+        [0, 100]
+      )
+      updateVal(Math.floor(percentageValue))
+
       numberY.value = 0
     },
   })
@@ -106,6 +116,16 @@ function Slider({ number }: Props) {
             lineEnd.value = x + width - 15
           }}
         />
+        {response !== -1 && (
+          <View
+            style={[
+              styles.circle,
+              { left: response, backgroundColor: colors.GREEN },
+            ]}
+          >
+            <Bold>{response}</Bold>
+          </View>
+        )}
         <PanGestureHandler onGestureEvent={gestureHandler}>
           <Animated.View style={[styles.circle, animatedStyle]}>
             <Animated.View style={textStyle}>

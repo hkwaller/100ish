@@ -5,6 +5,8 @@ import 'react-native-gesture-handler'
 
 import Front from 'app/screens/Front'
 import Start from 'app/screens/respond/Start'
+import Answers from 'app/screens/respond/Answers'
+import Finished from 'app/screens/respond/Finished'
 
 const Stack = createStackNavigator()
 
@@ -16,6 +18,8 @@ function RespondStack() {
       }}
     >
       <Stack.Screen name="Start" component={Start} />
+      <Stack.Screen name="Answers" component={Answers} />
+      <Stack.Screen name="Finished" component={Finished} />
     </Stack.Navigator>
   )
 }

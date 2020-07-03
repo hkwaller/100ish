@@ -1,9 +1,7 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
 import Logo from './Logo'
 import { colors } from 'app/config/constants'
-import { useNavigation } from '@react-navigation/native'
 
 type Props = {
   children: React.ReactNode
@@ -11,18 +9,25 @@ type Props = {
 
 function Screen({ children }: Props) {
   return (
-    <SafeAreaView style={styles.container}>
-      <Logo />
-      <View style={styles.innerContainer}>{children}</View>
-    </SafeAreaView>
+    <>
+      <View style={styles.top} />
+      <View style={styles.container}>
+        <Logo />
+        <ScrollView>
+          <View style={styles.innerContainer}>{children}</View>
+        </ScrollView>
+      </View>
+      <SafeAreaView />
+    </>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.WHITE,
+    backgroundColor: colors.GREY,
   },
+  top: { backgroundColor: colors.WHITE, paddingTop: 34 },
   innerContainer: { backgroundColor: colors.GREY, flex: 1, padding: 24 },
 })
 
