@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { Bold } from 'app/components'
-import { colors, screen } from 'app/config/constants'
+import { colors } from 'app/config/constants'
 import { PanGestureHandler } from 'react-native-gesture-handler'
 import Animated, {
   useAnimatedGestureHandler,
@@ -25,20 +25,28 @@ function clamp(x: number, min: number, max: number) {
 
 function Slider({ number }: Props) {
   const [value, setValue] = useState(50)
-  const x = useSharedValue(100)
   const lineStart = useSharedValue(0)
   const lineEnd = useSharedValue(0)
   const numberY = useSharedValue(0)
 
+  const x = useDerivedValue(() => {
+    return lineEnd.value / 2
+  })
+
   const gestureHandler = useAnimatedGestureHandler({
     onStart: (_, ctx) => {
       ctx.startX = x.value
-      numberY.value = -50
+      numberY.value = 1
     },
     onActive: (event, ctx) => {
       const val = ctx.startX + event.translationX
       const clamped = clamp(val, lineStart.value, lineEnd.value)
-      setValue(Math.round(clamped / 2.145 + 11))
+      const percentageValue = interpolate(
+        clamped,
+        [lineStart.value, lineEnd.value],
+        [0, 100]
+      )
+      setValue(Math.floor(percentageValue))
       x.value = clamped
     },
     onEnd: _ => {
@@ -47,19 +55,30 @@ function Slider({ number }: Props) {
   })
 
   const textScale = useDerivedValue(() => {
-    return interpolate(numberY.value, [-30, 0], [1.5, 1])
+    return interpolate(numberY.value, [0, 1], [1, 2.5])
+  })
+
+  const circleScale = useDerivedValue(() => {
+    return interpolate(numberY.value, [0, 1], [1, 1.2])
+  })
+
+  const translateY = useDerivedValue(() => {
+    return interpolate(numberY.value, [0, 1], [0, -50])
   })
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: x.value }],
+      transform: [
+        { translateX: x.value },
+        { scale: withSpring(circleScale.value) },
+      ],
     }
   })
 
   const textStyle = useAnimatedStyle(() => {
     return {
       transform: [
-        { translateY: withSpring(numberY.value) },
+        { translateY: withSpring(translateY.value) },
         { scale: withSpring(textScale.value) },
       ],
     }
@@ -67,7 +86,7 @@ function Slider({ number }: Props) {
 
   return (
     <View style={styles.container}>
-      <Bold style={{ flex: 1, fontSize: 40, marginRight: 20 }}>#{number}</Bold>
+      <Bold style={{ flex: 1, fontSize: 40 }}>#{number}</Bold>
       <View
         style={{
           justifyContent: 'center',
@@ -83,14 +102,14 @@ function Slider({ number }: Props) {
               layout: { x, width },
             },
           }) => {
-            lineStart.value = x - 25
-            lineEnd.value = x + width - 25
+            lineStart.value = x - 15
+            lineEnd.value = x + width - 15
           }}
         />
         <PanGestureHandler onGestureEvent={gestureHandler}>
           <Animated.View style={[styles.circle, animatedStyle]}>
             <Animated.View style={textStyle}>
-              <Bold style={{ fontSize: 30 }}>{value}</Bold>
+              <Bold style={{ fontSize: 20 }}>{value}</Bold>
             </Animated.View>
           </Animated.View>
         </PanGestureHandler>
@@ -103,18 +122,24 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     marginBottom: 30,
+    backgroundColor: colors.WHITE,
+    padding: 20,
   },
   line: {
     backgroundColor: colors.DARKGREY,
     height: 5,
-    width: '100%',
+    width: '90%',
+  },
+  circleContainer: {
+    padding: 20,
   },
   circle: {
     ...StyleSheet.absoluteFillObject,
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: colors.GREEN,
+    top: 5,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: colors.TURQUOISE,
     alignItems: 'center',
     justifyContent: 'center',
   },
