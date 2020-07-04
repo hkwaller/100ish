@@ -32,7 +32,7 @@ function Slider({ number, response = -1, updateVal = () => {} }: Props) {
   const numberY = useSharedValue(0)
 
   const x = useDerivedValue(() => {
-    return lineEnd.value / 2
+    return lineEnd.value / 2 - 10
   })
 
   const gestureHandler = useAnimatedGestureHandler({
@@ -79,7 +79,7 @@ function Slider({ number, response = -1, updateVal = () => {} }: Props) {
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
-        { translateX: x.value },
+        { translateX: withSpring(x.value) },
         { scale: withSpring(circleScale.value) },
       ],
     }

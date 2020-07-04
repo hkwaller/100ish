@@ -16,7 +16,6 @@ function BottomButton({ onPress, title }: Props) {
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
-        marginHorizontal: 66,
       }}
     >
       <TouchableOpacity
@@ -26,6 +25,8 @@ function BottomButton({ onPress, title }: Props) {
           padding: 20,
           flex: 1,
           alignItems: 'center',
+          marginHorizontal: 66,
+          marginTop: 20,
         }}
       >
         <Bold style={{ color: colors.WHITE, fontSize: 20 }}>{title}</Bold>
