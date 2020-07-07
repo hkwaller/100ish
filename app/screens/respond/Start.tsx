@@ -21,7 +21,7 @@ function Start() {
       </Screen>
       <BottomButton
         onPress={() => navigation.navigate('Answers', { answer: answer })}
-        title="Check answers!"
+        title="Submit answers"
       />
     </>
   )

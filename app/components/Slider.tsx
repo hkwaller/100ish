@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import { Bold } from 'app/components'
 import { colors } from 'app/config/constants'
@@ -24,6 +24,8 @@ function clamp(x: number, min: number, max: number) {
   else if (x > max) return max
   else return x
 }
+
+const AnimatedBold = Animated.createAnimatedComponent(Bold)
 
 function Slider({ number, response = -1, updateVal = () => {} }: Props) {
   const [value, setValue] = useState(50)
@@ -65,7 +67,7 @@ function Slider({ number, response = -1, updateVal = () => {} }: Props) {
   })
 
   const textScale = useDerivedValue(() => {
-    return interpolate(numberY.value, [0, 1], [1, 2.5])
+    return interpolate(numberY.value, [0, 1], [20, 35])
   })
 
   const circleScale = useDerivedValue(() => {
@@ -87,10 +89,10 @@ function Slider({ number, response = -1, updateVal = () => {} }: Props) {
 
   const textStyle = useAnimatedStyle(() => {
     return {
-      transform: [
-        { translateY: withSpring(translateY.value) },
-        { scale: withSpring(textScale.value) },
-      ],
+      transform: [{ translateY: withSpring(translateY.value) }],
+      fontSize: withSpring(textScale.value),
+      width: 100,
+      textAlign: 'center',
     }
   })
 
@@ -102,7 +104,6 @@ function Slider({ number, response = -1, updateVal = () => {} }: Props) {
           justifyContent: 'center',
           flex: 3,
           marginLeft: 20,
-          overflow: 'visible',
         }}
       >
         <View
@@ -128,9 +129,7 @@ function Slider({ number, response = -1, updateVal = () => {} }: Props) {
         )}
         <PanGestureHandler onGestureEvent={gestureHandler}>
           <Animated.View style={[styles.circle, animatedStyle]}>
-            <Animated.View style={textStyle}>
-              <Bold style={{ fontSize: 20 }}>{value}</Bold>
-            </Animated.View>
+            <AnimatedBold style={textStyle}>{value}</AnimatedBold>
           </Animated.View>
         </PanGestureHandler>
       </View>
