@@ -14,10 +14,11 @@
     "@react-navigation/stack": "^5.6.2",
     "@risingstack/react-easy-state": "^6.3.0",
     "@sanity/client": "^1.149.16",
-    "react": "16.11.0",
-    "react-native": "0.62.2",
+    "react": "16.13.1",
+    "react-native": "0.63.0",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-reanimated": "^2.0.0-alpha.3",
+    "react-native-redash": "^14.2.1",
     "react-native-safe-area-context": "^3.0.7",
     "react-native-screens": "^2.9.0",
     "styled-components": "^5.1.1"
