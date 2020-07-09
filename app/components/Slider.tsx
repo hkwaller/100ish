@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Text } from 'react-native'
-import { Bold } from 'app/components'
+import React, { useState } from 'react'
+import { View, StyleSheet } from 'react-native'
+import { Bold, SliderHeader } from 'app/components'
 import { colors } from 'app/config/constants'
 import { PanGestureHandler } from 'react-native-gesture-handler'
 import Animated, {
@@ -13,22 +13,24 @@ import Animated, {
 } from 'react-native-reanimated'
 
 type Props = {
-  number: number
-  response?: number
+  number?: number
   updateVal: (val: number) => void
+  header?: string
+  min?: number
+  max?: number
 }
 
 function clamp(x: number, min: number, max: number) {
   'worklet'
   if (x < min) return min
   else if (x > max) return max
-  else return x
+  return x
 }
 
 const AnimatedBold = Animated.createAnimatedComponent(Bold)
 
-function Slider({ number, response = -1, updateVal = () => {} }: Props) {
-  const [value, setValue] = useState(50)
+function Slider({ number, updateVal = () => {}, header, max }: Props) {
+  const [value, setValue] = useState((max && max / 2) || 50)
   const lineStart = useSharedValue(0)
   const lineEnd = useSharedValue(0)
   const numberY = useSharedValue(0)
@@ -48,9 +50,9 @@ function Slider({ number, response = -1, updateVal = () => {} }: Props) {
       const percentageValue = interpolate(
         clamped,
         [lineStart.value, lineEnd.value],
-        [0, 100]
+        [0, max || 100]
       )
-      setValue(Math.floor(percentageValue))
+      setValue(Math.round(percentageValue))
       x.value = clamped
     },
     onEnd: _ => {
@@ -58,9 +60,9 @@ function Slider({ number, response = -1, updateVal = () => {} }: Props) {
       const percentageValue = interpolate(
         clamped,
         [lineStart.value, lineEnd.value],
-        [0, 100]
+        [0, max || 100]
       )
-      updateVal(Math.floor(percentageValue))
+      updateVal(Math.round(percentageValue))
 
       numberY.value = 0
     },
@@ -97,52 +99,53 @@ function Slider({ number, response = -1, updateVal = () => {} }: Props) {
   })
 
   return (
-    <View style={styles.container}>
-      <Bold style={{ flex: 1, fontSize: 40 }}>#{number}</Bold>
-      <View
-        style={{
-          justifyContent: 'center',
-          flex: 3,
-          marginLeft: 20,
-        }}
-      >
-        <View
-          style={styles.line}
-          onLayout={({
-            nativeEvent: {
-              layout: { x, width },
-            },
-          }) => {
-            lineStart.value = x - 15
-            lineEnd.value = x + width - 15
-          }}
-        />
-        {response !== -1 && (
-          <View
-            style={[
-              styles.circle,
-              { left: response, backgroundColor: colors.GREEN },
-            ]}
-          >
-            <Bold>{response}</Bold>
-          </View>
+    <View style={styles.outerContainer}>
+      {header && (
+        <SliderHeader style={{ marginBottom: 10 }}>{header}</SliderHeader>
+      )}
+      <View style={styles.container}>
+        {number && (
+          <Bold style={{ flex: 1, fontSize: 40, marginRight: 20 }}>
+            #{number}
+          </Bold>
         )}
-        <PanGestureHandler onGestureEvent={gestureHandler}>
-          <Animated.View style={[styles.circle, animatedStyle]}>
-            <AnimatedBold style={textStyle}>{value}</AnimatedBold>
-          </Animated.View>
-        </PanGestureHandler>
+        <View
+          style={{
+            justifyContent: 'center',
+            flex: 3,
+          }}
+        >
+          <View
+            style={styles.line}
+            onLayout={({
+              nativeEvent: {
+                layout: { x, width },
+              },
+            }) => {
+              lineStart.value = x - 15
+              lineEnd.value = x + width - 15
+            }}
+          />
+          <PanGestureHandler onGestureEvent={gestureHandler}>
+            <Animated.View style={[styles.circle, animatedStyle]}>
+              <AnimatedBold style={textStyle}>{value}</AnimatedBold>
+            </Animated.View>
+          </PanGestureHandler>
+        </View>
       </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
+  outerContainer: {
     marginBottom: 30,
     backgroundColor: colors.WHITE,
     padding: 20,
+  },
+  container: {
+    flexDirection: 'row',
+    minHeight: 50,
   },
   line: {
     backgroundColor: colors.DARKGREY,

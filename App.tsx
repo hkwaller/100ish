@@ -8,6 +8,10 @@ import Start from 'app/screens/respond/Start'
 import Answers from 'app/screens/respond/Answers'
 import Finished from 'app/screens/respond/Finished'
 
+import Setup from 'app/screens/leader/Setup'
+import Game from 'app/screens/leader/Game'
+import WaitingRoom from 'app/screens/leader/WaitingRoom'
+
 const Stack = createStackNavigator()
 
 function RespondStack() {
@@ -24,6 +28,20 @@ function RespondStack() {
   )
 }
 
+function GameLeaderStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="Setup" component={Setup} />
+      <Stack.Screen name="Game" component={Game} />
+      <Stack.Screen name="WaitingRoom" component={WaitingRoom} />
+    </Stack.Navigator>
+  )
+}
+
 function App() {
   return (
     <NavigationContainer>
@@ -34,6 +52,7 @@ function App() {
       >
         <Stack.Screen name="Home" component={Front} />
         <Stack.Screen name="Respond" component={RespondStack} />
+        <Stack.Screen name="Leader" component={GameLeaderStack} />
       </Stack.Navigator>
     </NavigationContainer>
   )

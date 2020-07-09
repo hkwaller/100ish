@@ -14,7 +14,7 @@ function Front() {
       <Welcome style={{ marginBottom: 20 }}>Welcome</Welcome>
       <BigButton
         title="I’m the game master"
-        onPress={() => {}}
+        onPress={() => navigation.navigate('Leader')}
         bgColor={colors.PURPLE}
       />
       <BigButton
