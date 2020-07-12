@@ -21,18 +21,13 @@ export function getQuestions(numberOfQuestions: number) {
 
 export async function getGame(id: string) {
   const query = `*[_type == "game"]`
+  const params = { _id: id }
 
-  // client.fetch(query).then((game: Game) => {
-  //   state.game = game
-  // })
-  console.log('sup')
-  const subscription = client.listen(query).subscribe(update => {
-    console.log('update: ', update)
-    const game = update.result
-    state.game = game
-    console.log(`${game}`)
+  client.fetch(query, params).then((game: Game) => {
+    state.game = game[0]
   })
 
-  // to unsubscribe later on
-  // subscription.unsubscribe()
+  const subscription = client.listen(query, params).subscribe(update => {
+    state.game = update.result
+  })
 }

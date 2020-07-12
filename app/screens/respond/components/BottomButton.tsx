@@ -10,12 +10,13 @@ type Props = {
 
 function BottomButton({ onPress, title }: Props) {
   return (
-    <SafeAreaView
+    <View
       style={{
         backgroundColor: colors.WHITE,
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
+        paddingBottom: 40,
       }}
     >
       <TouchableOpacity
@@ -31,7 +32,7 @@ function BottomButton({ onPress, title }: Props) {
       >
         <Bold style={{ color: colors.WHITE, fontSize: 20 }}>{title}</Bold>
       </TouchableOpacity>
-    </SafeAreaView>
+    </View>
   )
 }
 export default BottomButton

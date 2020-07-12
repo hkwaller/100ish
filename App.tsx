@@ -11,6 +11,8 @@ import Finished from 'app/screens/respond/Finished'
 import Setup from 'app/screens/leader/Setup'
 import Game from 'app/screens/leader/Game'
 import WaitingRoom from 'app/screens/leader/WaitingRoom'
+import Results from 'app/screens/leader/Results'
+require('react-native').unstable_enableLogBox()
 
 const Stack = createStackNavigator()
 
@@ -38,6 +40,7 @@ function GameLeaderStack() {
       <Stack.Screen name="Setup" component={Setup} />
       <Stack.Screen name="Game" component={Game} />
       <Stack.Screen name="WaitingRoom" component={WaitingRoom} />
+      <Stack.Screen name="Results" component={Results} />
     </Stack.Navigator>
   )
 }

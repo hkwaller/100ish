@@ -15,7 +15,7 @@ export type Player = {
 
 export type Game = {
   id: string
-  players: Player
+  players: Player[]
 }
 
 export type Question = {
