@@ -1,0 +1,590 @@
+[
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "In what year was Garry&#039;s Mod released as a standalone title on Valve&#039;s Steam distribution service?",
+    "correct_answer": "2006",
+    "incorrect_answers": ["2007", "2004", "2003"]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "hard",
+    "question": "How many trophies are there in &quot;Super Smash Bros. for Nintendo 3DS&quot;?",
+    "correct_answer": "685",
+    "incorrect_answers": ["1360", "716", "1155"]
+  },
+  {
+    "category": "History",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "In what year did the First World War end?",
+    "correct_answer": "1918",
+    "incorrect_answers": ["1914", "1916", "1912"]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "hard",
+    "question": "In &quot;The Witness&quot;, how many lasers must be activated to get into the mountain area?",
+    "correct_answer": "7",
+    "incorrect_answers": ["8", "5", "12"]
+  },
+  {
+    "category": "Science: Computers",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "How many bytes are in a single Kibibyte?",
+    "correct_answer": "1024",
+    "incorrect_answers": ["2400", "1000", "1240"]
+  },
+  {
+    "category": "Geography",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "How many counties in the Republic of Ireland.",
+    "correct_answer": "26",
+    "incorrect_answers": ["32", "28", "30"]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "When was the game &quot;Roblox&quot; released?",
+    "correct_answer": "2006",
+    "incorrect_answers": ["2003", "2002", "2007"]
+  },
+  {
+    "category": "Sports",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "What year did the New Orleans Saints win the Super Bowl?",
+    "correct_answer": "2010",
+    "incorrect_answers": ["2008", "2009", "2011"]
+  },
+  {
+    "category": "Entertainment: Board Games",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "In what year was the card game Magic: the Gathering first introduced?",
+    "correct_answer": "1993",
+    "incorrect_answers": ["1987", "1998", "2003"]
+  },
+  {
+    "category": "History",
+    "type": "multiple",
+    "difficulty": "hard",
+    "question": "How many sonatas did Ludwig van Beethoven write?",
+    "correct_answer": "32",
+    "incorrect_answers": ["50", "31", "21"]
+  },
+  {
+    "category": "Sports",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "In Baseball, how many times does the ball have to be pitched outside of the strike zone before the batter is walked?",
+    "correct_answer": "4",
+    "incorrect_answers": ["1", "2", "3"]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "In which year did the first Monster Hunter game get released?",
+    "correct_answer": "2004",
+    "incorrect_answers": ["2006", "2005", "2002"]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "How many different notes is the tune, &quot;Song of Healing&quot;, comprised of in &quot;The Legend of Zelda: Majora&#039;s Mask&quot;?",
+    "correct_answer": "3",
+    "incorrect_answers": ["4", "1", "6"]
+  },
+  {
+    "category": "General Knowledge",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "Five dollars is worth how many nickles?",
+    "correct_answer": "100",
+    "incorrect_answers": ["50", "25", "69"]
+  },
+  {
+    "category": "General Knowledge",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "In what year was McDonald&#039;s founded?",
+    "correct_answer": "1955",
+    "incorrect_answers": ["1964", "1951", "1947"]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "hard",
+    "question": "How many playable characters are there in Super Smash Bros. for Nintendo 3DS and Wii U?",
+    "correct_answer": "58",
+    "incorrect_answers": ["48", "51", "55"]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "How many regular Sunken Sea Scrolls are there in &quot;Splatoon&quot;?",
+    "correct_answer": "27",
+    "incorrect_answers": ["32", "30", "5"]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "hard",
+    "question": "In &quot;The Witness&quot;, how many lasers must be activated to get into the mountain area?",
+    "correct_answer": "7",
+    "incorrect_answers": ["8", "5", "12"]
+  },
+  {
+    "category": "Sports",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "When was the first official international game played?",
+    "correct_answer": "1872",
+    "incorrect_answers": ["1880", "1863", "1865"]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "How many classes are there in Team Fortress 2?",
+    "correct_answer": "9",
+    "incorrect_answers": ["10", "8", "7"]
+  },
+  {
+    "category": "History",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "How old was Lyndon B. Johnson when he assumed the role of President of the United States?",
+    "correct_answer": "55",
+    "incorrect_answers": ["50", "60", "54"]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "In what year was Hearthstone released?",
+    "correct_answer": "2014",
+    "incorrect_answers": ["2011", "2013", "2012"]
+  },
+  {
+    "category": "Geography",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "How many countries does Mexico border?",
+    "correct_answer": "3",
+    "incorrect_answers": ["2", "4", "1"]
+  },
+  {
+    "category": "Science: Gadgets",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "In what year was the Oculus Rift revealed to the public through a Kickstarter campaign?",
+    "correct_answer": "2012",
+    "incorrect_answers": ["2010", "2011", "2013"]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "When was the top-down online RPG &quot;Space Station 13&quot; released?",
+    "correct_answer": "2003",
+    "incorrect_answers": ["2000", "2010", "2006"]
+  },
+  {
+    "category": "Entertainment: Japanese Anime & Manga",
+    "type": "multiple",
+    "difficulty": "hard",
+    "question": "The &quot;To Love-Ru&quot; Manga was started in what year?",
+    "correct_answer": "2006",
+    "incorrect_answers": ["2007", "2004", "2005"]
+  },
+  {
+    "category": "General Knowledge",
+    "type": "multiple",
+    "difficulty": "hard",
+    "question": "How many notes are there on a standard grand piano?",
+    "correct_answer": "88",
+    "incorrect_answers": ["98", "108", "78"]
+  },
+  {
+    "category": "Geography",
+    "type": "multiple",
+    "difficulty": "hard",
+    "question": "What year is on the flag of the US state Wisconsin?",
+    "correct_answer": "1848",
+    "incorrect_answers": ["1634", "1783", "1901"]
+  },
+  {
+    "category": "Entertainment: Music",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "How many members are in the Japanese rock band SCANDAL?",
+    "correct_answer": "4",
+    "incorrect_answers": ["5", "2", "18"]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "How many different notes is the tune, &quot;Song of Healing&quot;, comprised of in &quot;The Legend of Zelda: Majora&#039;s Mask&quot;?",
+    "correct_answer": "3",
+    "incorrect_answers": ["4", "1", "6"]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "In Grand Theft Auto: V, what wanted level does the player receive if they enter Zancudo Army Base north of Los Santos?",
+    "correct_answer": "4",
+    "incorrect_answers": ["3", "5", "1"]
+  },
+  {
+    "category": "Sports",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "When was the first official international game played?",
+    "correct_answer": "1872",
+    "incorrect_answers": ["1880", "1863", "1865"]
+  },
+  {
+    "category": "Science & Nature",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "In human biology, a circadium rhythm relates to a period of roughly how many hours?",
+    "correct_answer": "24",
+    "incorrect_answers": ["8", "16", "32"]
+  },
+  {
+    "category": "History",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "In what year did Texas secede from Mexico?",
+    "correct_answer": "1836",
+    "incorrect_answers": ["1838", "1845", "1844"]
+  },
+  {
+    "category": "General Knowledge",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "After how many years would you celebrate your crystal anniversary?",
+    "correct_answer": "15",
+    "incorrect_answers": ["20", "10", "25"]
+  },
+  {
+    "category": "Science: Gadgets",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "When was the iPhone released?",
+    "correct_answer": "2007",
+    "incorrect_answers": ["2005", "2006", "2004"]
+  },
+  {
+    "category": "General Knowledge",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "After how many years would you celebrate your crystal anniversary?",
+    "correct_answer": "15",
+    "incorrect_answers": ["20", "10", "25"]
+  },
+  {
+    "category": "Science & Nature",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "Human cells typically have how many copies of each gene?",
+    "correct_answer": "2",
+    "incorrect_answers": ["1", "4", "3"]
+  },
+  {
+    "category": "History",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "In what year did Neil Armstrong and Buzz Aldrin land on the moon?",
+    "correct_answer": "1969",
+    "incorrect_answers": ["1965", "1966", "1973"]
+  },
+  {
+    "category": "Entertainment: Television",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "How many seasons did the TV show &quot;Donkey Kong Country&quot; last?",
+    "correct_answer": "2",
+    "incorrect_answers": ["1", "4", "5"]
+  },
+  {
+    "category": "Entertainment: Music",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "When was Gangnam Style uploaded to YouTube?",
+    "correct_answer": "2012",
+    "incorrect_answers": ["2013", "2014", "2011"]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "How many games are there in the &quot;Colony Wars&quot; series for the PlayStation?",
+    "correct_answer": "3",
+    "incorrect_answers": ["2", "4", "5"]
+  },
+  {
+    "category": "Entertainment: Music",
+    "type": "multiple",
+    "difficulty": "hard",
+    "question": "The key of sharps does the key of G# minor contain?",
+    "correct_answer": "5",
+    "incorrect_answers": ["3", "7", "0"]
+  },
+  {
+    "category": "Entertainment: Japanese Anime & Manga",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "How many &quot;JoJos&quot; that are protagonists are there in the series &quot;Jojo&#039;s Bizarre Adventure&quot;?",
+    "correct_answer": "8",
+    "incorrect_answers": ["6", "4", "5"]
+  },
+  {
+    "category": "Science & Nature",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "In human biology, a circadium rhythm relates to a period of roughly how many hours?",
+    "correct_answer": "24",
+    "incorrect_answers": ["8", "16", "32"]
+  },
+  {
+    "category": "Entertainment: Music",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "Rick Astley&#039;s hit song &quot;Never Gonna Give You Up&quot; was released in what year?",
+    "correct_answer": "1987",
+    "incorrect_answers": ["1985", "1986", "1988"]
+  },
+  {
+    "category": "Entertainment: Television",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "When did the TV show Rick and Morty first air on Adult Swim?",
+    "correct_answer": "2013",
+    "incorrect_answers": ["2014", "2016", "2015"]
+  },
+  {
+    "category": "Science & Nature",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "In human biology, a circadium rhythm relates to a period of roughly how many hours?",
+    "correct_answer": "24",
+    "incorrect_answers": ["8", "16", "32"]
+  },
+  {
+    "category": "Entertainment: Books",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "George Orwell wrote this book, which is often considered a statement on government oversight.",
+    "correct_answer": "1984",
+    "incorrect_answers": [
+      "The Old Man and the Sea",
+      "Catcher and the Rye",
+      "To Kill a Mockingbird"
+    ]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "hard",
+    "question": "When was the first &quot;Half-Life&quot; released?",
+    "correct_answer": "1998",
+    "incorrect_answers": ["2004", "1999", "1997"]
+  },
+  {
+    "category": "Science & Nature",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "What is the standard atomic weight of a Plutonium nucleus?",
+    "correct_answer": "244",
+    "incorrect_answers": ["94", "481", "128"]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "When was Nintendo&#039;s Virtual Boy released?",
+    "correct_answer": "1995",
+    "incorrect_answers": ["1989", "1997", "1992"]
+  },
+  {
+    "category": "General Knowledge",
+    "type": "multiple",
+    "difficulty": "hard",
+    "question": "How many calories are in a 355 ml can of Pepsi Cola?",
+    "correct_answer": "150",
+    "incorrect_answers": ["200", "100", "155"]
+  },
+  {
+    "category": "Geography",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "How many sovereign states are members of the United Nations?",
+    "correct_answer": "195",
+    "incorrect_answers": ["201", "153", "178"]
+  },
+  {
+    "category": "Science: Computers",
+    "type": "multiple",
+    "difficulty": "hard",
+    "question": "How many Hz does the video standard PAL support?",
+    "correct_answer": "50",
+    "incorrect_answers": ["59", "60", "25"]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "In what year were achivements added to Steam?",
+    "correct_answer": "2007",
+    "incorrect_answers": ["2008", "2009", "2006"]
+  },
+  {
+    "category": "Entertainment: Film",
+    "type": "multiple",
+    "difficulty": "hard",
+    "question": "In the &quot;Jurassic Park&quot; universe, when did &quot;Jurassic Park: San Diego&quot; begin construction?",
+    "correct_answer": "1985",
+    "incorrect_answers": ["1988", "1986", "1993"]
+  },
+  {
+    "category": "General Knowledge",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "The term &quot;scientist&quot; was coined in which year?",
+    "correct_answer": "1833",
+    "incorrect_answers": ["1933", "1942", "1796"]
+  },
+  {
+    "category": "Science & Nature",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "Human cells typically have how many copies of each gene?",
+    "correct_answer": "2",
+    "incorrect_answers": ["1", "4", "3"]
+  },
+  {
+    "category": "Science: Mathematics",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "In a complete graph G, which has 12 vertices, how many edges are there?",
+    "correct_answer": "66",
+    "incorrect_answers": ["67", "34", "11"]
+  },
+  {
+    "category": "Science: Computers",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "What amount of bits commonly equals one byte?",
+    "correct_answer": "8",
+    "incorrect_answers": ["1", "2", "64"]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "In what year were achivements added to Steam?",
+    "correct_answer": "2007",
+    "incorrect_answers": ["2008", "2009", "2006"]
+  },
+  {
+    "category": "History",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "In what year did the Berlin Wall fall?",
+    "correct_answer": "1989",
+    "incorrect_answers": ["1987", "1991", "1993"]
+  },
+  {
+    "category": "Sports",
+    "type": "multiple",
+    "difficulty": "easy",
+    "question": "How many soccer players should be on the field at the same time?",
+    "correct_answer": "22",
+    "incorrect_answers": ["20", "24", "26"]
+  },
+  {
+    "category": "History",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "What year did the Battle of Agincourt take place?",
+    "correct_answer": "1415",
+    "incorrect_answers": ["1463", "1401", "1422"]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "How many normal endings are there in Cry Of Fear&#039;s campaign mode?",
+    "correct_answer": "4",
+    "incorrect_answers": ["5", "3", "6"]
+  },
+  {
+    "category": "Science & Nature",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "In Chemistry, how many isomers does Butanol (C4H9OH) have?",
+    "correct_answer": "4",
+    "incorrect_answers": ["3", "5", "6"]
+  },
+  {
+    "category": "Politics",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "Before 2016, in which other year did Donald Trump run for President?",
+    "correct_answer": "2000",
+    "incorrect_answers": ["2012", "1988", "2008"]
+  },
+  {
+    "category": "Entertainment: Cartoon & Animations",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "How many episodes were in season five of Samurai Jack?",
+    "correct_answer": "10",
+    "incorrect_answers": ["12", "11", "13"]
+  },
+  {
+    "category": "Entertainment: Board Games",
+    "type": "multiple",
+    "difficulty": "hard",
+    "question": "What is the sum of all the tiles in a standard box of Scrabble?",
+    "correct_answer": "187",
+    "incorrect_answers": ["207", "197", "177"]
+  },
+  {
+    "category": "History",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "In what year did the North American Video Game Crash occur?",
+    "correct_answer": "1983",
+    "incorrect_answers": ["1982", "1993", "1970"]
+  },
+  {
+    "category": "Vehicles",
+    "type": "multiple",
+    "difficulty": "medium",
+    "question": "When was Cadillac founded?",
+    "correct_answer": "1902",
+    "incorrect_answers": ["1964", "1898", "1985"]
+  },
+  {
+    "category": "Entertainment: Video Games",
+    "type": "multiple",
+    "difficulty": "hard",
+    "question": "In &quot;Team Fortress 2&quot;, how much health does a scout have when overhealed?",
+    "correct_answer": "185",
+    "incorrect_answers": ["215", "195", "225"]
+  }
+]

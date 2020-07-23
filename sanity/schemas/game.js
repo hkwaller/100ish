@@ -7,20 +7,35 @@ export default {
   icon,
   fields: [
     {
+      name: 'gamename',
+      title: 'Game name',
+      type: 'string',
+    },
+    {
       name: 'players',
       title: 'Players',
       type: 'array',
       of: [{ type: 'player' }],
     },
+    {
+      name: 'questions',
+      title: 'Questions',
+      type: 'array',
+      of: [{ type: 'question' }],
+    },
+    {
+      name: 'isReady',
+      title: 'Game is ready to play',
+      type: 'boolean',
+    },
   ],
   preview: {
     select: {
-      players: 'players',
-      id: '_id',
+      gamename: 'gamename',
     },
     prepare(selection) {
       return {
-        title: `${selection.id}`,
+        title: `${selection.gamename}`,
       }
     },
   },

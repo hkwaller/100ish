@@ -6,7 +6,7 @@ import { state } from 'app/config/store'
 import { colors } from 'app/config/constants'
 import Question from './components/Question'
 import { PageHeader } from 'app/components'
-import BottomButton from '../respond/components/BottomButton'
+import BottomButton from '../player/components/BottomButton'
 import { useNavigation } from '@react-navigation/native'
 import { view } from '@risingstack/react-easy-state'
 
@@ -21,7 +21,7 @@ function Game() {
     if (activeIndex < state.questions.length - 1) {
       list.current?.scrollToIndex({ index: activeIndex + 1 })
     } else {
-      navigation.navigate('WaitingRoom')
+      navigation.navigate('ResultsWaitingRoom')
     }
   }
 
@@ -33,7 +33,7 @@ function Game() {
     <>
       <Screen noPadding>
         <PageHeader style={{ paddingLeft: 24, paddingTop: 24 }}>
-          Game
+          Game {activeIndex + 1}/{state.questions.length}
         </PageHeader>
         <FlatList
           ref={list}

@@ -1,13 +1,11 @@
 import React from 'react'
-import { View, Text } from 'react-native'
 import Screen from 'app/components/Screen'
+import { Bold } from 'app/components'
 
-type Props = {}
-
-function Finished(props: Props) {
+function Finished() {
   return (
     <Screen>
-      <Text>Finished</Text>
+      <Bold>Finished</Bold>
     </Screen>
   )
 }

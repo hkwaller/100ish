@@ -4,6 +4,7 @@ export type State = {
   questions: Question[]
   isPlaying: boolean
   game?: Game
+  player?: Player
 }
 
 export type Player = {
@@ -14,11 +15,15 @@ export type Player = {
 }
 
 export type Game = {
-  id: string
+  _id: string
+  gamename: string
   players: Player[]
+  questions: Question[]
+  isReady: boolean
 }
 
 export type Question = {
+  _id: string
   title: string
   answer: number
   _createdAt: string
@@ -27,5 +32,4 @@ export type Question = {
 export const state = store<State>({
   questions: [],
   isPlaying: false,
-  game: undefined,
 })

@@ -4,9 +4,10 @@ import { createStackNavigator } from '@react-navigation/stack'
 import 'react-native-gesture-handler'
 
 import Front from 'app/screens/Front'
-import Start from 'app/screens/respond/Start'
-import Answers from 'app/screens/respond/Answers'
-import Finished from 'app/screens/respond/Finished'
+import StartGame from 'app/screens/player/StartGame'
+import Lounge from 'app/screens/player/Lounge'
+import Respond from 'app/screens/player/Respond'
+import Finished from 'app/screens/player/Finished'
 
 import Setup from 'app/screens/leader/Setup'
 import Game from 'app/screens/leader/Game'
@@ -16,15 +17,16 @@ require('react-native').unstable_enableLogBox()
 
 const Stack = createStackNavigator()
 
-function RespondStack() {
+function PlayerStack() {
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Start" component={Start} />
-      <Stack.Screen name="Answers" component={Answers} />
+      <Stack.Screen name="StartGame" component={StartGame} />
+      <Stack.Screen name="Lounge" component={Lounge} />
+      <Stack.Screen name="Respond" component={Respond} />
       <Stack.Screen name="Finished" component={Finished} />
     </Stack.Navigator>
   )
@@ -38,8 +40,9 @@ function GameLeaderStack() {
       }}
     >
       <Stack.Screen name="Setup" component={Setup} />
-      <Stack.Screen name="Game" component={Game} />
       <Stack.Screen name="WaitingRoom" component={WaitingRoom} />
+      <Stack.Screen name="Game" component={Game} />
+      <Stack.Screen name="ResultsWaitingRoom" component={WaitingRoom} />
       <Stack.Screen name="Results" component={Results} />
     </Stack.Navigator>
   )
@@ -54,7 +57,7 @@ function App() {
         }}
       >
         <Stack.Screen name="Home" component={Front} />
-        <Stack.Screen name="Respond" component={RespondStack} />
+        <Stack.Screen name="Respond" component={PlayerStack} />
         <Stack.Screen name="Leader" component={GameLeaderStack} />
       </Stack.Navigator>
     </NavigationContainer>
