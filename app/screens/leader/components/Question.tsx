@@ -17,7 +17,9 @@ function Question({ question, updateVal, index }: Props) {
       <View style={styles.container}>
         <QuestionText>{question.title}</QuestionText>
       </View>
-      {state.isPlaying && <Slider number={index + 1} updateVal={updateVal} />}
+      {state.isPlaying && (
+        <Slider number={index + 1} updateVal={val => updateVal(val)} />
+      )}
     </View>
   )
 }

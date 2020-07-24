@@ -21,6 +21,10 @@ function Game() {
   const list = useRef<FlatList>(null)
   const navigation = useNavigation()
 
+  useEffect(() => {
+    if (activeIndex === state.questions.length - 1) setButtonText('Continue')
+  }, [activeIndex])
+
   function nextPressed() {
     setActiveIndex(prev => ++prev)
     if (activeIndex < state.questions.length - 1) {
@@ -31,9 +35,11 @@ function Game() {
     }
   }
 
-  useEffect(() => {
-    if (activeIndex === state.questions.length - 1) setButtonText('Continue')
-  }, [activeIndex])
+  function updateValue(val: number, index: number) {
+    const updatedAnswers = answers
+    updatedAnswers[index] = val
+    setAnswers([...updatedAnswers])
+  }
 
   return (
     <>
@@ -62,11 +68,7 @@ function Game() {
               <Question
                 question={item}
                 index={index}
-                updateVal={val => {
-                  const updatedAnswers = answers
-                  updatedAnswers[index] = val
-                  setAnswers(updatedAnswers)
-                }}
+                updateVal={val => updateValue(val, index)}
               />
             )
           }}
