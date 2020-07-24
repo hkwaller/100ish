@@ -30,6 +30,12 @@ function WaitingRoom() {
     if (isWaiting) animation.value = 0
   }, [isWaiting])
 
+  useEffect(() => {
+    if (state.game?.players.every(p => p.isFinished)) {
+      animation.value = 0
+    }
+  }, [state.game])
+
   const style = useAnimatedStyle(() => {
     return {
       transform: [{ translateY: withSpring(animation.value, { damping: 15 }) }],

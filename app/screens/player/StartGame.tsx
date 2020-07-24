@@ -85,8 +85,8 @@ function StartGame() {
       <Animated.View style={style}>
         <BottomButton
           onPress={async () => {
-            await addPlayer()
             await getGame(gameName)
+            await addPlayer()
             navigation.navigate('Lounge')
           }}
           title="Go to quiz"

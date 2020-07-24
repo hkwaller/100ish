@@ -31,5 +31,5 @@ export type Question = {
 
 export const state = store<State>({
   questions: [],
-  isPlaying: false,
+  isPlaying: true,
 })

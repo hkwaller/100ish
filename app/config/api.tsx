@@ -11,10 +11,10 @@ const client = sanityClient({
   useCdn: false,
 })
 
-export function getQuestions(numberOfQuestions: number) {
+export async function getQuestions(numberOfQuestions: number) {
   const query = `*[_type == "question"] | order(_createdAt asc)[0..${numberOfQuestions}]`
 
-  client.fetch(query).then((questions: Question[]) => {
+  await client.fetch(query).then((questions: Question[]) => {
     state.questions = questions.map((q: Question, index: number) =>
       Object.assign({ _key: `${index}` }, q)
     )
@@ -22,19 +22,6 @@ export function getQuestions(numberOfQuestions: number) {
 }
 
 let subscription
-export async function getGame(gamename: string) {
-  const query = `*[_type == "game"]`
-  const params = { gamename: gamename }
-
-  client.fetch(query, params).then((game: Game) => {
-    state.game = game[0]
-  })
-
-  subscription = client.listen(query, params).subscribe(update => {
-    state.game = update.result
-    console.log('game updated', update.result)
-  })
-}
 
 export async function stopListening() {
   subscription.unsubscribe()
@@ -42,7 +29,8 @@ export async function stopListening() {
 
 export async function createGame(
   numberOfQuestions: number,
-  isPlaying: boolean
+  isPlaying: boolean,
+  id: string
 ) {
   await getQuestions(numberOfQuestions)
 
@@ -60,50 +48,39 @@ export async function createGame(
 
   const game = {
     _type: 'game',
-    gamename: humanId(),
+    gamename: id,
     questions: state.questions,
     players: players,
   }
 
-  client.create(game).then((res: Game) => {
+  await client.create(game).then((res: Game) => {
     console.log(`Game was created with name ${res.gamename}`, res)
     state.game = res
+    if (players.length > 0) state.player = res.players[0]
+  })
+}
+
+export async function getGame(gamename: string) {
+  const query = `*[_type == "game" && gamename == $gamename]`
+  const params = { gamename: gamename }
+
+  await client.fetch(query, params).then((game: Game) => {
+    state.game = game[0]
+  })
+
+  subscription = await client.listen(query, params).subscribe(update => {
+    state.game = update.result
+    console.log('game updated', update.result)
   })
 }
 
 export async function listenToGameUpdates() {
   const query = `*[_type == "game"]`
-  const params = { gamename: state.game?.gamename }
+  const params = { _id: state.game?._id }
 
   subscription = client.listen(query, params).subscribe(update => {
     state.game = update.result
   })
-}
-
-export async function addPlayer() {
-  const newPlayer = {
-    _type: 'player',
-    _key: `${1}`,
-    name: 'Hannes',
-    isFinished: false,
-    answers: [],
-  }
-
-  state.player = newPlayer
-
-  client
-    .patch(state.game?._id)
-    .set({
-      players: [...state.game.players, newPlayer],
-    })
-    .commit()
-    .then((updatedGame: Game) => {
-      console.log(
-        `game updated, now ${updatedGame.players.length} players playing`
-      )
-
-      state.game = updatedGame
-    })
 }
 
 export async function readyGame() {
@@ -115,6 +92,30 @@ export async function readyGame() {
     .commit()
     .then((updatedGame: Game) => {
       console.log(`game updated, now ready to play`, updatedGame)
+
+      state.game = updatedGame
+    })
+}
+
+export async function addPlayer() {
+  const newPlayer = {
+    _type: 'player',
+    _key: `${Math.random()}`,
+    name: 'Hannes',
+    isFinished: false,
+    answers: [],
+  }
+
+  state.player = newPlayer
+
+  await client
+    .patch(state.game?._id)
+    .insert('after', 'players[-1]', [newPlayer])
+    .commit()
+    .then((updatedGame: Game) => {
+      console.log(
+        `game updated, now ${updatedGame.players.length} players playing`
+      )
 
       state.game = updatedGame
     })

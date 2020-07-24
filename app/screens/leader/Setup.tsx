@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
 import { view } from '@risingstack/react-easy-state'
 import { useNavigation } from '@react-navigation/native'
+import humanId from 'human-id'
 
 import Screen from 'app/components/Screen'
 import Slider from 'app/components/Slider'
@@ -13,7 +14,7 @@ import { state } from 'app/config/store'
 
 function Setup() {
   const navigation = useNavigation()
-  const [questions, setQuestions] = useState(5)
+  const [questions, setQuestions] = useState(1)
 
   return (
     <>
@@ -37,7 +38,8 @@ function Setup() {
       <BottomButton
         title="Start game"
         onPress={async () => {
-          await createGame(questions, state.isPlaying)
+          const id = humanId()
+          await createGame(questions, state.isPlaying, id)
           navigation.navigate('WaitingRoom', { isWaiting: true })
         }}
       />
