@@ -31,6 +31,7 @@ const AnimatedBold = Animated.createAnimatedComponent(Bold)
 
 function Slider({ number, updateVal = () => {}, header, max }: Props) {
   const [value, setValue] = useState((max && max / 2) || 50)
+  const [isActive, setIsActive] = useState(false)
   const lineStart = useSharedValue(0)
   const lineEnd = useSharedValue(0)
   const numberY = useSharedValue(0)
@@ -43,6 +44,7 @@ function Slider({ number, updateVal = () => {}, header, max }: Props) {
     onStart: (_, ctx) => {
       ctx.startX = x.value
       numberY.value = 1
+      setIsActive(true)
     },
     onActive: (event, ctx) => {
       const val = ctx.startX + event.translationX
@@ -63,7 +65,7 @@ function Slider({ number, updateVal = () => {}, header, max }: Props) {
         [0, max || 100]
       )
       updateVal(Math.round(percentageValue))
-
+      setIsActive(false)
       numberY.value = 0
     },
   })
@@ -101,20 +103,22 @@ function Slider({ number, updateVal = () => {}, header, max }: Props) {
   return (
     <View style={styles.outerContainer}>
       {header && (
-        <SliderHeader style={{ marginBottom: 10 }}>{header}</SliderHeader>
+        <SliderHeader
+          style={{
+            marginBottom: 10,
+            color: isActive ? colors.DARKGREY : colors.BLACK,
+          }}
+        >
+          {header}
+        </SliderHeader>
       )}
       <View style={styles.container}>
         {number && (
-          <Bold style={{ flex: 1, fontSize: 40, marginRight: 20 }}>
+          <Bold style={{ flex: 1, fontSize: 25, marginRight: 20 }}>
             #{number}
           </Bold>
         )}
-        <View
-          style={{
-            justifyContent: 'center',
-            flex: 3,
-          }}
-        >
+        <View style={styles.sliderContainer}>
           <View
             style={styles.line}
             onLayout={({
@@ -145,19 +149,24 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
-    minHeight: 50,
+    alignItems: 'center',
+  },
+  sliderContainer: {
+    justifyContent: 'center',
+    flex: 5,
+    alignItems: 'center',
   },
   line: {
     backgroundColor: colors.DARKGREY,
     height: 5,
-    width: '90%',
+    width: '100%',
+    marginVertical: 15,
   },
   circleContainer: {
     padding: 20,
   },
   circle: {
     ...StyleSheet.absoluteFillObject,
-    top: 5,
     width: 40,
     height: 40,
     borderRadius: 20,

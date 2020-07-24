@@ -28,6 +28,16 @@ export default {
       title: 'Game is ready to play',
       type: 'boolean',
     },
+    {
+      name: 'isOpen',
+      title: 'Game is open to play',
+      type: 'boolean',
+    },
+    {
+      name: 'showQuestions',
+      title: 'Show questions',
+      type: 'boolean',
+    },
   ],
   preview: {
     select: {

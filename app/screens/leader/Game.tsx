@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
-import { FlatList } from 'react-native'
+import { View, FlatList } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { view } from '@risingstack/react-easy-state'
+
 import Screen from 'app/components/Screen'
 import { state } from 'app/config/store'
 import { colors } from 'app/config/constants'
 import Question from './components/Question'
 import { PageHeader } from 'app/components'
 import BottomButton from '../player/components/BottomButton'
-import { useNavigation } from '@react-navigation/native'
-import { view } from '@risingstack/react-easy-state'
 import { submitAnswers } from 'app/config/api'
 
 function Game() {

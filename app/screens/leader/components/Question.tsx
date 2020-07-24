@@ -14,9 +14,7 @@ type Props = {
 function Question({ question, updateVal, index }: Props) {
   return (
     <View style={styles.outerContainer}>
-      <View style={styles.container}>
-        <QuestionText>{question.title}</QuestionText>
-      </View>
+      <QuestionText style={styles.question}>{question.title}</QuestionText>
       {state.isPlaying && (
         <Slider number={index + 1} updateVal={val => updateVal(val)} />
       )}
@@ -30,10 +28,11 @@ const styles = StyleSheet.create({
     width: screen.WIDTH - 48,
     marginLeft: 24,
   },
-  container: {
+  question: {
     padding: 24,
     backgroundColor: colors.PURPLE,
     paddingBottom: 48,
+    marginBottom: 20,
   },
 })
 export default Question

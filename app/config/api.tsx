@@ -11,7 +11,8 @@ const client = sanityClient({
 })
 
 export async function getQuestions(numberOfQuestions: number) {
-  const query = `*[_type == "question"] | order(_createdAt asc)[0..${numberOfQuestions}]`
+  const query = `*[_type == "question"] | order(_createdAt asc)[0..${numberOfQuestions -
+    1}]`
 
   await client.fetch(query).then((questions: Question[]) => {
     state.questions = questions.map((q: Question, index: number) =>
@@ -26,14 +27,10 @@ export async function stopListening() {
   subscription.unsubscribe()
 }
 
-export async function createGame(
-  numberOfQuestions: number,
-  isPlaying: boolean,
-  id: string
-) {
+export async function createGame(numberOfQuestions: number, id: string) {
   await getQuestions(numberOfQuestions)
 
-  const players = isPlaying
+  const players = state.isPlaying
     ? [
         {
           _type: 'player',
@@ -50,12 +47,14 @@ export async function createGame(
     gamename: id,
     questions: state.questions,
     players: players,
+    isOpen: true,
+    showQuestions: state.showQuestions,
   }
 
   await client.create(game).then((res: Game) => {
     console.log(`Game was created with name ${res.gamename}`, res)
     state.game = res
-    if (isPlaying) state.player = res.players[0]
+    if (state.isPlaying) state.player = res.players[0]
   })
 }
 
@@ -63,7 +62,8 @@ export async function getGame(gamename: string) {
   const query = `*[_type == "game" && gamename == $gamename]`
   const params = { gamename: gamename }
 
-  await client.fetch(query, params).then((game: Game) => {
+  await client.fetch(query, params).then((game: Game[]) => {
+    if (!game[0].isOpen) return 'no can do'
     state.game = game[0]
   })
 
@@ -91,6 +91,20 @@ export async function readyGame() {
     .commit()
     .then((updatedGame: Game) => {
       console.log(`game updated, now ready to play`, updatedGame)
+
+      state.game = updatedGame
+    })
+}
+
+export async function inactivateGame() {
+  client
+    .patch(state.game?._id)
+    .set({
+      isOpen: false,
+    })
+    .commit()
+    .then((updatedGame: Game) => {
+      console.log(`game closed`, updatedGame)
 
       state.game = updatedGame
     })
@@ -136,7 +150,7 @@ export function submitAnswers(answers: number[]) {
     })
     .commit()
     .then((updatedGame: Game) => {
-      console.log(`game updated`, updatedGame)
+      console.log(`answers submitted`, updatedGame)
 
       state.game = updatedGame
     })

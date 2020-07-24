@@ -23,7 +23,9 @@ function Respond() {
         {state.game?.questions.map((q: Question, index: number) => {
           return (
             <View key={index}>
-              <Bold>{q.title}</Bold>
+              {state.game?.showQuestions && (
+                <Bold style={{ marginBottom: 12 }}>{q.title}</Bold>
+              )}
               <Slider
                 number={index + 1}
                 updateVal={val => {
@@ -39,7 +41,7 @@ function Respond() {
       <BottomButton
         onPress={() => {
           submitAnswers(answers)
-          navigation.navigate('Finished')
+          navigation.navigate('Results')
         }}
         title="Submit answers"
       />

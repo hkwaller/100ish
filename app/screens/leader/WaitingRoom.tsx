@@ -9,7 +9,12 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated'
 
-import { stopListening, readyGame, listenToGameUpdates } from 'app/config/api'
+import {
+  stopListening,
+  readyGame,
+  getGame,
+  inactivateGame,
+} from 'app/config/api'
 import { state } from 'app/config/store'
 import { PageHeader, Bold } from 'app/components'
 import Player from './components/Player'
@@ -23,7 +28,7 @@ function WaitingRoom() {
 
   useEffect(() => {
     setIsWaiting(route.params?.isWaiting)
-    listenToGameUpdates()
+    getGame(state.game?.gamename)
   }, [])
 
   useEffect(() => {
@@ -84,8 +89,7 @@ function WaitingRoom() {
         <BottomButton
           title={isWaiting ? 'Go to game' : 'Show Results'}
           onPress={() => {
-            stopListening()
-            readyGame()
+            isWaiting ? readyGame() : inactivateGame()
             navigation.navigate(isWaiting ? 'Game' : 'Results')
           }}
         />

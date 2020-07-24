@@ -7,11 +7,16 @@ import Animated, {
 } from 'react-native-reanimated'
 
 import { PageHeader } from 'app/components'
-import { state } from 'app/config/store'
 import { colors } from 'app/config/constants'
 import { view } from '@risingstack/react-easy-state'
 
-function AnimatedCheckbox() {
+type Props = {
+  title: string
+  toggle: () => void
+  val: boolean
+}
+
+function AnimatedCheckbox({ title, toggle, val }: Props) {
   const translateY = useSharedValue(-50)
 
   const style = useAnimatedStyle(() => {
@@ -21,40 +26,45 @@ function AnimatedCheckbox() {
   })
 
   useEffect(() => {
-    if (state.isPlaying) translateY.value = 0
+    if (val) translateY.value = 0
     else translateY.value = -50
-  }, [state.isPlaying])
+  }, [val])
 
   return (
     <TouchableOpacity
-      style={[styles.isPlaying]}
-      onPress={() => (state.isPlaying = !state.isPlaying)}
+      activeOpacity={1}
+      style={[styles.animatedCheckbox]}
+      onPress={toggle}
     >
       <View style={styles.checkbox}>
         <Animated.View
           style={[
             style,
             {
-              padding: 24,
+              padding: 12,
               backgroundColor: colors.GREEN,
             },
           ]}
         />
       </View>
-      <PageHeader>I wanna play to!</PageHeader>
+      <PageHeader style={{ flex: 3 }}>{title}</PageHeader>
     </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
-  isPlaying: {
+  animatedCheckbox: {
     alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 24,
+    justifyContent: 'space-around',
+    padding: 12,
     flexDirection: 'row',
   },
   checkbox: {
     overflow: 'hidden',
+    borderWidth: 8,
+    borderColor: colors.BLACK,
+    flex: 0,
+    marginRight: 20,
   },
 })
 

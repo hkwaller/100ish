@@ -3,6 +3,7 @@ import { store } from '@risingstack/react-easy-state'
 export type State = {
   questions: Question[]
   isPlaying: boolean
+  showQuestions: boolean
   game?: Game
   player?: Player
 }
@@ -20,6 +21,8 @@ export type Game = {
   players: Player[]
   questions: Question[]
   isReady: boolean
+  isOpen: boolean
+  showQuestions: boolean
 }
 
 export type Question = {

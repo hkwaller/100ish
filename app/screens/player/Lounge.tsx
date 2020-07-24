@@ -5,6 +5,7 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated'
+import { useNavigation } from '@react-navigation/native'
 
 import Screen from 'app/components/Screen'
 import { PageHeader } from 'app/components'
@@ -13,7 +14,6 @@ import { state } from 'app/config/store'
 import { listenToGameUpdates } from 'app/config/api'
 import { view } from '@risingstack/react-easy-state'
 import BottomButton from './components/BottomButton'
-import { useNavigation } from '@react-navigation/native'
 
 function Lounge() {
   const animation = useSharedValue(120)
