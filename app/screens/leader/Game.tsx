@@ -38,7 +38,9 @@ function Game() {
   return (
     <>
       <Screen noPadding>
-        <PageHeader style={{ paddingLeft: 24, paddingTop: 24 }}>
+        <PageHeader
+          style={{ paddingLeft: 24, paddingTop: 24, marginBottom: 24 }}
+        >
           Game {activeIndex + 1}/{state.questions.length}
         </PageHeader>
         <FlatList

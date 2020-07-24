@@ -1,13 +1,12 @@
 import { state, Question, Game } from './store'
-import humanId from 'human-id'
+import { token } from '../../token'
 
 const sanityClient = require('@sanity/client')
 
 const client = sanityClient({
   projectId: 'xljurv9v',
   dataset: 'production',
-  token:
-    'skKJilwSJxaDMSA7aIqmY7chPTbC0HwNEqRFgew8q5jAqb5sarE64ptaI9Y8gtlBFiwcgd0OMQs08bsyt0NCeBnmyTJmp0nmSe1Vn945ymdSNhdY6JJc0UJmAPGvaVxskyNLKGVpUmH69Gfbr4AhxgQg0njTlk8wLeBXt5CDkLFtysFKhcVR',
+  token: token,
   useCdn: false,
 })
 
@@ -56,7 +55,7 @@ export async function createGame(
   await client.create(game).then((res: Game) => {
     console.log(`Game was created with name ${res.gamename}`, res)
     state.game = res
-    if (players.length > 0) state.player = res.players[0]
+    if (isPlaying) state.player = res.players[0]
   })
 }
 

@@ -37,7 +37,7 @@ function Lounge() {
   return (
     <>
       <Screen>
-        <PageHeader>Player lounge</PageHeader>
+        <PageHeader style={{ marginBottom: 24 }}>Player lounge</PageHeader>
         <View style={styles.playerContainer}>
           {state.game?.players?.map((p, index) => {
             return <Player key={index} name={p.name} isFinished={true} />

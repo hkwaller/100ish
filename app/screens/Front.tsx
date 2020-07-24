@@ -9,30 +9,6 @@ import Screen from 'app/components/Screen'
 function Front() {
   const navigation = useNavigation()
 
-  // useEffect(() => {
-  //   async function gett() {
-  //     const res = await fetch('https://jservice.io/api/random?count=100', {
-  //       headers: {
-  //         'user-agent': 'Mozilla/4.0 MDN Example',
-  //         'content-type': 'application/json',
-  //       },
-  //     })
-  //     const p = await res.json()
-  //     console.log('p: ', p)
-  //     let numbers = []
-  //     p.results.map(q => {
-  //       if (/^\d+$/.test(q.correct_answer)) {
-  //         numbers.push(q)
-  //       }
-  //     })
-
-  //     console.log('numbers: ', numbers)
-  //     console.log(p)
-  //   }
-
-  //   gett()
-  // }, [])
-
   return (
     <Screen>
       <Welcome style={{ marginBottom: 20 }}>Welcome</Welcome>

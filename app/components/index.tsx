@@ -23,7 +23,6 @@ export const QuestionText = styled.Text`
 export const PageHeader = styled.Text`
   font-family: ${fonts.BOLD};
   font-size: 30px;
-  margin-bottom: 20px;
 `
 
 export const Welcome = styled.Text`
@@ -34,7 +33,7 @@ export const Welcome = styled.Text`
 export const SliderHeader = styled.Text`
   font-family: ${fonts.BOLD};
   font-size: 30px;
-  color: ${colors.DARKGREY};
+  color: ${colors.BLACK};
 `
 
 export { Header }

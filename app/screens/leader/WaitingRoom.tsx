@@ -61,7 +61,7 @@ function WaitingRoom() {
   return (
     <>
       <Screen>
-        <PageHeader>
+        <PageHeader style={{ marginBottom: 24 }}>
           Players {playersDone || 0}/{playersPlaying || 0}{' '}
         </PageHeader>
         <Bold style={{ marginVertical: 20 }}>
