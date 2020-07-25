@@ -18,6 +18,7 @@ type Props = {
   header?: string
   min?: number
   max?: number
+  setQuestionActiveCallback?: (isActive: boolean) => void
 }
 
 function clamp(x: number, min: number, max: number) {
@@ -29,7 +30,13 @@ function clamp(x: number, min: number, max: number) {
 
 const AnimatedBold = Animated.createAnimatedComponent(Bold)
 
-function Slider({ number, updateVal, header, max = 100 }: Props) {
+function Slider({
+  number,
+  updateVal,
+  header,
+  max = 100,
+  setQuestionActiveCallback,
+}: Props) {
   const [value, setValue] = useState(max / 2)
   const [isActive, setIsActive] = useState(false)
   const lineStart = useSharedValue(0)
@@ -45,6 +52,7 @@ function Slider({ number, updateVal, header, max = 100 }: Props) {
       ctx.startX = x.value
       numberY.value = 1
       setIsActive(true)
+      setQuestionActiveCallback(true)
     },
     onActive: (event, ctx) => {
       const val = ctx.startX + event.translationX
@@ -67,6 +75,7 @@ function Slider({ number, updateVal, header, max = 100 }: Props) {
       updateVal(Math.round(percentageValue))
       setIsActive(false)
       numberY.value = 0
+      setQuestionActiveCallback(false)
     },
   })
 

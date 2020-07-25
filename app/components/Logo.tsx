@@ -1,6 +1,6 @@
-import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { colors, screen } from 'app/config/constants'
+import React, { useState } from 'react'
+import { View, StyleSheet } from 'react-native'
+import { colors } from 'app/config/constants'
 import { Bold } from 'app/components'
 import { useNavigation } from '@react-navigation/native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -11,13 +11,26 @@ type Props = {
 }
 
 function Logo({ title, hideBackButton = false }: Props) {
+  const [width, setWidth] = useState(0)
+
   const navigation = useNavigation()
 
   return (
     <View style={styles.container}>
       <View>
-        <Bold style={{ fontSize: 40 }}>{title || '100ish'}</Bold>
-        <View style={styles.line} />
+        <Bold
+          onLayout={({
+            nativeEvent: {
+              layout: { width: layoutWidth },
+            },
+          }) => {
+            setWidth(layoutWidth)
+          }}
+          style={{ fontSize: 40 }}
+        >
+          {title || '100ish'}
+        </Bold>
+        <View style={[styles.line, { width: width }]} />
       </View>
       {navigation.canGoBack() && !hideBackButton && (
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -38,7 +51,6 @@ const styles = StyleSheet.create({
   },
   line: {
     height: 10,
-    width: screen.WIDTH / 2.5,
     backgroundColor: colors.RED,
   },
 })

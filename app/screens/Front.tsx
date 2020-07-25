@@ -24,7 +24,7 @@ function Front() {
       />
       <BigButton
         title="I want to add a question or two"
-        onPress={() => {}}
+        onPress={() => navigation.navigate('Add')}
         bgColor={colors.RED}
       />
     </Screen>

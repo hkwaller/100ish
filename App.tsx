@@ -13,6 +13,9 @@ import Setup from 'app/screens/leader/Setup'
 import Game from 'app/screens/leader/Game'
 import WaitingRoom from 'app/screens/leader/WaitingRoom'
 import Results from 'app/screens/common/Results'
+
+import AddQuestion from 'app/screens/add-question/AddQuestion'
+
 require('react-native').unstable_enableLogBox()
 
 const Stack = createStackNavigator()
@@ -48,6 +51,18 @@ function GameLeaderStack() {
   )
 }
 
+function AddQuestionAstack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="AddQuestion" component={AddQuestion} />
+    </Stack.Navigator>
+  )
+}
+
 function App() {
   return (
     <NavigationContainer>
@@ -59,6 +74,7 @@ function App() {
         <Stack.Screen name="Home" component={Front} />
         <Stack.Screen name="Respond" component={PlayerStack} />
         <Stack.Screen name="Leader" component={GameLeaderStack} />
+        <Stack.Screen name="Add" component={AddQuestionAstack} />
       </Stack.Navigator>
     </NavigationContainer>
   )

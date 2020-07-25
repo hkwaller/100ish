@@ -2,38 +2,33 @@ import React, { useState } from 'react'
 import { view } from '@risingstack/react-easy-state'
 import { useNavigation } from '@react-navigation/native'
 
-import Slider from 'app/components/Slider'
 import Screen from 'app/components/Screen'
-import { Bold } from 'app/components'
 import BottomButton from './components/BottomButton'
 import { submitAnswers } from 'app/config/api'
-import { state, Question } from 'app/config/store'
-import { View } from 'react-native'
+import { state, Question as QuestionType } from 'app/config/store'
+import Question from './components/Question'
 
 function Respond() {
   const [answers, setAnswers] = useState(
     (state.game?.questions || []).map(_ => 0)
   )
+
   const navigation = useNavigation()
 
   return (
     <>
       <Screen title="Respond">
-        {state.game?.questions.map((q: Question, index: number) => {
+        {state.game?.questions.map((q: QuestionType, index: number) => {
           return (
-            <View key={index}>
-              {state.game?.showQuestions && (
-                <Bold style={{ marginBottom: 12 }}>{q.title}</Bold>
-              )}
-              <Slider
-                number={index + 1}
-                updateVal={val => {
-                  const updatedAnswers = answers
-                  updatedAnswers[index] = val
-                  setAnswers(updatedAnswers)
-                }}
-              />
-            </View>
+            <Question
+              number={index + 1}
+              title={q.title}
+              updateVal={val => {
+                const updatedAnswers = answers
+                updatedAnswers[index] = val
+                setAnswers(updatedAnswers)
+              }}
+            />
           )
         })}
       </Screen>
