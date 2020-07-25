@@ -21,8 +21,7 @@ function Setup() {
 
   return (
     <>
-      <Screen>
-        <PageHeader style={{ marginBottom: 24 }}>Setup</PageHeader>
+      <Screen title="Setup">
         <Slider
           header="Questions"
           max={10}

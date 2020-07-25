@@ -5,23 +5,20 @@ import { colors } from 'app/config/constants'
 
 type Props = {
   children: React.ReactNode
+  title?: string
   noPadding?: boolean
+  hideBackButton?: boolean
 }
 
-function Screen({ children, noPadding }: Props) {
+function Screen({ children, title, noPadding, hideBackButton }: Props) {
   return (
     <>
       <View style={styles.top} />
       <View style={styles.container}>
-        <Logo />
+        <Logo title={title} hideBackButton={hideBackButton} />
         <ScrollView>
           <View
-            style={[
-              styles.innerContainer,
-              {
-                padding: noPadding ? 0 : 24,
-              },
-            ]}
+            style={[styles.innerContainer, { padding: noPadding ? 0 : 24 }]}
           >
             {children}
           </View>

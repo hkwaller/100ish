@@ -53,7 +53,7 @@ function StartGame() {
 
   return (
     <>
-      <Screen>
+      <Screen title="Join">
         <Bold style={{ fontSize: 30, marginBottom: 20 }}>
           Enter game room name {wordsEntered}
         </Bold>

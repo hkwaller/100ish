@@ -18,8 +18,7 @@ function Respond() {
 
   return (
     <>
-      <Screen>
-        <Bold style={{ fontSize: 30, marginBottom: 20 }}>Input answers</Bold>
+      <Screen title="Respond">
         {state.game?.questions.map((q: Question, index: number) => {
           return (
             <View key={index}>

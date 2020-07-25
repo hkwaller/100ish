@@ -29,8 +29,8 @@ function clamp(x: number, min: number, max: number) {
 
 const AnimatedBold = Animated.createAnimatedComponent(Bold)
 
-function Slider({ number, updateVal = () => {}, header, max }: Props) {
-  const [value, setValue] = useState((max && max / 2) || 50)
+function Slider({ number, updateVal, header, max = 100 }: Props) {
+  const [value, setValue] = useState(max / 2)
   const [isActive, setIsActive] = useState(false)
   const lineStart = useSharedValue(0)
   const lineEnd = useSharedValue(0)
@@ -52,7 +52,7 @@ function Slider({ number, updateVal = () => {}, header, max }: Props) {
       const percentageValue = interpolate(
         clamped,
         [lineStart.value, lineEnd.value],
-        [0, max || 100]
+        [0, max]
       )
       setValue(Math.round(percentageValue))
       x.value = clamped
@@ -62,7 +62,7 @@ function Slider({ number, updateVal = () => {}, header, max }: Props) {
       const percentageValue = interpolate(
         clamped,
         [lineStart.value, lineEnd.value],
-        [0, max || 100]
+        [0, max]
       )
       updateVal(Math.round(percentageValue))
       setIsActive(false)

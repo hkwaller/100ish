@@ -5,16 +5,21 @@ import { Bold } from 'app/components'
 import { useNavigation } from '@react-navigation/native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-function Logo() {
+type Props = {
+  title?: string
+  hideBackButton?: boolean
+}
+
+function Logo({ title, hideBackButton = false }: Props) {
   const navigation = useNavigation()
 
   return (
     <View style={styles.container}>
       <View>
-        <Bold style={{ fontSize: 40 }}>100ish</Bold>
+        <Bold style={{ fontSize: 40 }}>{title || '100ish'}</Bold>
         <View style={styles.line} />
       </View>
-      {navigation.canGoBack() && (
+      {navigation.canGoBack() && !hideBackButton && (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Bold style={{ color: colors.RED, fontSize: 20 }}>Back</Bold>
         </TouchableOpacity>

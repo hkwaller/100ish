@@ -43,7 +43,7 @@ function Game() {
 
   return (
     <>
-      <Screen noPadding>
+      <Screen noPadding title="Game">
         <PageHeader
           style={{ paddingLeft: 24, paddingTop: 24, marginBottom: 24 }}
         >

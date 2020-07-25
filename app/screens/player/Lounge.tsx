@@ -6,13 +6,12 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated'
 import { useNavigation } from '@react-navigation/native'
+import { view } from '@risingstack/react-easy-state'
 
 import Screen from 'app/components/Screen'
-import { PageHeader } from 'app/components'
 import Player from '../leader/components/Player'
 import { state } from 'app/config/store'
 import { listenToGameUpdates } from 'app/config/api'
-import { view } from '@risingstack/react-easy-state'
 import BottomButton from './components/BottomButton'
 
 function Lounge() {
@@ -36,8 +35,7 @@ function Lounge() {
 
   return (
     <>
-      <Screen>
-        <PageHeader style={{ marginBottom: 24 }}>Player lounge</PageHeader>
+      <Screen title="Lounge">
         <View style={styles.playerContainer}>
           {state.game?.players?.map((p, index) => {
             return <Player key={index} name={p.name} isFinished={true} />

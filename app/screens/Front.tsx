@@ -1,16 +1,16 @@
-import React, { useEffect } from 'react'
-import { StyleSheet } from 'react-native'
+import React from 'react'
+import { useNavigation } from '@react-navigation/native'
+
 import { colors } from 'app/config/constants'
 import { Welcome } from 'app/components'
 import BigButton from 'app/components/BigButton'
-import { useNavigation } from '@react-navigation/native'
 import Screen from 'app/components/Screen'
 
 function Front() {
   const navigation = useNavigation()
 
   return (
-    <Screen>
+    <Screen hideBackButton>
       <Welcome style={{ marginBottom: 20 }}>Welcome</Welcome>
       <BigButton
         title="I’m the game master"
@@ -30,13 +30,5 @@ function Front() {
     </Screen>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.WHITE,
-    padding: 20,
-  },
-})
 
 export default Front

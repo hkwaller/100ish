@@ -9,12 +9,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated'
 
-import {
-  stopListening,
-  readyGame,
-  getGame,
-  inactivateGame,
-} from 'app/config/api'
+import { readyGame, getGame, inactivateGame } from 'app/config/api'
 import { state } from 'app/config/store'
 import { PageHeader, Bold } from 'app/components'
 import Player from './components/Player'
@@ -65,7 +60,7 @@ function WaitingRoom() {
 
   return (
     <>
-      <Screen>
+      <Screen title="Lounge">
         <PageHeader style={{ marginBottom: 24 }}>
           Players {playersDone || 0}/{playersPlaying || 0}{' '}
         </PageHeader>
