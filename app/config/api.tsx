@@ -21,6 +21,31 @@ export async function getQuestions(numberOfQuestions: number) {
   })
 }
 
+export async function replaceQuestion(index: number) {
+  const questionToRemove = [`questions[${index}]`]
+
+  const query = `*[_type == "question"] | order(_createdAt desc)[0..1]`
+
+  const newQuestion = await client
+    .fetch(query)
+    .then((questions: Question[]) => {
+      return questions[0]
+    })
+
+  await client
+    .patch(state.game?._id)
+    .unset(questionToRemove)
+    .insert('after', `questions[${index - 1}]`, [
+      { _key: Math.random(), ...newQuestion },
+    ])
+    .commit()
+    .then((updatedGame: Game) => {
+      console.log(`question replaced`)
+
+      state.game = updatedGame
+    })
+}
+
 let subscription
 
 export async function stopListening() {

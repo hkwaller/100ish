@@ -61,7 +61,7 @@ function Game() {
           ItemSeparatorComponent={() => (
             <View style={{ width: 20, backgroundColor: colors.GREY }} />
           )}
-          data={state.questions}
+          data={state.game?.questions}
           pagingEnabled
           renderItem={({ item, index }) => {
             return (

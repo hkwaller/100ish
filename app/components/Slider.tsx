@@ -35,7 +35,7 @@ function Slider({
   updateVal,
   header,
   max = 100,
-  setQuestionActiveCallback,
+  setQuestionActiveCallback = () => {},
 }: Props) {
   const [value, setValue] = useState(max / 2)
   const [isActive, setIsActive] = useState(false)

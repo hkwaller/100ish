@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { View } from 'react-native'
 import { view } from '@risingstack/react-easy-state'
 import { useNavigation } from '@react-navigation/native'
 
@@ -18,9 +19,11 @@ function Respond() {
   return (
     <>
       <Screen title="Respond">
+        <View style={{ marginVertical: 20 }} />
         {state.game?.questions.map((q: QuestionType, index: number) => {
           return (
             <Question
+              key={index}
               number={index + 1}
               title={q.title}
               updateVal={val => {

@@ -4,6 +4,7 @@ import { View } from 'react-native'
 import { Bold } from 'app/components'
 import Slider from 'app/components/Slider'
 import { colors } from 'app/config/constants'
+import { state } from 'app/config/store'
 
 type Props = {
   title: string
@@ -16,14 +17,16 @@ function Question({ title, updateVal, number }: Props) {
 
   return (
     <View>
-      <Bold
-        style={{
-          marginBottom: 12,
-          color: isActive ? colors.DARKGREY : colors.BLACK,
-        }}
-      >
-        {title}
-      </Bold>
+      {state.game?.showQuestions && (
+        <Bold
+          style={{
+            marginBottom: 12,
+            color: isActive ? colors.DARKGREY : colors.BLACK,
+          }}
+        >
+          {title}
+        </Bold>
+      )}
       <Slider
         number={number}
         setQuestionActiveCallback={isActive => setIsActive(isActive)}
