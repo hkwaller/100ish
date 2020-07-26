@@ -22,12 +22,13 @@ function Game() {
   const navigation = useNavigation()
 
   useEffect(() => {
-    if (activeIndex === state.questions.length - 1) setButtonText('Continue')
+    if (activeIndex === state.game.questions.length - 1)
+      setButtonText('Continue')
   }, [activeIndex])
 
   function nextPressed() {
     setActiveIndex(prev => ++prev)
-    if (activeIndex < state.questions.length - 1) {
+    if (activeIndex < state.game.questions.length - 1) {
       list.current?.scrollToIndex({ index: activeIndex + 1 })
     } else {
       state.isPlaying && submitAnswers(answers)
@@ -47,7 +48,7 @@ function Game() {
         <PageHeader
           style={{ paddingLeft: 24, paddingTop: 24, marginBottom: 24 }}
         >
-          Game {activeIndex + 1}/{state.questions.length}
+          Game {activeIndex + 1}/{state.game.questions.length}
         </PageHeader>
         <FlatList
           ref={list}

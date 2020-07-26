@@ -1,5 +1,6 @@
 import { state, Question, Game } from './store'
 import { token } from '../../token'
+import { shuffle } from './utils'
 
 const sanityClient = require('@sanity/client')
 
@@ -10,12 +11,14 @@ const client = sanityClient({
   useCdn: false,
 })
 
-export async function getQuestions(numberOfQuestions: number) {
+export async function getQuestions(
+  numberOfQuestions: number
+): Promise<Question[]> {
   const query = `*[_type == "question"] | order(_createdAt asc)[0..${numberOfQuestions -
     1}]`
 
-  await client.fetch(query).then((questions: Question[]) => {
-    state.questions = questions.map((q: Question, index: number) =>
+  return await client.fetch(query).then((questions: Question[]) => {
+    return questions.map((q: Question, index: number) =>
       Object.assign({ _key: `${index}` }, q)
     )
   })
@@ -53,7 +56,9 @@ export async function stopListening() {
 }
 
 export async function createGame(numberOfQuestions: number, id: string) {
-  await getQuestions(numberOfQuestions)
+  const questions = await getQuestions(numberOfQuestions)
+
+  const shuffledQuestions = shuffle(questions).slice(0, numberOfQuestions)
 
   const players = state.isPlaying
     ? [
@@ -70,7 +75,7 @@ export async function createGame(numberOfQuestions: number, id: string) {
   const game = {
     _type: 'game',
     gamename: id,
-    questions: state.questions,
+    questions: shuffledQuestions,
     players: players,
     isOpen: true,
     showQuestions: state.showQuestions,
