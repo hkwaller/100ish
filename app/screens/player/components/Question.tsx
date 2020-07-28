@@ -21,6 +21,7 @@ function Question({ title, updateVal, number }: Props) {
         <Bold
           style={{
             marginBottom: 12,
+            marginTop: 10,
             color: isActive ? colors.DARKGREY : colors.BLACK,
           }}
         >

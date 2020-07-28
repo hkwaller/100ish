@@ -28,11 +28,19 @@ function Game() {
 
   function nextPressed() {
     setActiveIndex(prev => ++prev)
+
     if (state.game && activeIndex < state.game.questions.length - 1) {
       list.current?.scrollToIndex({ index: activeIndex + 1 })
     } else {
       state.isPlaying && submitAnswers(answers)
       navigation.navigate('ResultsWaitingRoom')
+    }
+  }
+
+  function previousPressed() {
+    if (state.game && activeIndex > 0) {
+      setActiveIndex(prev => --prev)
+      list.current?.scrollToIndex({ index: activeIndex - 1 })
     }
   }
 
@@ -48,7 +56,7 @@ function Game() {
         <PageHeader
           style={{ paddingLeft: 24, paddingTop: 24, marginBottom: 24 }}
         >
-          Game {activeIndex + 1}/{state.game?.questions.length}
+          Question {activeIndex + 1}/{state.game?.questions.length}
         </PageHeader>
         <FlatList
           ref={list}
@@ -70,6 +78,7 @@ function Game() {
                 question={item}
                 index={index}
                 updateVal={val => updateValue(val, index)}
+                previous={() => previousPressed()}
               />
             )
           }}

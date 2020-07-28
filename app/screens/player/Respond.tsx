@@ -19,7 +19,7 @@ function Respond() {
   return (
     <>
       <Screen title="Respond">
-        <View style={{ marginVertical: 20 }} />
+        <View style={{ marginVertical: 10 }} />
         {state.game?.questions.map((q: QuestionType, index: number) => {
           return (
             <Question

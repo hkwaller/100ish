@@ -7,43 +7,48 @@ import Slider from 'app/components/Slider'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { replaceQuestion, removeQuestion } from 'app/config/api'
 import { view } from '@risingstack/react-easy-state'
+import QuestionButton from './QuestionButton'
 
 type Props = {
   question: QuestionType
   updateVal: (answer: number) => void
   index: number
+  previous?: () => void
 }
 
-function Question({ question, updateVal, index }: Props) {
+function Question({ question, updateVal, index, previous }: Props) {
   return (
     <View style={styles.outerContainer}>
       <QuestionText style={styles.question}>{question.title}</QuestionText>
       {state.isPlaying && (
         <Slider number={index + 1} updateVal={val => updateVal(val)} />
       )}
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-          replaceQuestion(index)
-        }}
-      >
-        <Bold style={{ fontSize: 20, color: colors.WHITE }}>
-          Replace question
-        </Bold>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[styles.button, { backgroundColor: colors.BLACK }]}
-        onPress={async () => {
-          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-          await removeQuestion(question._id)
-          await replaceQuestion(index)
-        }}
-      >
-        <Bold style={{ fontSize: 20, color: colors.WHITE }}>
-          Remove question
-        </Bold>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <QuestionButton
+          title="Replace"
+          backgroundColor={colors.RED}
+          onPress={async () => {
+            await replaceQuestion(index)
+          }}
+        />
+        <QuestionButton
+          title="Remove"
+          backgroundColor={colors.BLACK}
+          onPress={async () => {
+            await removeQuestion(question._id)
+            await replaceQuestion(index)
+          }}
+        />
+        {index !== 0 && (
+          <QuestionButton
+            title="Previous"
+            backgroundColor={colors.GREEN}
+            onPress={() => {
+              previous && previous()
+            }}
+          />
+        )}
+      </View>
     </View>
   )
 }
@@ -60,13 +65,11 @@ const styles = StyleSheet.create({
     paddingBottom: 48,
     marginBottom: 20,
   },
-  button: {
-    alignSelf: 'center',
-    backgroundColor: colors.RED,
-    paddingHorizontal: 30,
-    paddingVertical: 20,
-    borderRadius: 50,
-    marginTop: 30,
+  buttonContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
   },
 })
+
 export default view(Question)

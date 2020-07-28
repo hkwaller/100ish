@@ -7,7 +7,7 @@ import Screen from 'app/components/Screen'
 import { Bold } from 'app/components'
 import { colors, fonts } from 'app/config/constants'
 import BottomButton from './components/BottomButton'
-import { getGame, addPlayer } from 'app/config/api'
+import { getGame, addPlayer, listenToGameUpdates } from 'app/config/api'
 import { state } from 'app/config/store'
 
 const words = [adjectives, nouns, verbs]
@@ -36,7 +36,7 @@ function StartGame() {
     ) {
       setWordsEntered(prev => ++prev)
     } else if (gameName.length === 0) setWordsEntered(0)
-  }, [gameName.length])
+  }, [gameName])
 
   return (
     <>
@@ -66,6 +66,7 @@ function StartGame() {
         isVisible={wordsEntered === words.length}
         onPress={async () => {
           await getGame(gameName)
+          await listenToGameUpdates()
           await addPlayer(playerName)
           navigation.navigate('Lounge')
         }}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { view } from '@risingstack/react-easy-state'
 import { useNavigation } from '@react-navigation/native'
@@ -11,11 +11,16 @@ import { Bold, PageHeader } from 'app/components'
 import { getPlayerScore } from 'app/config/utils'
 import Count from 'app/components/Count'
 import BottomButton from '../player/components/BottomButton'
+import { stopListening } from 'app/config/api'
 
 function Results() {
   const navigation = useNavigation()
 
   const p = state.game?.players.filter(p => p.name === state.player?.name)[0]
+
+  useEffect(() => {
+    stopListening()
+  })
 
   return (
     <>
@@ -25,19 +30,27 @@ function Results() {
         ) : (
           <>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+              <PageHeader style={{ marginBottom: 15 }}>
+                Player scores
+              </PageHeader>
+
               {state.game?.players.map((player: Player, index: number) => {
                 const score = getPlayerScore(player.answers)
+                const margins =
+                  index % 2 === 0
+                    ? {
+                        marginLeft: 0,
+                        marginRight: 12,
+                      }
+                    : {
+                        marginLeft: 12,
+                        marginRight: 0,
+                      }
 
                 return (
                   <View
                     key={index}
-                    style={[
-                      styles.scoreContainer,
-                      {
-                        marginLeft: index % 2 === 0 ? 0 : 12,
-                        marginRight: index % 2 ? 12 : 0,
-                      },
-                    ]}
+                    style={[styles.scoreContainer, { ...margins }]}
                   >
                     <Bold style={{ fontSize: 14, marginTop: 10 }}>
                       {player.name}
@@ -49,34 +62,35 @@ function Results() {
             </View>
             <View style={{ marginVertical: 25 }} />
             <PageHeader style={{ marginBottom: 15 }}>Your scores</PageHeader>
-            {p.answers.map((answer, index) => {
-              const correctAnswer = state.game?.questions[index].answer || 0
+            {p &&
+              p.answers.map((answer, index) => {
+                const correctAnswer = state.game?.questions[index].answer || 0
 
-              return (
-                <View style={{ marginBottom: 20 }}>
-                  <Bold style={{ marginBottom: 15 }}>
-                    {state.game?.questions[index].title}
-                  </Bold>
-                  <View style={styles.descriptionContainer}>
-                    <View style={styles.answerContainer}>
-                      <Bold style={{ backgroundColor: colors.TURQUOISE }}>
-                        Your answer
-                      </Bold>
-                      <Bold style={styles.correctAnswer}>Correct answer</Bold>
-                    </View>
-                    <Bold style={{ fontSize: 24 }}>
-                      {Math.abs(answer - correctAnswer)}
+                return (
+                  <View style={{ marginBottom: 20 }}>
+                    <Bold style={{ marginBottom: 15 }}>
+                      {state.game?.questions[index].title}
                     </Bold>
+                    <View style={styles.descriptionContainer}>
+                      <View style={styles.answerContainer}>
+                        <Bold style={{ backgroundColor: colors.TURQUOISE }}>
+                          Your answer
+                        </Bold>
+                        <Bold style={styles.correctAnswer}>Correct answer</Bold>
+                      </View>
+                      <Bold style={{ fontSize: 24 }}>
+                        {Math.abs(answer - correctAnswer)}
+                      </Bold>
+                    </View>
+                    <Slider
+                      key={index}
+                      defaultValue={answer}
+                      number={index + 1}
+                      answer={state.game?.questions[index].answer}
+                    />
                   </View>
-                  <Slider
-                    key={index}
-                    defaultValue={answer}
-                    number={index + 1}
-                    answer={state.game?.questions[index].answer}
-                  />
-                </View>
-              )
-            })}
+                )
+              })}
           </>
         )}
       </Screen>
@@ -98,6 +112,7 @@ const styles = StyleSheet.create({
     width: screen.WIDTH / 2 - 48,
     backgroundColor: colors.WHITE,
     padding: 10,
+    paddingBottom: 15,
   },
   descriptionContainer: {
     flexDirection: 'row',

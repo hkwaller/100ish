@@ -34,7 +34,7 @@ const AnimatedBold = Animated.createAnimatedComponent(Bold)
 
 function Slider({
   number,
-  updateVal = () => {},
+  updateVal,
   header,
   max = 100,
   answer,
