@@ -1,10 +1,5 @@
 import React, { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-} from 'react-native-reanimated'
 import { useNavigation } from '@react-navigation/native'
 import { view } from '@risingstack/react-easy-state'
 
@@ -15,23 +10,11 @@ import { listenToGameUpdates } from 'app/config/api'
 import BottomButton from './components/BottomButton'
 
 function Lounge() {
-  const animation = useSharedValue(120)
   const navigation = useNavigation()
 
   useEffect(() => {
     listenToGameUpdates()
   }, [])
-
-  useEffect(() => {
-    if (state.game?.isReady) animation.value = 0
-    else animation.value = 120
-  }, [state.game?.isReady])
-
-  const style = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateY: withSpring(animation.value, { damping: 15 }) }],
-    }
-  })
 
   return (
     <>
@@ -42,14 +25,13 @@ function Lounge() {
           })}
         </View>
       </Screen>
-      <Animated.View style={style}>
-        <BottomButton
-          title="Start playing"
-          onPress={() => {
-            navigation.navigate('Respond')
-          }}
-        />
-      </Animated.View>
+      <BottomButton
+        title="Start playing"
+        isVisible={state.game?.isReady}
+        onPress={() => {
+          navigation.navigate('Respond')
+        }}
+      />
     </>
   )
 }

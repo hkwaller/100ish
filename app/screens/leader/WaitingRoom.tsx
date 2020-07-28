@@ -3,11 +3,6 @@ import { StyleSheet, View } from 'react-native'
 import Screen from 'app/components/Screen'
 import { view } from '@risingstack/react-easy-state'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-} from 'react-native-reanimated'
 
 import { readyGame, getGame, inactivateGame } from 'app/config/api'
 import { state } from 'app/config/store'
@@ -18,7 +13,6 @@ import BottomButton from '../player/components/BottomButton'
 function WaitingRoom() {
   const [isWaiting, setIsWaiting] = useState(false)
   const navigation = useNavigation()
-  const animation = useSharedValue(120)
   const route = useRoute()
 
   useEffect(() => {
@@ -26,30 +20,11 @@ function WaitingRoom() {
     getGame(state.game?.gamename)
   }, [])
 
-  useEffect(() => {
-    if (isWaiting) animation.value = 0
-  }, [isWaiting])
-
-  useEffect(() => {
-    if (state.game?.players.every(p => p.isFinished)) {
-      animation.value = 0
-    }
-  }, [state.game])
-
-  const style = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateY: withSpring(animation.value, { damping: 15 }) }],
-    }
-  })
-
   function toggle(index: number) {
     if (!state.game) return
 
     state.game.players[index].isFinished = !state.game?.players[index]
       .isFinished
-
-    const allFinished = state.game?.players.every(p => p.isFinished)
-    animation.value = allFinished ? 0 : 120
   }
 
   const playersDone = state.game?.players.reduce((acc, cur) => {
@@ -80,15 +55,14 @@ function WaitingRoom() {
           })}
         </View>
       </Screen>
-      <Animated.View style={style}>
-        <BottomButton
-          title={isWaiting ? 'Go to game' : 'Show Results'}
-          onPress={() => {
-            isWaiting ? readyGame() : inactivateGame()
-            navigation.navigate(isWaiting ? 'Game' : 'Results')
-          }}
-        />
-      </Animated.View>
+      <BottomButton
+        title={isWaiting ? 'Go to game' : 'Show Results'}
+        isVisible={state.game?.players.every(p => p.isFinished) || isWaiting}
+        onPress={() => {
+          isWaiting ? readyGame() : inactivateGame()
+          navigation.navigate(isWaiting ? 'Game' : 'Results')
+        }}
+      />
     </>
   )
 }

@@ -28,7 +28,7 @@ function Setup() {
           updateVal={val => updateQuestions(val)}
         />
         <AnimatedCheckbox
-          title="I wanna play to"
+          title="I wanna play too"
           val={state.isPlaying}
           toggle={() => (state.isPlaying = !state.isPlaying)}
         />

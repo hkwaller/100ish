@@ -5,7 +5,7 @@ import { screen, colors } from 'app/config/constants'
 import { QuestionText, Bold } from 'app/components'
 import Slider from 'app/components/Slider'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { replaceQuestion } from 'app/config/api'
+import { replaceQuestion, removeQuestion } from 'app/config/api'
 import { view } from '@risingstack/react-easy-state'
 
 type Props = {
@@ -30,6 +30,18 @@ function Question({ question, updateVal, index }: Props) {
       >
         <Bold style={{ fontSize: 20, color: colors.WHITE }}>
           Replace question
+        </Bold>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, { backgroundColor: colors.BLACK }]}
+        onPress={async () => {
+          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+          await removeQuestion(question._id)
+          await replaceQuestion(index)
+        }}
+      >
+        <Bold style={{ fontSize: 20, color: colors.WHITE }}>
+          Remove question
         </Bold>
       </TouchableOpacity>
     </View>

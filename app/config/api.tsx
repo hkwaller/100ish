@@ -11,41 +11,49 @@ const client = sanityClient({
   useCdn: false,
 })
 
-export async function getQuestions(
-  numberOfQuestions: number
-): Promise<Question[]> {
-  const query = `*[_type == "question"] | order(_createdAt asc)[0..${numberOfQuestions -
-    1}]`
+export async function createQuestion(question) {
+  await client.create(question).then(res => {
+    console.log(`Question was created with id ${res._id}`, res)
+  })
+}
+
+export async function getQuestions(): Promise<Question[]> {
+  const query = `*[_type == "question"]`
 
   return await client.fetch(query).then((questions: Question[]) => {
-    return questions.map((q: Question, index: number) =>
-      Object.assign({ _key: `${index}` }, q)
-    )
+    return questions.map((q: Question, index: number) => {
+      if (q.answer !== 0) return Object.assign({ _key: `${index}` }, q)
+      else return
+    })
   })
 }
 
 export async function replaceQuestion(index: number) {
   const questionToRemove = [`questions[${index}]`]
 
-  const query = `*[_type == "question"] | order(_createdAt desc)[0..1]`
-
-  const newQuestion = await client
-    .fetch(query)
-    .then((questions: Question[]) => {
-      return questions[0]
-    })
+  const newQuestion =
+    state.questions[Math.floor(Math.random() * state.questions.length)]
 
   await client
     .patch(state.game?._id)
     .unset(questionToRemove)
-    .insert('after', `questions[${index - 1}]`, [
-      { _key: Math.random(), ...newQuestion },
-    ])
+    .insert('after', `questions[${index - 1}]`, [newQuestion])
     .commit()
     .then((updatedGame: Game) => {
       console.log(`question replaced`)
 
       state.game = updatedGame
+    })
+}
+
+export async function removeQuestion(id: string) {
+  await client
+    .delete(id)
+    .then(res => {
+      console.log('question deleted')
+    })
+    .catch(err => {
+      console.error('question failed: ', err.message)
     })
 }
 
@@ -56,9 +64,10 @@ export async function stopListening() {
 }
 
 export async function createGame(numberOfQuestions: number, id: string) {
-  const questions = await getQuestions(numberOfQuestions)
+  const questions = await getQuestions()
 
   const shuffledQuestions = shuffle(questions).slice(0, numberOfQuestions)
+  state.questions = questions
 
   const players = state.isPlaying
     ? [
@@ -71,6 +80,8 @@ export async function createGame(numberOfQuestions: number, id: string) {
         },
       ]
     : []
+
+  if (state.isPlaying) state.player = players[0]
 
   const game = {
     _type: 'game',
@@ -89,17 +100,26 @@ export async function createGame(numberOfQuestions: number, id: string) {
 }
 
 export async function getGame(gamename: string) {
+  console.log('gamename: ', gamename)
   const query = `*[_type == "game" && gamename == $gamename]`
   const params = { gamename: gamename }
 
-  await client.fetch(query, params).then((game: Game[]) => {
-    if (!game[0].isOpen) return 'no can do'
-    state.game = game[0]
-  })
+  await client
+    .fetch(query, params)
+    .then((game: Game[]) => {
+      if (!game[0].isOpen) {
+        state.error = 'This game is closed'
+        return
+      }
+      state.game = game[0]
+    })
+    .catch((err: Error) => {
+      console.error('Oh no, the update failed: ', err.message)
+    })
 
   subscription = await client.listen(query, params).subscribe(update => {
     state.game = update.result
-    console.log('game updated', update.result)
+    console.log('game updated')
   })
 }
 
@@ -120,7 +140,7 @@ export async function readyGame() {
     })
     .commit()
     .then((updatedGame: Game) => {
-      console.log(`game updated, now ready to play`, updatedGame)
+      console.log(`game updated, now ready to play`)
 
       state.game = updatedGame
     })
@@ -134,26 +154,28 @@ export async function inactivateGame() {
     })
     .commit()
     .then((updatedGame: Game) => {
-      console.log(`game closed`, updatedGame)
+      console.log(`game closed`)
 
       state.game = updatedGame
     })
 }
 
-export async function addPlayer() {
-  const newPlayer = {
-    _type: 'player',
-    _key: `${Math.random()}`,
-    name: 'Hannes',
-    isFinished: false,
-    answers: [],
-  }
+export async function addPlayer(name: string) {
+  if (!state.player) {
+    const newPlayer = {
+      _type: 'player',
+      _key: `${Math.random()}`,
+      name: name,
+      isFinished: false,
+      answers: [],
+    }
 
-  state.player = newPlayer
+    state.player = newPlayer
+  }
 
   await client
     .patch(state.game?._id)
-    .insert('after', 'players[-1]', [newPlayer])
+    .insert('after', 'players[-1]', [state.player])
     .commit()
     .then((updatedGame: Game) => {
       console.log(
@@ -180,7 +202,7 @@ export function submitAnswers(answers: number[]) {
     })
     .commit()
     .then((updatedGame: Game) => {
-      console.log(`answers submitted`, updatedGame)
+      console.log(`answers submitted`)
 
       state.game = updatedGame
     })

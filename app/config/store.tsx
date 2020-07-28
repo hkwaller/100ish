@@ -1,14 +1,16 @@
-import { store } from '@risingstack/react-easy-state'
+import { store, autoEffect } from '@risingstack/react-easy-state'
+import AsyncStorage from '@react-native-community/async-storage'
 
 export type State = {
   isPlaying: boolean
   showQuestions: boolean
   game?: Game
   player?: Player
+  questions: Question[]
+  error: string
 }
 
 export type Player = {
-  id: string
   name: string
   answers: number[]
   isFinished: boolean
@@ -34,4 +36,11 @@ export type Question = {
 export const state = store<State>({
   isPlaying: true,
   showQuestions: false,
+  questions: [],
+  error: '',
+})
+
+autoEffect(() => {
+  if (!state.player) return
+  AsyncStorage.setItem('@player', JSON.stringify(state.player))
 })

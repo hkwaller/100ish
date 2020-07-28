@@ -26,7 +26,7 @@ function CountUp({ to }: Props) {
 const styles = StyleSheet.create({
   score: {
     fontFamily: fonts.BOLD,
-    fontSize: 100,
+    fontSize: 30,
     marginTop: 10,
   },
 })

@@ -36,11 +36,11 @@ function Respond() {
         })}
       </Screen>
       <BottomButton
+        title="Submit answers"
         onPress={() => {
           submitAnswers(answers)
           navigation.navigate('Results')
         }}
-        title="Submit answers"
       />
     </>
   )

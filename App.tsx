@@ -1,13 +1,13 @@
 import * as React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
+import AsyncStorage from '@react-native-community/async-storage'
 import 'react-native-gesture-handler'
 
 import Front from 'app/screens/Front'
 import StartGame from 'app/screens/player/StartGame'
 import Lounge from 'app/screens/player/Lounge'
 import Respond from 'app/screens/player/Respond'
-import Finished from 'app/screens/player/Finished'
 
 import Setup from 'app/screens/leader/Setup'
 import Game from 'app/screens/leader/Game'
@@ -15,6 +15,7 @@ import WaitingRoom from 'app/screens/leader/WaitingRoom'
 import Results from 'app/screens/common/Results'
 
 import AddQuestion from 'app/screens/add-question/AddQuestion'
+import { state } from 'app/config/store'
 
 require('react-native').unstable_enableLogBox()
 
@@ -64,6 +65,15 @@ function AddQuestionAstack() {
 }
 
 function App() {
+  React.useEffect(() => {
+    async function getPlayerFromStorage() {
+      const player = await AsyncStorage.getItem('@player')
+      if (player) state.player = JSON.parse(player)
+    }
+
+    getPlayerFromStorage()
+  }, [])
+
   return (
     <NavigationContainer>
       <Stack.Navigator

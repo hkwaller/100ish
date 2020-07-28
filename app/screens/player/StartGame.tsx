@@ -1,35 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { StyleSheet, TextInput, ScrollView } from 'react-native'
+import { StyleSheet, TextInput } from 'react-native'
 import { nouns, adjectives, verbs } from 'human-id'
 import { useNavigation } from '@react-navigation/native'
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-} from 'react-native-reanimated'
 
 import Screen from 'app/components/Screen'
 import { Bold } from 'app/components'
 import { colors, fonts } from 'app/config/constants'
-import Suggestion from './components/Suggestion'
 import BottomButton from './components/BottomButton'
 import { getGame, addPlayer } from 'app/config/api'
+import { state } from 'app/config/store'
 
 const words = [adjectives, nouns, verbs]
 
 function StartGame() {
   const [gameName, setGameName] = useState<string>('')
+  const [playerName, setPlayerName] = useState<string>(state.player?.name || '')
   const [wordsEntered, setWordsEntered] = useState(0)
   const [suggestions, setSuggestions] = useState(adjectives)
   const navigation = useNavigation()
 
   const textInputRef = useRef<TextInput>(null)
 
-  const animation = useSharedValue(120)
-
   useEffect(() => {
     if (wordsEntered === words.length) {
-      animation.value = 0
       textInputRef.current?.blur()
       return
     }
@@ -42,18 +35,20 @@ function StartGame() {
       suggestions.filter(w => gameName.toLowerCase().includes(w)).length > 0
     ) {
       setWordsEntered(prev => ++prev)
-    }
-  }, [gameName])
-
-  const style = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateY: withSpring(animation.value, { damping: 15 }) }],
-    }
-  })
+    } else if (gameName.length === 0) setWordsEntered(0)
+  }, [gameName.length])
 
   return (
     <>
       <Screen title="Join">
+        <Bold style={{ fontSize: 30, marginBottom: 20 }}>Enter your name</Bold>
+        <TextInput
+          style={[styles.textInput, { marginBottom: 50 }]}
+          value={playerName}
+          onChangeText={val => setPlayerName(val)}
+          clearButtonMode="while-editing"
+          placeholder="Type your name"
+        />
         <Bold style={{ fontSize: 30, marginBottom: 20 }}>
           Enter game room name {wordsEntered}
         </Bold>
@@ -61,37 +56,20 @@ function StartGame() {
           style={styles.textInput}
           value={gameName}
           ref={textInputRef}
+          clearButtonMode="while-editing"
           onChangeText={val => setGameName(val)}
           placeholder="Type in the room name.."
         />
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ flexDirection: 'row', marginTop: 20 }}
-        >
-          {suggestions.map((suggestion, index) => {
-            return (
-              <Suggestion
-                key={index}
-                word={suggestion}
-                onPress={() => {
-                  setGameName(prev => `${prev}${suggestion}`)
-                }}
-              />
-            )
-          })}
-        </ScrollView>
       </Screen>
-      <Animated.View style={style}>
-        <BottomButton
-          onPress={async () => {
-            await getGame(gameName)
-            await addPlayer()
-            navigation.navigate('Lounge')
-          }}
-          title="Go to quiz"
-        />
-      </Animated.View>
+      <BottomButton
+        title="Go to quiz"
+        isVisible={wordsEntered === words.length}
+        onPress={async () => {
+          await getGame(gameName)
+          await addPlayer(playerName)
+          navigation.navigate('Lounge')
+        }}
+      />
     </>
   )
 }

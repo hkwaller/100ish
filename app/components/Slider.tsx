@@ -14,10 +14,12 @@ import Animated, {
 
 type Props = {
   number?: number
-  updateVal: (val: number) => void
+  updateVal?: (val: number) => void
   header?: string
   min?: number
   max?: number
+  answer?: number
+  defaultValue?: number
   setQuestionActiveCallback?: (isActive: boolean) => void
 }
 
@@ -32,9 +34,11 @@ const AnimatedBold = Animated.createAnimatedComponent(Bold)
 
 function Slider({
   number,
-  updateVal,
+  updateVal = () => {},
   header,
   max = 100,
+  answer,
+  defaultValue,
   setQuestionActiveCallback = () => {},
 }: Props) {
   const [value, setValue] = useState(max / 2)
@@ -44,7 +48,13 @@ function Slider({
   const numberY = useSharedValue(0)
 
   const x = useDerivedValue(() => {
-    return lineEnd.value / 2 - 10
+    return defaultValue
+      ? (lineEnd.value / 100) * defaultValue
+      : lineEnd.value / 2 - 10
+  })
+
+  const answerX = useDerivedValue(() => {
+    return (lineEnd.value / 100) * (answer || -1)
   })
 
   const gestureHandler = useAnimatedGestureHandler({
@@ -109,6 +119,12 @@ function Slider({
     }
   })
 
+  const answerStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: withSpring(answerX.value) }],
+    }
+  })
+
   return (
     <View style={styles.outerContainer}>
       {header && (
@@ -141,9 +157,22 @@ function Slider({
           />
           <PanGestureHandler onGestureEvent={gestureHandler}>
             <Animated.View style={[styles.circle, animatedStyle]}>
-              <AnimatedBold style={textStyle}>{value}</AnimatedBold>
+              <AnimatedBold style={textStyle}>
+                {defaultValue || value}
+              </AnimatedBold>
             </Animated.View>
           </PanGestureHandler>
+          {answer && (
+            <Animated.View
+              style={[
+                styles.circle,
+                answerStyle,
+                { backgroundColor: colors.GREEN },
+              ]}
+            >
+              <AnimatedBold style={textStyle}>{answer}</AnimatedBold>
+            </Animated.View>
+          )}
         </View>
       </View>
     </View>
