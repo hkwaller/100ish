@@ -12,6 +12,7 @@ import Animated, {
   interpolate,
   delay,
 } from 'react-native-reanimated'
+import * as Haptics from 'expo-haptics'
 
 type Props = {
   number?: number
@@ -75,6 +76,7 @@ function Slider({
       )
       setValue(Math.round(percentageValue))
       x.value = clamped
+      Haptics.selectionAsync()
     },
     onEnd: _ => {
       const clamped = clamp(x.value, lineStart.value, lineEnd.value)
