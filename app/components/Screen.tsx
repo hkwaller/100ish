@@ -1,5 +1,11 @@
 import React from 'react'
-import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
+import {
+  View,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  Platform,
+} from 'react-native'
 import Logo from './Logo'
 import { colors } from 'app/config/constants'
 
@@ -24,7 +30,7 @@ function Screen({ children, title, noPadding, hideBackButton }: Props) {
           </View>
         </ScrollView>
       </View>
-      <SafeAreaView />
+      {Platform.OS === 'ios' && <SafeAreaView />}
     </>
   )
 }
@@ -34,7 +40,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.GREY,
   },
-  top: { backgroundColor: colors.WHITE, paddingTop: 34 },
+  top: {
+    backgroundColor: colors.WHITE,
+    paddingTop: Platform.OS === 'ios' ? 34 : 0,
+  },
   innerContainer: {
     backgroundColor: colors.GREY,
     flex: 1,

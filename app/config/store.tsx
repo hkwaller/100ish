@@ -8,6 +8,7 @@ export type State = {
   player?: Player
   questions: Question[]
   error: string
+  isLoading: boolean
 }
 
 export type Player = {
@@ -38,6 +39,7 @@ export const state = store<State>({
   showQuestions: false,
   questions: [],
   error: '',
+  isLoading: false,
 })
 
 autoEffect(() => {

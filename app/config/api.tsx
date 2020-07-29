@@ -12,20 +12,35 @@ const client = sanityClient({
 })
 
 export async function createQuestion(question) {
+  state.isLoading = true
   await client.create(question).then(res => {
     console.log(`Question was created with id ${res._id}`, res)
+    state.isLoading = false
   })
+}
+
+function validateQuestion(question: Question) {
+  return (
+    typeof question.title === 'string' && typeof question.answer === 'number'
+  )
 }
 
 export async function getQuestions(): Promise<Question[]> {
   const query = `*[_type == "question"]`
+  state.isLoading = true
 
-  return await client.fetch(query).then((questions: Question[]) => {
-    return questions.map((q: Question, index: number) => {
-      if (q.answer !== 0) return Object.assign({ _key: `${index}` }, q)
-      else return
+  const filteredQuestions = await client
+    .fetch(query)
+    .then((questions: Question[]) => {
+      return questions.filter((q: Question) => {
+        if (q.answer === 0 || !validateQuestion(q)) return
+        else return q
+      })
     })
-  })
+
+  state.isLoading = false
+
+  return filteredQuestions
 }
 
 export async function replaceQuestion(index: number) {
@@ -67,6 +82,7 @@ export async function createGame(numberOfQuestions: number, id: string) {
 
   const shuffledQuestions = shuffle(questions).slice(0, numberOfQuestions)
   state.questions = questions
+  state.isLoading = true
 
   const players = state.isPlaying
     ? [
@@ -94,6 +110,8 @@ export async function createGame(numberOfQuestions: number, id: string) {
   await client.create(game).then((res: Game) => {
     console.log(`Game was created with name ${res.gamename}`)
     state.game = res
+    state.isLoading = false
+
     if (state.isPlaying) state.player = res.players[0]
   })
 

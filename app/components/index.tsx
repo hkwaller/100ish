@@ -1,6 +1,5 @@
 import styled from 'styled-components/native'
 import { fonts, colors } from 'app/config/constants'
-import Header from './Header'
 
 export const HeaderText = styled.Text`
   font-family: ${fonts.REGULAR};
@@ -35,5 +34,3 @@ export const SliderHeader = styled.Text`
   font-size: 30px;
   color: ${colors.BLACK};
 `
-
-export { Header }
