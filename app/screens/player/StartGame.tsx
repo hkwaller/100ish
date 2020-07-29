@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { StyleSheet, TextInput } from 'react-native'
+import { StyleSheet, TextInput, View } from 'react-native'
 import { nouns, adjectives, verbs } from 'human-id'
 import { useNavigation } from '@react-navigation/native'
 
@@ -7,8 +7,14 @@ import Screen from 'app/components/Screen'
 import { Bold } from 'app/components'
 import { colors, fonts } from 'app/config/constants'
 import BottomButton from './components/BottomButton'
-import { getGame, addPlayer, listenToGameUpdates } from 'app/config/api'
+import {
+  getGame,
+  addPlayer,
+  listenToGameUpdates,
+  getNewestGame,
+} from 'app/config/api'
 import { state } from 'app/config/store'
+import QuestionButton from 'app/screens/leader/components/QuestionButton'
 
 const words = [adjectives, nouns, verbs]
 
@@ -52,6 +58,15 @@ function StartGame() {
         <Bold style={{ fontSize: 30, marginBottom: 20 }}>
           Enter game room name {wordsEntered}
         </Bold>
+        <QuestionButton
+          title="Orkar inte skriva, ge mig senaste spelet bitte"
+          backgroundColor={colors.BLACK}
+          onPress={async () => {
+            await getNewestGame()
+            navigation.navigate('Lounge')
+          }}
+        />
+        <View style={{ marginVertical: 20 }} />
         <TextInput
           style={styles.textInput}
           value={gameName}

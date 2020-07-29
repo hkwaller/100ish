@@ -66,7 +66,7 @@ function Results() {
                 const correctAnswer = state.game?.questions[index].answer || 0
 
                 return (
-                  <View style={{ marginBottom: 20 }}>
+                  <View key={index} style={{ marginBottom: 20 }}>
                     <Bold style={{ marginBottom: 15 }}>
                       {state.game?.questions[index].title}
                     </Bold>
@@ -78,7 +78,9 @@ function Results() {
                         <Bold style={styles.correctAnswer}>Correct answer</Bold>
                       </View>
                       <Bold style={{ fontSize: 24 }}>
-                        {Math.abs(answer - correctAnswer)}
+                        {answer === correctAnswer
+                          ? '-10'
+                          : Math.abs(answer - correctAnswer)}
                       </Bold>
                     </View>
                     <Slider

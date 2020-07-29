@@ -5,6 +5,7 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
   withSpring,
+  delay,
 } from 'react-native-reanimated'
 import { colors } from 'app/config/constants'
 import { state } from 'app/config/store'
@@ -15,13 +16,13 @@ type Props = {
   value?: boolean
 }
 
-function Loading({ color = colors.WHITE, value = state.isLoading }) {
+function Loading({ color = colors.WHITE, value = state.isLoading }: Props) {
   const animation = useSharedValue(0)
 
   let interval = setInterval(() => {
     if (animation.value === 1) animation.value = 0
     else if (animation.value === 0) animation.value = 1
-  }, 500)
+  }, 250)
 
   if (!value) {
     clearInterval(interval)
@@ -29,18 +30,6 @@ function Loading({ color = colors.WHITE, value = state.isLoading }) {
   }
 
   const x = useDerivedValue(() => {
-    return (animation.value + 1) * Math.random() * 20
-  })
-
-  const x2 = useDerivedValue(() => {
-    return (animation.value + 1) * Math.random() * 20
-  })
-
-  const x3 = useDerivedValue(() => {
-    return (animation.value + 1) * Math.random() * 20
-  })
-
-  const x4 = useDerivedValue(() => {
     return (animation.value + 1) * Math.random() * 20
   })
 
@@ -55,7 +44,7 @@ function Loading({ color = colors.WHITE, value = state.isLoading }) {
   const x2Style = useAnimatedStyle(() => {
     return {
       transform: [{ translateY: -50 }],
-      height: withSpring(x2.value),
+      height: delay(200, withSpring(x.value)),
       translateY: 50,
     }
   })
@@ -63,7 +52,7 @@ function Loading({ color = colors.WHITE, value = state.isLoading }) {
   const x3Style = useAnimatedStyle(() => {
     return {
       transform: [{ translateY: -50 }],
-      height: withSpring(x3.value),
+      height: delay(300, withSpring(x.value)),
       translateY: 50,
     }
   })
@@ -71,7 +60,7 @@ function Loading({ color = colors.WHITE, value = state.isLoading }) {
   const x4Style = useAnimatedStyle(() => {
     return {
       transform: [{ translateY: -50 }],
-      height: withSpring(x4.value),
+      height: delay(400, withSpring(x.value)),
       translateY: 50,
     }
   })

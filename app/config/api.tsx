@@ -137,6 +137,20 @@ export async function getGame(gamename: string) {
     })
 }
 
+export async function getNewestGame() {
+  const query = `*[_type == "game"] | order(_createdAt desc)`
+
+  await client
+    .fetch(query)
+    .then((games: Game[]) => {
+      console.log('game: ', games[0].gamename)
+      state.game = games[0]
+    })
+    .catch((err: Error) => {
+      console.error('Oh no, the update failed: ', err.message)
+    })
+}
+
 export async function listenToGameUpdates() {
   const query = `*[_type == "game"]`
   const params = { _id: state.game?._id }
@@ -197,6 +211,9 @@ export async function addPlayer(name: string) {
       )
 
       state.game = updatedGame
+    })
+    .catch(e => {
+      console.log('e: ', e.message)
     })
 }
 

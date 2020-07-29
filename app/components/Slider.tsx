@@ -10,6 +10,7 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
   interpolate,
+  delay,
 } from 'react-native-reanimated'
 
 type Props = {
@@ -121,7 +122,7 @@ function Slider({
 
   const answerStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: withSpring(answerX.value) }],
+      transform: [{ translateX: delay(100, withSpring(answerX.value)) }],
     }
   })
 
