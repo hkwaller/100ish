@@ -12,6 +12,7 @@ import { getPlayerScore } from 'app/config/utils'
 import Count from 'app/components/Count'
 import BottomButton from '../player/components/BottomButton'
 import { stopListening } from 'app/config/api'
+import Loading from 'app/components/Loading'
 
 function Results() {
   const navigation = useNavigation()
@@ -26,7 +27,10 @@ function Results() {
     <>
       <Screen title="Results" hideBackButton>
         {state.game?.isOpen ? (
-          <Bold>Waiting for other players...</Bold>
+          <View style={styles.waiting}>
+            <Bold style={styles.waitingText}>Waiting for other players...</Bold>
+            <Loading color={colors.RED} value={state.game.isOpen} />
+          </View>
         ) : (
           <>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
@@ -36,16 +40,11 @@ function Results() {
 
               {state.game?.players.map((player: Player, index: number) => {
                 const score = getPlayerScore(player.answers)
-                const margins =
-                  index % 2 === 0
-                    ? {
-                        marginLeft: 0,
-                        marginRight: 12,
-                      }
-                    : {
-                        marginLeft: 12,
-                        marginRight: 0,
-                      }
+                const marginVal = index % 2 === 0
+                const margins = {
+                  marginLeft: marginVal ? 0 : 12,
+                  marginRight: marginVal ? 12 : 0,
+                }
 
                 return (
                   <View
@@ -95,10 +94,11 @@ function Results() {
         )}
       </Screen>
       <BottomButton
+        isVisible={!state.game?.isOpen}
+        title="Back to start"
         onPress={() => {
           navigation.navigate('Home')
         }}
-        title="Back to start"
       />
     </>
   )
@@ -127,6 +127,11 @@ const styles = StyleSheet.create({
     backgroundColor: colors.GREEN,
     marginLeft: 10,
   },
+  waiting: {
+    padding: 20,
+    alignItems: 'center',
+  },
+  waitingText: { marginBottom: 40, fontSize: 20, textAlign: 'center' },
 })
 
 export default view(Results)

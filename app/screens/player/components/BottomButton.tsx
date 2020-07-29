@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View, TouchableOpacity } from 'react-native'
+import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -8,6 +8,9 @@ import Animated, {
 
 import { colors } from 'app/config/constants'
 import { Bold } from 'app/components'
+import { view } from '@risingstack/react-easy-state'
+import { state } from 'app/config/store'
+import Loading from 'app/components/Loading'
 
 type Props = {
   onPress: () => void
@@ -31,30 +34,47 @@ function BottomButton({ onPress, title, isVisible = true }: Props) {
 
   return (
     <Animated.View style={style}>
-      <View
-        style={{
-          backgroundColor: colors.WHITE,
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'row',
-          paddingBottom: 40,
-        }}
-      >
+      <View style={styles.container}>
         <TouchableOpacity
-          onPress={onPress}
-          style={{
-            backgroundColor: colors.RED,
-            padding: 20,
-            flex: 1,
-            alignItems: 'center',
-            marginHorizontal: 66,
-            marginTop: 20,
+          style={[
+            styles.buttonContainer,
+            {
+              backgroundColor: !state.isLoading ? colors.RED : colors.DARKGREY,
+            },
+          ]}
+          onPress={() => {
+            if (state.isLoading) return
+            onPress()
           }}
         >
-          <Bold style={{ color: colors.WHITE, fontSize: 20 }}>{title}</Bold>
+          {!state.isLoading ? (
+            <Bold style={styles.text}>{title}</Bold>
+          ) : (
+            <Loading />
+          )}
         </TouchableOpacity>
       </View>
     </Animated.View>
   )
 }
-export default BottomButton
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colors.WHITE,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    paddingBottom: 40,
+  },
+  buttonContainer: {
+    height: 65,
+    padding: 20,
+    flex: 1,
+    alignItems: 'center',
+    marginHorizontal: 66,
+    marginTop: 20,
+  },
+  text: { color: colors.WHITE, fontSize: 20 },
+})
+
+export default view(BottomButton)
