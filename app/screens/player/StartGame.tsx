@@ -48,15 +48,6 @@ function StartGame() {
           <Bold style={{ fontSize: 30, marginBottom: 20 }}>
             Enter game room name
           </Bold>
-          <QuestionButton
-            title="Orkar inte skriva, ge mig senaste spelet bitte"
-            backgroundColor={colors.BLACK}
-            onPress={async () => {
-              await getNewestGame()
-              navigation.navigate('Lounge')
-            }}
-          />
-          <View style={{ marginVertical: 20 }} />
           <TextInput
             style={styles.textInput}
             value={gameName}
@@ -65,6 +56,15 @@ function StartGame() {
             clearButtonMode="while-editing"
             onChangeText={val => setGameName(val)}
             placeholder="Type in the room name.."
+          />
+          <View style={{ marginVertical: 20 }} />
+          <QuestionButton
+            title="Orkar inte skriva, ge mig senaste spelet bitte"
+            backgroundColor={colors.BLACK}
+            onPress={async () => {
+              await getNewestGame()
+              navigation.navigate('Lounge')
+            }}
           />
         </KeyboardAwareScrollView>
       </Screen>
