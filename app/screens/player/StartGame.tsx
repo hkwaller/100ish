@@ -5,7 +5,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import Screen from 'app/components/Screen'
 import { Bold } from 'app/components'
-import { colors, fonts, screen } from 'app/config/constants'
+import { colors, fonts } from 'app/config/constants'
 import BottomButton from './components/BottomButton'
 import {
   getGame,
@@ -15,7 +15,7 @@ import {
 } from 'app/config/api'
 import { state } from 'app/config/store'
 import QuestionButton from 'app/screens/leader/components/QuestionButton'
-import { validateGameWord, capitalise } from 'app/config/utils'
+import { validateGameWord } from 'app/config/utils'
 
 function StartGame() {
   const [gameName, setGameName] = useState<string>('')

@@ -18,8 +18,6 @@
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* hundredishTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = hundredishTests.m; sourceTree = "<group>"; };
 		04FEB72E5F6DC714A15BA469 /* libPods-hundredish-hundredishTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-hundredish-hundredishTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		053E6A1E0305F01970CFFD60 /* libPods-hundredish.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-hundredish.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* hundredish.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hundredish.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -31,13 +29,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = hundredish/main.m; sourceTree = "<group>"; };
 		17B1D789673B40B2A1804EE4 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		6F9EC1B940CFAFE0D16A1020 /* libPods-hundredish-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-hundredish-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		734F4012C47A7D126AD355D7 /* Pods-hundredish-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hundredish-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-hundredish-tvOSTests/Pods-hundredish-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		89C850BF77123DDAC36C79C3 /* Pods-hundredish-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hundredish-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-hundredish-tvOS/Pods-hundredish-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		91E69E3ED7B6B66865F52D98 /* Pods-hundredish.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hundredish.debug.xcconfig"; path = "Target Support Files/Pods-hundredish/Pods-hundredish.debug.xcconfig"; sourceTree = "<group>"; };
-		973CAFD2AFF2E38395739253 /* Pods-hundredish-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hundredish-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-hundredish-tvOSTests/Pods-hundredish-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		DA0AC41475100E794CF4B63A /* Pods-hundredish-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hundredish-tvOS.release.xcconfig"; path = "Target Support Files/Pods-hundredish-tvOS/Pods-hundredish-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		DAC86727E7A0EC5F36E1B7C4 /* Pods-hundredish-hundredishTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hundredish-hundredishTests.debug.xcconfig"; path = "Target Support Files/Pods-hundredish-hundredishTests/Pods-hundredish-hundredishTests.debug.xcconfig"; sourceTree = "<group>"; };
-		DBB4AE1B863FB7396CF4FFF4 /* Pods-hundredish-hundredishTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hundredish-hundredishTests.release.xcconfig"; path = "Target Support Files/Pods-hundredish-hundredishTests/Pods-hundredish-hundredishTests.release.xcconfig"; sourceTree = "<group>"; };
 		E17A2B2037C44129886601D2 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		E5BDFE212CF653A19CC7167B /* Pods-hundredish.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-hundredish.release.xcconfig"; path = "Target Support Files/Pods-hundredish/Pods-hundredish.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -57,23 +49,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* hundredishTests */ = {
-			isa = PBXGroup;
-			children = (
-				00E356F21AD99517003FC87E /* hundredishTests.m */,
-				00E356F01AD99517003FC87E /* Supporting Files */,
-			);
-			path = hundredishTests;
-			sourceTree = "<group>";
-		};
-		00E356F01AD99517003FC87E /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				00E356F11AD99517003FC87E /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		13B07FAE1A68108700A75B9A /* hundredish */ = {
 			isa = PBXGroup;
 			children = (
@@ -122,7 +97,6 @@
 			children = (
 				13B07FAE1A68108700A75B9A /* hundredish */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* hundredishTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				AE1B83AC8E8B3DD20916F764 /* Pods */,
@@ -146,12 +120,6 @@
 			children = (
 				91E69E3ED7B6B66865F52D98 /* Pods-hundredish.debug.xcconfig */,
 				E5BDFE212CF653A19CC7167B /* Pods-hundredish.release.xcconfig */,
-				DAC86727E7A0EC5F36E1B7C4 /* Pods-hundredish-hundredishTests.debug.xcconfig */,
-				DBB4AE1B863FB7396CF4FFF4 /* Pods-hundredish-hundredishTests.release.xcconfig */,
-				89C850BF77123DDAC36C79C3 /* Pods-hundredish-tvOS.debug.xcconfig */,
-				DA0AC41475100E794CF4B63A /* Pods-hundredish-tvOS.release.xcconfig */,
-				973CAFD2AFF2E38395739253 /* Pods-hundredish-tvOSTests.debug.xcconfig */,
-				734F4012C47A7D126AD355D7 /* Pods-hundredish-tvOSTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
