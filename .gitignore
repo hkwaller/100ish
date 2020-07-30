@@ -64,4 +64,4 @@ buck-out/
 
 token.tsx
 
-sanity/dist/
+/sanity/dist/
