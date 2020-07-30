@@ -119,12 +119,14 @@ module.exports = function listen(query, params) {
     }
 
     function unsubscribe() {
-      es.removeEventListener('error', onError, false)
-      es.removeEventListener('channelError', onChannelError, false)
-      es.removeEventListener('disconnect', onDisconnect, false)
-      listenFor.forEach(function(type) {
-        return es.removeEventListener(type, onMessage, false)
-      })
+      // es.removeEventListener('error', onError, false)
+      // es.removeEventListener('channelError', onChannelError, false)
+      // es.removeEventListener('disconnect', onDisconnect, false)
+      // listenFor.forEach(function(type) {
+      //   return es.removeEventListener(type, onMessage, false)
+      // })
+      // es.close()
+      es.removeAllListeners()
       es.close()
     }
 
