@@ -1,4 +1,5 @@
 import { state, Question } from './store'
+import { nouns, adjectives, verbs } from 'human-id'
 
 export function capitalise(word: string) {
   return word.charAt(0).toUpperCase() + word.slice(1)
@@ -26,4 +27,20 @@ export function shuffle(array: Question[]) {
   }
 
   return array
+}
+
+const dict = [adjectives, nouns, verbs]
+export function validateGameWord(gamename: string) {
+  const arr = gamename.split(' ')
+
+  return (
+    arr.length === 3 &&
+    gamename
+      .split(' ')
+      .every(
+        (word: string, index: number) =>
+          dict[index].filter(dW => dW.toLowerCase() === word.toLowerCase())
+            .length > 0
+      )
+  )
 }

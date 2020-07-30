@@ -15,7 +15,7 @@ export const Regular = styled.Text`
 
 export const QuestionText = styled.Text`
   font-family: ${fonts.BOLD};
-  font-size: 30px;
+  font-size: 24px;
   color: ${colors.WHITE};
 `
 

@@ -1,6 +1,6 @@
 import { state, Question, Game } from './store'
 import { token } from '../../token'
-import { shuffle } from './utils'
+import { shuffle, capitalise } from './utils'
 
 const sanityClient = require('@sanity/client')
 
@@ -77,7 +77,7 @@ export async function stopListening() {
   subscription.unsubscribe()
 }
 
-export async function createGame(numberOfQuestions: number, id: string) {
+export async function createGame(numberOfQuestions: number, gameName: string) {
   const questions = await getQuestions()
 
   const shuffledQuestions = shuffle(questions).slice(0, numberOfQuestions)
@@ -100,7 +100,7 @@ export async function createGame(numberOfQuestions: number, id: string) {
 
   const game = {
     _type: 'game',
-    gamename: id,
+    gamename: gameName,
     questions: shuffledQuestions,
     players: players,
     isOpen: true,
@@ -120,7 +120,12 @@ export async function createGame(numberOfQuestions: number, id: string) {
 
 export async function getGame(gamename: string) {
   const query = `*[_type == "game" && gamename == $gamename]`
-  const params = { gamename: gamename }
+  const params = {
+    gamename: gamename
+      .split(' ')
+      .map(g => g.toLowerCase())
+      .join('-'),
+  }
 
   await client
     .fetch(query, params)

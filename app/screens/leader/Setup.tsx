@@ -41,7 +41,7 @@ function Setup() {
       <BottomButton
         title="Start game"
         onPress={async () => {
-          const id = humanId()
+          const id = humanId({ separator: '-', capitalize: false })
           await createGame(questions, id)
           navigation.navigate('WaitingRoom', { isWaiting: true })
         }}

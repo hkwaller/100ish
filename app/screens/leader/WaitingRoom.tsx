@@ -40,7 +40,7 @@ function WaitingRoom() {
           Players {playersDone || 0}/{playersPlaying || 0}{' '}
         </PageHeader>
         <Bold style={{ marginVertical: 20, fontSize: 20 }}>
-          Gamename: {state.game?.gamename}
+          Gamename: {state.displayGameName}
         </Bold>
         <View style={styles.playerContainer}>
           {state.game?.players?.map((p, index) => {

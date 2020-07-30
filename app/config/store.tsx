@@ -1,5 +1,6 @@
 import { store, autoEffect } from '@risingstack/react-easy-state'
 import AsyncStorage from '@react-native-community/async-storage'
+import { capitalise } from './utils'
 
 export type State = {
   isPlaying: boolean
@@ -9,6 +10,7 @@ export type State = {
   questions: Question[]
   error: string
   isLoading: boolean
+  displayGameName?: string
 }
 
 export type Player = {
@@ -45,4 +47,12 @@ export const state = store<State>({
 autoEffect(() => {
   if (!state.player) return
   AsyncStorage.setItem('@player', JSON.stringify(state.player))
+})
+
+autoEffect(() => {
+  if (!state.game) return
+  state.displayGameName = state.game.gamename
+    .split('-')
+    .map(w => capitalise(w))
+    .join(' ')
 })
