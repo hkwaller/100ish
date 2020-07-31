@@ -154,15 +154,18 @@ export async function getNewestGame() {
     .catch((err: Error) => {
       console.error('Oh no, the update failed: ', err.message)
     })
+
+  listenToGameUpdates()
 }
 
 export async function listenToGameUpdates() {
   const query = `*[_type == "game"]`
   const params = { _id: state.game?._id }
 
-  return (subscription = client.listen(query, params).subscribe(update => {
+  subscription = client.listen(query, params).subscribe(update => {
+    console.log('game updated')
     state.game = update.result
-  }))
+  })
 }
 
 export async function readyGame() {
