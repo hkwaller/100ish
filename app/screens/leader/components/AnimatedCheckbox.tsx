@@ -4,6 +4,7 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
+  useAnimatedGestureHandler,
 } from 'react-native-reanimated'
 
 import { PageHeader } from 'app/components'
@@ -22,6 +23,15 @@ const AnimatedPageHeader = Animated.createAnimatedComponent(PageHeader)
 function AnimatedCheckbox({ title, toggle, val }: Props) {
   const translateY = useSharedValue(-50)
   const textScale = useSharedValue(1)
+
+  const onGestureEvent = useAnimatedGestureHandler({
+    onStart: _ => {
+      textScale.value = 0.8
+    },
+    onEnd: _ => {
+      textScale.value = 1
+    },
+  })
 
   const style = useAnimatedStyle(() => {
     return {
@@ -47,14 +57,12 @@ function AnimatedCheckbox({ title, toggle, val }: Props) {
   return (
     <TapGestureHandler
       onHandlerStateChange={event => {
-        if (event.nativeEvent.state === State.BEGAN) textScale.value = 0.9
-        if (event.nativeEvent.state === State.END) {
-          textScale.value = 1
-          toggle()
-        }
+        if (event.nativeEvent.state === State.END) toggle()
+        onGestureEvent
       }}
+      onGestureEvent={onGestureEvent}
     >
-      <View style={[styles.animatedCheckbox]}>
+      <Animated.View style={[styles.animatedCheckbox]}>
         <View style={styles.checkbox}>
           <Animated.View
             style={[
@@ -69,7 +77,7 @@ function AnimatedCheckbox({ title, toggle, val }: Props) {
         <AnimatedPageHeader style={[{ flex: 3 }, textStyle]}>
           {title}
         </AnimatedPageHeader>
-      </View>
+      </Animated.View>
     </TapGestureHandler>
   )
 }
