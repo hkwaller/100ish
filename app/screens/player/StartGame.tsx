@@ -41,7 +41,7 @@ function StartGame() {
           <TextInput
             style={[styles.textInput, { marginBottom: 50 }]}
             value={playerName}
-            onChangeText={val => setPlayerName(val)}
+            onChangeText={(val: string) => setPlayerName(val)}
             clearButtonMode="while-editing"
             placeholder="Type your name"
           />
@@ -54,7 +54,7 @@ function StartGame() {
             ref={textInputRef}
             autoCorrect={false}
             clearButtonMode="while-editing"
-            onChangeText={val => setGameName(val)}
+            onChangeText={(val: string) => setGameName(val)}
             placeholder="Type in the room name.."
           />
           <View style={{ marginVertical: 20 }} />
@@ -72,6 +72,7 @@ function StartGame() {
         title="Go to quiz"
         isVisible={isValid}
         onPress={async () => {
+          if (!playerName || playerName.length === 0) return
           state.isLoading = true
           await getGame(gameName)
           await listenToGameUpdates()

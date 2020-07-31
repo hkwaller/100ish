@@ -10,7 +10,7 @@ import Logo from './Logo'
 import { colors } from 'app/config/constants'
 
 type Props = {
-  children: React.ReactNode
+  children?: React.ReactNode
   title?: string
   noPadding?: boolean
   hideBackButton?: boolean
