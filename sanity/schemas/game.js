@@ -38,6 +38,16 @@ export default {
       title: 'Show questions',
       type: 'boolean',
     },
+    {
+      name: 'showAllScores',
+      title: 'Show all scores',
+      type: 'boolean',
+    },
+    {
+      name: 'language',
+      title: 'Language',
+      type: 'string',
+    },
   ],
   preview: {
     select: {

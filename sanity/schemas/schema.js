@@ -7,6 +7,7 @@ import schemaTypes from 'all:part:@sanity/base/schema-type'
 import question from './question'
 import player from './player'
 import game from './game'
+import translation from './translation'
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -20,5 +21,6 @@ export default createSchema({
     question,
     player,
     game,
+    translation,
   ]),
 })

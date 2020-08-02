@@ -16,6 +16,17 @@ export default {
       title: 'Answer',
       type: 'number',
     },
+    {
+      name: 'translations',
+      title: 'Translation',
+      type: 'array',
+      of: [{ type: 'translation' }],
+    },
+    {
+      name: 'originalTitle',
+      title: 'Original title',
+      type: 'string',
+    },
   ],
   preview: {
     select: {
