@@ -1,7 +1,6 @@
 import { state, Question, Game } from './store'
 import { token } from '../../token'
 import { shuffle, capitalise } from './utils'
-import translate from 'google-translate-open-api'
 
 const sanityClient = require('@sanity/client')
 
@@ -78,33 +77,12 @@ export async function stopListening() {
   subscription.unsubscribe()
 }
 
-async function translateQuestions(questions: Question[]) {
-  const result = await translate(questions.map(q => `${q.title}|`).join(''), {
-    tld: 'com',
-    to: state.selectedLanguage,
-  })
-
-  const newQuestionTitles = result.data[0].split('|')
-
-  return questions.map((q, index) => {
-    return {
-      ...q,
-      translatedTitle: newQuestionTitles[index].trim() || '',
-    }
-  })
-}
-
 export async function createGame(numberOfQuestions: number, gameName: string) {
   const questions = await getQuestions()
 
   let shuffledQuestions = shuffle(questions).slice(0, numberOfQuestions)
   state.questions = questions
   state.isLoading = true
-
-  if (state.selectedLanguage !== 'en') {
-    const test = await translateQuestions(shuffledQuestions)
-    console.log('test: ', test)
-  }
 
   const players = state.isPlaying
     ? [
