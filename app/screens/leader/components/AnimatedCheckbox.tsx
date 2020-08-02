@@ -28,6 +28,9 @@ function AnimatedCheckbox({ title, toggle, val }: Props) {
     onStart: _ => {
       textScale.value = 0.8
     },
+    onFail: _ => {
+      textScale.value = 1
+    },
     onEnd: _ => {
       textScale.value = 1
     },
@@ -74,7 +77,7 @@ function AnimatedCheckbox({ title, toggle, val }: Props) {
             ]}
           />
         </View>
-        <AnimatedPageHeader style={[{ flex: 3 }, textStyle]}>
+        <AnimatedPageHeader style={[{ flex: 3, fontSize: 24 }, textStyle]}>
           {title}
         </AnimatedPageHeader>
       </Animated.View>

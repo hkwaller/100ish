@@ -8,6 +8,7 @@ import BottomButton from './components/BottomButton'
 import { submitAnswers } from 'app/config/api'
 import { state, Question as QuestionType } from 'app/config/store'
 import Question from './components/Question'
+import { getTranslatedTitle } from 'app/config/utils'
 
 function Respond() {
   const [answers, setAnswers] = useState(
@@ -25,7 +26,7 @@ function Respond() {
             <Question
               key={index}
               number={index + 1}
-              title={q.title}
+              title={getTranslatedTitle(q)}
               updateVal={val => {
                 const updatedAnswers = answers
                 updatedAnswers[index] = val

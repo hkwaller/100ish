@@ -1,16 +1,24 @@
 import { store, autoEffect } from '@risingstack/react-easy-state'
 import AsyncStorage from '@react-native-community/async-storage'
-import { capitalise } from './utils'
 
 export type State = {
   isPlaying: boolean
   showQuestions: boolean
+  showAllScores: boolean
   game?: Game
   player?: Player
   questions: Question[]
   error: string
   isLoading: boolean
   displayGameName?: string
+  selectedLanguage: string
+  isTranslated: boolean
+}
+
+export type Translation = {
+  languageKey: string
+  languageName: string
+  title: string
 }
 
 export type Player = {
@@ -27,6 +35,8 @@ export type Game = {
   isReady: boolean
   isOpen: boolean
   showQuestions: boolean
+  showAllScores: boolean
+  language: string
 }
 
 export type Question = {
@@ -34,25 +44,21 @@ export type Question = {
   title: string
   answer: number
   _createdAt: string
+  translations: Translation[]
 }
 
 export const state = store<State>({
   isPlaying: true,
-  showQuestions: false,
+  showQuestions: true,
   questions: [],
   error: '',
   isLoading: false,
+  selectedLanguage: 'en',
+  isTranslated: false,
+  showAllScores: false,
 })
 
 autoEffect(() => {
   if (!state.player) return
   AsyncStorage.setItem('@player', JSON.stringify(state.player))
-})
-
-autoEffect(() => {
-  if (!state.game) return
-  state.displayGameName = state.game.gamename
-    .split('-')
-    .map(w => capitalise(w))
-    .join(' ')
 })

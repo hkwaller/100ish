@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Bold, SliderHeader } from 'app/components'
 import { colors } from 'app/config/constants'
@@ -44,10 +44,16 @@ function Slider({
   setQuestionActiveCallback = () => {},
 }: Props) {
   const [value, setValue] = useState(max / 2)
+
   const [isActive, setIsActive] = useState(false)
   const lineStart = useSharedValue(0)
   const lineEnd = useSharedValue(0)
   const numberY = useSharedValue(0)
+  const text = useSharedValue(0)
+
+  useEffect(() => {
+    text.value = value
+  }, [value])
 
   const x = useDerivedValue(() => {
     return defaultValue
@@ -75,14 +81,17 @@ function Slider({
         [lineStart.value, lineEnd.value],
         [0, max]
       )
+
+      if (Math.round(percentageValue) !== text.value) {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+      }
+
       setValue(Math.round(percentageValue))
       x.value = clamped
-      Haptics.selectionAsync()
     },
     onEnd: _ => {
-      const clamped = clamp(x.value, lineStart.value, lineEnd.value)
       const percentageValue = interpolate(
-        clamped,
+        x.value,
         [lineStart.value, lineEnd.value],
         [0, max]
       )

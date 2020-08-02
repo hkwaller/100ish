@@ -5,7 +5,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import Screen from 'app/components/Screen'
 import { Bold } from 'app/components'
-import { colors, fonts } from 'app/config/constants'
+import { colors, fonts, screen } from 'app/config/constants'
 import BottomButton from './components/BottomButton'
 import {
   getGame,
@@ -63,6 +63,7 @@ function StartGame() {
             backgroundColor={colors.BLACK}
             onPress={async () => {
               await getNewestGame()
+              await addPlayer(playerName)
               navigation.navigate('Lounge')
             }}
           />

@@ -1,6 +1,7 @@
 import { state, Question, Game } from './store'
 import { token } from '../../token'
-import { shuffle } from './utils'
+import { shuffle, capitalise } from './utils'
+import translate from 'google-translate-open-api'
 
 const sanityClient = require('@sanity/client')
 
@@ -77,12 +78,33 @@ export async function stopListening() {
   subscription.unsubscribe()
 }
 
+async function translateQuestions(questions: Question[]) {
+  const result = await translate(questions.map(q => `${q.title}|`).join(''), {
+    tld: 'com',
+    to: state.selectedLanguage,
+  })
+
+  const newQuestionTitles = result.data[0].split('|')
+
+  return questions.map((q, index) => {
+    return {
+      ...q,
+      translatedTitle: newQuestionTitles[index].trim() || '',
+    }
+  })
+}
+
 export async function createGame(numberOfQuestions: number, gameName: string) {
   const questions = await getQuestions()
 
-  const shuffledQuestions = shuffle(questions).slice(0, numberOfQuestions)
+  let shuffledQuestions = shuffle(questions).slice(0, numberOfQuestions)
   state.questions = questions
   state.isLoading = true
+
+  if (state.selectedLanguage !== 'en') {
+    const test = await translateQuestions(shuffledQuestions)
+    console.log('test: ', test)
+  }
 
   const players = state.isPlaying
     ? [
@@ -105,12 +127,16 @@ export async function createGame(numberOfQuestions: number, gameName: string) {
     players: players,
     isOpen: true,
     showQuestions: state.showQuestions,
+    language: state.selectedLanguage,
+    showAllScores: state.showAllScores,
   }
 
   await client.create(game).then((res: Game) => {
     console.log(`Game was created with name ${res.gamename}`)
+    state.displayGameName = beautifyGamename(res.gamename)
     state.game = res
     state.isLoading = false
+    state.isTranslated = res.language !== 'en'
 
     if (state.isPlaying) state.player = res.players[0]
   })
@@ -119,13 +145,14 @@ export async function createGame(numberOfQuestions: number, gameName: string) {
 }
 
 export async function getGame(gamename: string) {
+  const uglyGamename = uglifyGamename(gamename)
+
   const query = `*[_type == "game" && gamename == $gamename]`
   const params = {
-    gamename: gamename
-      .split(' ')
-      .map(g => g.toLowerCase())
-      .join('-'),
+    gamename: uglyGamename,
   }
+
+  state.displayGameName = uglyGamename
 
   return await client
     .fetch(query, params)
@@ -136,6 +163,8 @@ export async function getGame(gamename: string) {
       }
       console.log(`got game with gamename ${game[0].gamename}`)
       state.game = game[0]
+      state.selectedLanguage = game[0].language
+      state.isTranslated = game[0].language !== 'en'
     })
     .catch((err: Error) => {
       console.error('Oh no, the update failed: ', err.message)
@@ -150,6 +179,13 @@ export async function getNewestGame() {
     .then((games: Game[]) => {
       console.log('game: ', games[0].gamename)
       state.game = games[0]
+      state.selectedLanguage = games[0].language
+      state.isTranslated = games[0].language !== 'en'
+
+      state.displayGameName = games[0].gamename
+        .split('-')
+        .map(w => capitalise(w))
+        .join(' ')
     })
     .catch((err: Error) => {
       console.error('Oh no, the update failed: ', err.message)
@@ -245,4 +281,18 @@ export function submitAnswers(answers: number[]) {
 
       state.game = updatedGame
     })
+}
+
+function beautifyGamename(gamename: string) {
+  return gamename
+    .split('-')
+    .map(g => capitalise(g))
+    .join(' ')
+}
+
+function uglifyGamename(gamename: string) {
+  return gamename
+    .split(' ')
+    .map(g => g.toLowerCase())
+    .join('-')
 }

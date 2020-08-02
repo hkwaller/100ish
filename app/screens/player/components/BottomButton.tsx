@@ -33,27 +33,25 @@ function BottomButton({ onPress, title, isVisible = true }: Props) {
   })
 
   return (
-    <Animated.View style={style}>
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={[
-            styles.buttonContainer,
-            {
-              backgroundColor: !state.isLoading ? colors.RED : colors.DARKGREY,
-            },
-          ]}
-          onPress={() => {
-            if (state.isLoading) return
-            onPress()
-          }}
-        >
-          {!state.isLoading ? (
-            <Bold style={styles.text}>{title}</Bold>
-          ) : (
-            <Loading />
-          )}
-        </TouchableOpacity>
-      </View>
+    <Animated.View style={[style, styles.container]}>
+      <TouchableOpacity
+        style={[
+          styles.buttonContainer,
+          {
+            backgroundColor: !state.isLoading ? colors.RED : colors.DARKGREY,
+          },
+        ]}
+        onPress={() => {
+          if (state.isLoading) return
+          onPress()
+        }}
+      >
+        {!state.isLoading ? (
+          <Bold style={styles.text}>{title}</Bold>
+        ) : (
+          <Loading />
+        )}
+      </TouchableOpacity>
     </Animated.View>
   )
 }
@@ -65,6 +63,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row',
     paddingBottom: 40,
+    position: 'absolute',
+    bottom: 0,
   },
   buttonContainer: {
     height: 65,

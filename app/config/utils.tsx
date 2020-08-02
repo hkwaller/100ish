@@ -44,3 +44,18 @@ export function validateGameWord(gamename: string) {
       )
   )
 }
+
+export function getTranslatedTitle(q: Question) {
+  if (!state.isTranslated) return q.title
+
+  switch (state.selectedLanguage) {
+    case 'en':
+      return q.title
+    case 'sv':
+      return q.translations.filter(q => q.languageKey === 'sv')[0].title
+    case 'no':
+      return q.translations.filter(q => q.languageKey === 'no')[0].title
+    default:
+      return q.title
+  }
+}

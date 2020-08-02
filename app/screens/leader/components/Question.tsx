@@ -1,13 +1,14 @@
-import React from 'react'
-import { View, StyleSheet, Button, LayoutAnimation } from 'react-native'
+import React, { useState } from 'react'
+import { View, StyleSheet } from 'react-native'
 import { Question as QuestionType, state } from 'app/config/store'
-import { screen, colors } from 'app/config/constants'
-import { QuestionText, Bold } from 'app/components'
-import Slider from 'app/components/Slider'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import { replaceQuestion, removeQuestion } from 'app/config/api'
 import { view } from '@risingstack/react-easy-state'
+
+import { screen, colors } from 'app/config/constants'
+import { QuestionText } from 'app/components'
+import Slider from 'app/components/Slider'
+import { replaceQuestion, removeQuestion } from 'app/config/api'
 import QuestionButton from './QuestionButton'
+import { getTranslatedTitle } from 'app/config/utils'
 
 type Props = {
   question: QuestionType
@@ -19,7 +20,9 @@ type Props = {
 function Question({ question, updateVal, index, previous }: Props) {
   return (
     <View style={styles.outerContainer}>
-      <QuestionText style={styles.question}>{question.title}</QuestionText>
+      <QuestionText style={styles.question}>
+        {getTranslatedTitle(question)}
+      </QuestionText>
       {state.isPlaying && (
         <Slider number={index + 1} updateVal={val => updateVal(val)} />
       )}
@@ -39,6 +42,16 @@ function Question({ question, updateVal, index, previous }: Props) {
             await replaceQuestion(index)
           }}
         />
+        {state.game?.language !== 'en' && (
+          <QuestionButton
+            title={state.isTranslated ? 'Original' : 'Translated'}
+            backgroundColor={colors.YELLOW}
+            onPress={() => {
+              state.isTranslated = !state.isTranslated
+            }}
+          />
+        )}
+
         {index !== 0 && (
           <QuestionButton
             title="Previous"

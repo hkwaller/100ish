@@ -8,7 +8,7 @@ import Slider from 'app/components/Slider'
 import { state, Player } from 'app/config/store'
 import { colors, screen } from 'app/config/constants'
 import { Bold, PageHeader } from 'app/components'
-import { getPlayerScore } from 'app/config/utils'
+import { getPlayerScore, getTranslatedTitle } from 'app/config/utils'
 import Count from 'app/components/Count'
 import BottomButton from '../player/components/BottomButton'
 import { stopListening } from 'app/config/api'
@@ -17,7 +17,13 @@ import Loading from 'app/components/Loading'
 function Results() {
   const navigation = useNavigation()
 
-  const p = state.game?.players.filter(p => p.name === state.player?.name)[0]
+  const scoresForPlayers = state.game?.showAllScores
+    ? state.game.players.sort((a, b) => {
+        if (a.name === state.player?.name) return -1
+        else if (b.name === state.player?.name) return 1
+        else return 0
+      })
+    : state.game?.players.filter(p => p.name === state.player?.name) || []
 
   useEffect(() => {
     stopListening()
@@ -60,38 +66,51 @@ function Results() {
               })}
             </View>
             <View style={{ marginVertical: 25 }} />
-            <PageHeader style={{ marginBottom: 15 }}>Your scores</PageHeader>
-            {p &&
-              p.answers.map((answer, index) => {
-                const correctAnswer = state.game?.questions[index].answer || 0
+            {scoresForPlayers.map(p => {
+              const header =
+                p.name === state.player?.name ? 'Your' : `${p.name}s`
 
-                return (
-                  <View key={index} style={{ marginBottom: 20 }}>
-                    <Bold style={{ marginBottom: 15 }}>
-                      {state.game?.questions[index].title}
-                    </Bold>
-                    <View style={styles.descriptionContainer}>
-                      <View style={styles.answerContainer}>
-                        <Bold style={{ backgroundColor: colors.TURQUOISE }}>
-                          Your answer
+              return (
+                <View style={{ marginVertical: 20 }}>
+                  <PageHeader style={{ marginBottom: 15 }}>
+                    {header} scores
+                  </PageHeader>
+                  {p.answers.map((answer, index) => {
+                    const correctAnswer =
+                      state.game?.questions[index].answer || 0
+
+                    return (
+                      <View key={index}>
+                        <Bold style={{ marginBottom: 15 }}>
+                          {getTranslatedTitle(state.game?.questions[index])}
                         </Bold>
-                        <Bold style={styles.correctAnswer}>Correct answer</Bold>
+                        <View style={styles.descriptionContainer}>
+                          <View style={styles.answerContainer}>
+                            <Bold style={{ backgroundColor: colors.TURQUOISE }}>
+                              Your answer
+                            </Bold>
+                            <Bold style={styles.correctAnswer}>
+                              Correct answer
+                            </Bold>
+                          </View>
+                          <Bold style={{ fontSize: 24 }}>
+                            {answer === correctAnswer
+                              ? '-10'
+                              : Math.abs(answer - correctAnswer)}
+                          </Bold>
+                        </View>
+                        <Slider
+                          key={index}
+                          defaultValue={answer}
+                          number={index + 1}
+                          answer={state.game?.questions[index].answer}
+                        />
                       </View>
-                      <Bold style={{ fontSize: 24 }}>
-                        {answer === correctAnswer
-                          ? '-10'
-                          : Math.abs(answer - correctAnswer)}
-                      </Bold>
-                    </View>
-                    <Slider
-                      key={index}
-                      defaultValue={answer}
-                      number={index + 1}
-                      answer={state.game?.questions[index].answer}
-                    />
-                  </View>
-                )
-              })}
+                    )
+                  })}
+                </View>
+              )
+            })}
           </>
         )}
       </Screen>

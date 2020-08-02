@@ -7,9 +7,9 @@ import Screen from 'app/components/Screen'
 import Slider from 'app/components/Slider'
 import BottomButton from '../player/components/BottomButton'
 import { createGame } from 'app/config/api'
-import { PageHeader } from 'app/components'
 import { state } from 'app/config/store'
 import AnimatedCheckbox from './components/AnimatedCheckbox'
+import Languages from './components/Languages'
 
 function Setup() {
   const navigation = useNavigation()
@@ -37,6 +37,12 @@ function Setup() {
           val={state.showQuestions}
           toggle={() => (state.showQuestions = !state.showQuestions)}
         />
+        <AnimatedCheckbox
+          title="Show everyone's scores"
+          val={state.showAllScores}
+          toggle={() => (state.showAllScores = !state.showAllScores)}
+        />
+        <Languages />
       </Screen>
       <BottomButton
         title="Start game"

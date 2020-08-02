@@ -17,7 +17,6 @@ function WaitingRoom() {
 
   useEffect(() => {
     setIsWaiting(route.params?.isWaiting)
-    getGame(state.game?.gamename)
   }, [])
 
   function toggle(index: number) {
