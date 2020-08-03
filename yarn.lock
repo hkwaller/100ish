@@ -1071,10 +1071,10 @@
   dependencies:
     "@nx-js/observer-util" "^4.2.2"
 
-"@sanity/client@1.149.16":
-  version "1.149.16"
-  resolved "https://registry.yarnpkg.com/@sanity/client/-/client-1.149.16.tgz#7b569830617614be2427be0a0daf50ce26af5a1d"
-  integrity sha512-wrclKcS8iNHjZqcatVAaIUei3v9DWVJfqRtR5cO6niNxUqu1vj3SnHgf7roo4s3V3js/6uHeuuF257v4jZbX5Q==
+"@sanity/client@1.149.18":
+  version "1.149.18"
+  resolved "https://registry.yarnpkg.com/@sanity/client/-/client-1.149.18.tgz#b69da5a9339ced013de961971e737133e1501e8a"
+  integrity sha512-yuJt7t56jkgrSkg3rXGSsrD81+a/0CLnj18JyTqLWAkojihqD2/KjYy0XOTELFUVk74Z6d6pHnNt0CpqTzlGLQ==
   dependencies:
     "@sanity/eventsource" "1.149.16"
     "@sanity/generate-help-url" "1.149.16"
@@ -2731,6 +2731,11 @@ expo-permissions@~9.0.1:
   version "9.0.1"
   resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-9.0.1.tgz#dc10b58654bbe39bbbed5827369942b01b08055e"
   integrity sha512-CosJgy8XQRN/OFG2JTQDcFxz3XTGi27coCMym/hVXWtQfk0z6PwdRG5IXHfLGuSckwIcgmirrwm2+Zc0X3MmNg==
+
+expo-store-review@2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/expo-store-review/-/expo-store-review-2.1.2.tgz#77ac276c79b409b43b76fc60ee95d744223205aa"
+  integrity sha512-BufOvg62SkX+cD8poUcfpAOXUyAp9S6vVzHzU3QJIU/s2gTlqq05GdnU1ZDEz6oBpjie9aimjGaR53FFDGjCkg==
 
 extend-shallow@^1.1.2:
   version "1.1.4"
