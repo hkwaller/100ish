@@ -11,7 +11,7 @@ type Props = {
 
 export const BigButtonText = styled.Text`
   font-family: ${fonts.BOLD};
-  font-size: 35px;
+  font-size: 30px;
   color: ${colors.WHITE};
 `
 
