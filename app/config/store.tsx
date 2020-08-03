@@ -13,6 +13,7 @@ export type State = {
   displayGameName?: string
   selectedLanguage: string
   isTranslated: boolean
+  timesPlayed: number
 }
 
 export type Translation = {
@@ -56,6 +57,7 @@ export const state = store<State>({
   selectedLanguage: 'en',
   isTranslated: false,
   showAllScores: false,
+  timesPlayed: 0,
 })
 
 autoEffect(() => {

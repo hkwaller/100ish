@@ -13,6 +13,7 @@ import Count from 'app/components/Count'
 import BottomButton from '../player/components/BottomButton'
 import { stopListening } from 'app/config/api'
 import Loading from 'app/components/Loading'
+import AsyncStorage from '@react-native-community/async-storage'
 
 function Results() {
   const navigation = useNavigation()
@@ -27,7 +28,7 @@ function Results() {
 
   useEffect(() => {
     stopListening()
-  })
+  }, [])
 
   return (
     <>
@@ -66,12 +67,12 @@ function Results() {
               })}
             </View>
             <View style={{ marginVertical: 25 }} />
-            {scoresForPlayers.map(p => {
+            {scoresForPlayers.map((p, index) => {
               const header =
                 p.name === state.player?.name ? 'Your' : `${p.name}s`
 
               return (
-                <View style={{ marginVertical: 20 }}>
+                <View key={index} style={{ marginVertical: 20 }}>
                   <PageHeader style={{ marginBottom: 15 }}>
                     {header} scores
                   </PageHeader>
@@ -117,8 +118,13 @@ function Results() {
       <BottomButton
         isVisible={!state.game?.isOpen}
         title="Back to start"
-        onPress={() => {
-          navigation.navigate('Home')
+        onPress={async () => {
+          ++state.timesPlayed
+          await AsyncStorage.setItem(
+            'timesPlayed',
+            JSON.stringify(state.timesPlayed)
+          )
+          navigation.navigate('Home', { checkForReview: true })
         }}
       />
     </>
