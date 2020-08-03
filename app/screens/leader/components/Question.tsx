@@ -21,7 +21,7 @@ function Question({ question, updateVal, index, previous }: Props) {
   return (
     <View style={styles.outerContainer}>
       <QuestionText style={styles.question}>
-        {getTranslatedTitle(question)}
+        {getTranslatedTitle(question).replace(/&quot;/g, '"')}
       </QuestionText>
       {state.isPlaying && (
         <Slider number={index + 1} updateVal={val => updateVal(val)} />

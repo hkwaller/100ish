@@ -4,7 +4,7 @@ import Screen from 'app/components/Screen'
 import { view } from '@risingstack/react-easy-state'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
-import { readyGame, getGame, inactivateGame } from 'app/config/api'
+import { readyGame, inactivateGame } from 'app/config/api'
 import { state } from 'app/config/store'
 import { PageHeader, Bold } from 'app/components'
 import Player from './components/Player'

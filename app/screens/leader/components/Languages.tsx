@@ -9,6 +9,7 @@ import Animated, {
 import { state } from 'app/config/store'
 import { Bold } from 'app/components'
 import { colors } from 'app/config/constants'
+import AsyncStorage from '@react-native-community/async-storage'
 
 const languages = [
   { name: 'en', flag: '🇬🇧' },
@@ -18,12 +19,15 @@ const languages = [
 
 function Languages() {
   const [width, setWidth] = useState(0)
-  const [activeIndex, setActiveIndex] = useState(0)
+  const [activeIndex, setActiveIndex] = useState(
+    languages.map(l => l.name).indexOf(state.selectedLanguage)
+  )
+
   const left = useSharedValue(0)
 
   useEffect(() => {
     left.value = (width / 3) * activeIndex + 10
-  }, [activeIndex])
+  }, [activeIndex, width])
 
   const lineStyle = useAnimatedStyle(() => {
     return {
@@ -53,6 +57,10 @@ function Languages() {
                 flag={flag}
                 onPress={() => {
                   state.selectedLanguage = name
+                  AsyncStorage.setItem(
+                    '@selectedLanguage',
+                    JSON.stringify(state.selectedLanguage)
+                  )
                   setActiveIndex(index)
                 }}
               />

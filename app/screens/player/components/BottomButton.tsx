@@ -46,11 +46,9 @@ function BottomButton({ onPress, title, isVisible = true }: Props) {
           onPress()
         }}
       >
-        {!state.isLoading ? (
-          <Bold style={styles.text}>{title}</Bold>
-        ) : (
-          <Loading />
-        )}
+        <Bold style={styles.text}>
+          {state.isLoading ? 'Loading...' : title}
+        </Bold>
       </TouchableOpacity>
     </Animated.View>
   )

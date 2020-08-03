@@ -46,8 +46,6 @@ export function validateGameWord(gamename: string) {
 }
 
 export function getTranslatedTitle(q: Question) {
-  if (!state.isTranslated) return q.title
-
   switch (state.selectedLanguage) {
     case 'en':
       return q.title

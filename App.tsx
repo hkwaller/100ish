@@ -15,7 +15,9 @@ import WaitingRoom from 'app/screens/leader/WaitingRoom'
 import Results from 'app/screens/common/Results'
 
 import AddQuestion from 'app/screens/add-question/AddQuestion'
+import Settings from 'app/screens/settings/Settings'
 import { state } from 'app/config/store'
+import { view } from '@risingstack/react-easy-state'
 
 require('react-native').unstable_enableLogBox()
 
@@ -64,14 +66,32 @@ function AddQuestionAstack() {
   )
 }
 
+function SettingsStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="Settings" component={Settings} />
+    </Stack.Navigator>
+  )
+}
+
 function App() {
   React.useEffect(() => {
-    async function getPlayerFromStorage() {
-      const player = await AsyncStorage.getItem('@player')
-      if (player) state.player = JSON.parse(player)
+    async function getDataFromStorage() {
+      const player = (await AsyncStorage.getItem('@player')) || '{}'
+      const timesPlayed = (await AsyncStorage.getItem('timesPlayed')) || '0'
+      const selectedLanguage =
+        (await AsyncStorage.getItem('@selectedLanguage')) || '0'
+
+      state.player = JSON.parse(player)
+      state.timesPlayed = JSON.parse(timesPlayed)
+      state.selectedLanguage = JSON.parse(selectedLanguage)
     }
 
-    getPlayerFromStorage()
+    getDataFromStorage()
   }, [])
 
   return (
@@ -85,9 +105,10 @@ function App() {
         <Stack.Screen name="Respond" component={PlayerStack} />
         <Stack.Screen name="Leader" component={GameLeaderStack} />
         <Stack.Screen name="Add" component={AddQuestionAstack} />
+        <Stack.Screen name="Settings" component={SettingsStack} />
       </Stack.Navigator>
     </NavigationContainer>
   )
 }
 
-export default App
+export default view(App)

@@ -89,7 +89,7 @@ export async function createGame(numberOfQuestions: number, gameName: string) {
         {
           _type: 'player',
           _key: `${0}`,
-          name: 'Honz',
+          name: state.player?.name || '',
           isFinished: false,
           answers: [],
         },
@@ -109,17 +109,28 @@ export async function createGame(numberOfQuestions: number, gameName: string) {
     showAllScores: state.showAllScores,
   }
 
-  await client.create(game).then((res: Game) => {
-    console.log(`Game was created with name ${res.gamename}`)
-    state.displayGameName = beautifyGamename(res.gamename)
-    state.game = res
-    state.isLoading = false
-    state.isTranslated = res.language !== 'en'
+  await client
+    .create(game)
+    .then((res: Game) => {
+      console.log(`Game was created with name ${res.gamename}`)
+      state.displayGameName = beautifyGamename(res.gamename)
+      state.game = res
+      state.isLoading = false
+      state.isTranslated = res.language !== 'en'
 
-    if (state.isPlaying) state.player = res.players[0]
+      if (state.isPlaying) state.player = res.players[0]
+    })
+    .catch((e: Error) => {
+      console.log('couldnt create game', e.message)
+    })
+
+  const query = `*[_type == "game"]`
+  const params = { _id: state.game?._id }
+
+  subscription = client.listen(query, params).subscribe(update => {
+    console.log('game live updated')
+    state.game = update.result
   })
-
-  await listenToGameUpdates()
 }
 
 export async function getGame(gamename: string) {
@@ -132,7 +143,7 @@ export async function getGame(gamename: string) {
 
   state.displayGameName = uglyGamename
 
-  return await client
+  await client
     .fetch(query, params)
     .then((game: Game[]) => {
       if (!game[0].isOpen) {
@@ -141,12 +152,16 @@ export async function getGame(gamename: string) {
       }
       console.log(`got game with gamename ${game[0].gamename}`)
       state.game = game[0]
-      state.selectedLanguage = game[0].language
       state.isTranslated = game[0].language !== 'en'
     })
     .catch((err: Error) => {
       console.error('Oh no, the update failed: ', err.message)
     })
+
+  subscription = client.listen(query, params).subscribe(update => {
+    console.log('game live updated')
+    state.game = update.result
+  })
 }
 
 export async function getNewestGame() {
@@ -157,7 +172,6 @@ export async function getNewestGame() {
     .then((games: Game[]) => {
       console.log('game: ', games[0].gamename)
       state.game = games[0]
-      state.selectedLanguage = games[0].language
       state.isTranslated = games[0].language !== 'en'
 
       state.displayGameName = games[0].gamename
@@ -169,15 +183,20 @@ export async function getNewestGame() {
       console.error('Oh no, the update failed: ', err.message)
     })
 
-  listenToGameUpdates()
+  const params = { _id: state.game?._id }
+
+  subscription = client.listen(query, params).subscribe(update => {
+    console.log('game live updated')
+    state.game = update.result
+  })
 }
 
-export async function listenToGameUpdates() {
+export function listenToGameUpdates() {
   const query = `*[_type == "game"]`
   const params = { _id: state.game?._id }
 
   subscription = client.listen(query, params).subscribe(update => {
-    console.log('game updated')
+    console.log('game live updated')
     state.game = update.result
   })
 }

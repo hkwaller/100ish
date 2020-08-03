@@ -26,7 +26,7 @@ function Respond() {
             <Question
               key={index}
               number={index + 1}
-              title={getTranslatedTitle(q)}
+              title={getTranslatedTitle(q).replace(/&quot;/g, '"')}
               updateVal={val => {
                 const updatedAnswers = answers
                 updatedAnswers[index] = val
