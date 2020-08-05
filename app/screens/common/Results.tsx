@@ -120,10 +120,6 @@ function Results() {
         title="Back to start"
         onPress={async () => {
           ++state.timesPlayed
-          await AsyncStorage.setItem(
-            'timesPlayed',
-            JSON.stringify(state.timesPlayed)
-          )
           navigation.navigate('Home', { checkForReview: true })
         }}
       />

@@ -64,3 +64,8 @@ autoEffect(() => {
   if (!state.player) return
   AsyncStorage.setItem('@player', JSON.stringify(state.player))
 })
+
+autoEffect(() => {
+  if (state.timesPlayed === 0) return
+  AsyncStorage.setItem('@timesPlayed', JSON.stringify(state.timesPlayed))
+})
