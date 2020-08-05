@@ -82,7 +82,7 @@ function App() {
   React.useEffect(() => {
     async function getDataFromStorage() {
       const player = (await AsyncStorage.getItem('@player')) || '{}'
-      const timesPlayed = (await AsyncStorage.getItem('timesPlayed')) || '0'
+      const timesPlayed = (await AsyncStorage.getItem('@timesPlayed')) || '0'
       const selectedLanguage =
         (await AsyncStorage.getItem('@selectedLanguage')) || '0'
 
