@@ -7,14 +7,8 @@ import Screen from 'app/components/Screen'
 import { Bold } from 'app/components'
 import { colors, fonts, screen } from 'app/config/constants'
 import BottomButton from './components/BottomButton'
-import {
-  getGame,
-  addPlayer,
-  listenToGameUpdates,
-  getNewestGame,
-} from 'app/config/api'
+import { getGame, addPlayer, listenToGameUpdates } from 'app/config/api'
 import { state } from 'app/config/store'
-import QuestionButton from 'app/screens/leader/components/QuestionButton'
 import { validateGameWord } from 'app/config/utils'
 
 function StartGame() {
@@ -58,15 +52,6 @@ function StartGame() {
             placeholder="Type in the room name.."
           />
           <View style={{ marginVertical: 20 }} />
-          <QuestionButton
-            title="Orkar inte skriva, ge mig senaste spelet bitte"
-            backgroundColor={colors.BLACK}
-            onPress={async () => {
-              await getNewestGame()
-              await addPlayer(playerName)
-              navigation.navigate('Lounge')
-            }}
-          />
         </KeyboardAwareScrollView>
       </Screen>
       <BottomButton
