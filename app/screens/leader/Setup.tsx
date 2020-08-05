@@ -7,7 +7,7 @@ import humanId from 'human-id'
 import Screen from 'app/components/Screen'
 import Slider from 'app/components/Slider'
 import BottomButton from '../player/components/BottomButton'
-import { createGame, addPlayer } from 'app/config/api'
+import { createGame } from 'app/config/api'
 import { state } from 'app/config/store'
 import AnimatedCheckbox from './components/AnimatedCheckbox'
 import Languages from './components/Languages'
@@ -60,7 +60,7 @@ function Setup() {
         title="Start game"
         onPress={async () => {
           const id = humanId({ separator: '-', capitalize: false })
-          await createGame(questions, id)
+          await createGame(questions, id, playerName)
           navigation.navigate('WaitingRoom', { isWaiting: true })
         }}
       />

@@ -77,7 +77,11 @@ export async function stopListening() {
   subscription.unsubscribe()
 }
 
-export async function createGame(numberOfQuestions: number, gameName: string) {
+export async function createGame(
+  numberOfQuestions: number,
+  gameName: string,
+  playerName: string
+) {
   const questions = await getQuestions()
 
   let shuffledQuestions = shuffle(questions).slice(0, numberOfQuestions)
@@ -89,7 +93,7 @@ export async function createGame(numberOfQuestions: number, gameName: string) {
         {
           _type: 'player',
           _key: `${0}`,
-          name: state.player?.name || '',
+          name: playerName || '',
           isFinished: false,
           answers: [],
         },
