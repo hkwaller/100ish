@@ -33,25 +33,17 @@ function Front() {
         onPress={() => navigation.navigate('Respond')}
         bgColor={colors.GREEN}
       />
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'flex-start',
-          justifyContent: 'center',
-        }}
-      >
-        <SmallButton
-          title="Add question"
-          onPress={() => navigation.navigate('Add')}
-          bgColor={colors.RED}
-        />
-        <SmallButton
-          title="Settings"
-          onPress={() => navigation.navigate('Settings')}
-          bgColor={colors.LAVENDEL}
-          color={colors.BLACK}
-        />
-      </View>
+      <BigButton
+        title="Add question"
+        onPress={() => navigation.navigate('Add')}
+        bgColor={colors.RED}
+      />
+      <BigButton
+        title="Settings"
+        onPress={() => navigation.navigate('Settings')}
+        bgColor={colors.LAVENDEL}
+        color={colors.BLACK}
+      />
     </Screen>
   )
 }

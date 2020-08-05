@@ -7,21 +7,21 @@ type Props = {
   title: string
   onPress: () => void
   bgColor: string
+  color?: string
 }
 
 export const BigButtonText = styled.Text`
   font-family: ${fonts.BOLD};
   font-size: 30px;
-  color: ${colors.WHITE};
 `
 
-function BigButton({ title, onPress, bgColor }: Props) {
+function BigButton({ title, onPress, bgColor, color = colors.WHITE }: Props) {
   return (
     <TouchableOpacity
       onPress={onPress}
       style={[styles.container, { backgroundColor: bgColor }]}
     >
-      <BigButtonText>{title}</BigButtonText>
+      <BigButtonText style={{ color: color }}>{title}</BigButtonText>
     </TouchableOpacity>
   )
 }
