@@ -1,5 +1,7 @@
 import { state, Question } from './store'
 import { nouns, adjectives, verbs } from 'human-id'
+import * as InAppPurchases from 'expo-in-app-purchases'
+import AsyncStorage from '@react-native-community/async-storage'
 
 export function capitalise(word: string) {
   return word.charAt(0).toUpperCase() + word.slice(1)
@@ -58,4 +60,41 @@ export function getTranslatedTitle(q: Question) {
     default:
       return q.title
   }
+}
+
+export async function setupPurchases() {
+  const history = await InAppPurchases.connectAsync()
+  if (history.responseCode === InAppPurchases.IAPResponseCode.OK) {
+    history.results.forEach(result => {
+      console.log('result: ', result)
+    })
+  } else {
+    console.log('shit failed yo')
+  }
+
+  await InAppPurchases.getProductsAsync(['premium'])
+
+  InAppPurchases.setPurchaseListener(({ responseCode, results, errorCode }) => {
+    if (responseCode === InAppPurchases.IAPResponseCode.OK) {
+      results.forEach(purchase => {
+        if (!purchase.acknowledged) {
+          state.hasPurchased = true
+          AsyncStorage.setItem('@hasPurchased', JSON.stringify(true))
+          InAppPurchases.finishTransactionAsync(purchase, true)
+        }
+      })
+    }
+
+    if (responseCode === InAppPurchases.IAPResponseCode.USER_CANCELED) {
+      console.log('User canceled the transaction')
+    } else if (responseCode === InAppPurchases.IAPResponseCode.DEFERRED) {
+      console.log(
+        'User does not have permissions to buy but requested parental approval (iOS only)'
+      )
+    } else {
+      console.warn(
+        `Something went wrong with the purchase. Received errorCode ${errorCode}`
+      )
+    }
+  })
 }

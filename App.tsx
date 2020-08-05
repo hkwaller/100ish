@@ -19,6 +19,7 @@ import AddQuestion from 'app/screens/add-question/AddQuestion'
 import Settings from 'app/screens/settings/Settings'
 import { state } from 'app/config/store'
 import { view } from '@risingstack/react-easy-state'
+import { setupPurchases } from 'app/config/utils'
 
 require('react-native').unstable_enableLogBox()
 
@@ -94,47 +95,8 @@ function App() {
       state.selectedLanguage = JSON.parse(selectedLanguage)
       state.hasPurchased = JSON.parse(hasPurchased)
 
-      console.log('hasPurchased: ', hasPurchased)
-      if (hasPurchased) {
-        const history = await InAppPurchases.connectAsync()
-        if (history.responseCode === InAppPurchases.IAPResponseCode.OK) {
-          history.results.forEach(result => {
-            console.log('result: ', result)
-            state.hasPurchased = true
-          })
-        } else {
-          console.log('shit failed yo')
-        }
-
-        await InAppPurchases.getProductsAsync(['premium'])
-
-        InAppPurchases.setPurchaseListener(
-          ({ responseCode, results, errorCode }) => {
-            if (responseCode === InAppPurchases.IAPResponseCode.OK) {
-              results.forEach(purchase => {
-                if (!purchase.acknowledged) {
-                  state.hasPurchased = true
-                  AsyncStorage.setItem('@hasPurchased', JSON.stringify(true))
-                  InAppPurchases.finishTransactionAsync(purchase, true)
-                }
-              })
-            }
-
-            if (responseCode === InAppPurchases.IAPResponseCode.USER_CANCELED) {
-              console.log('User canceled the transaction')
-            } else if (
-              responseCode === InAppPurchases.IAPResponseCode.DEFERRED
-            ) {
-              console.log(
-                'User does not have permissions to buy but requested parental approval (iOS only)'
-              )
-            } else {
-              console.warn(
-                `Something went wrong with the purchase. Received errorCode ${errorCode}`
-              )
-            }
-          }
-        )
+      if (!JSON.parse(hasPurchased)) {
+        setupPurchases()
       }
     }
 
