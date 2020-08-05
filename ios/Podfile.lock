@@ -15,6 +15,8 @@ PODS:
     - React-Core
     - UMCore
     - UMImageLoaderInterface
+  - EXInAppPurchases (8.2.1):
+    - UMCore
   - EXPermissions (9.0.1):
     - UMCore
     - UMPermissionsInterface
@@ -377,6 +379,7 @@ DEPENDENCIES:
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXHaptics (from `../node_modules/expo-haptics/ios`)
   - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
+  - EXInAppPurchases (from `../node_modules/expo-in-app-purchases/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
   - EXStoreReview (from `../node_modules/expo-store-review/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -472,6 +475,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-haptics/ios"
   EXImageLoader:
     :path: "../node_modules/expo-image-loader/ios"
+  EXInAppPurchases:
+    :path: "../node_modules/expo-in-app-purchases/ios"
   EXPermissions:
     :path: "../node_modules/expo-permissions/ios"
   EXStoreReview:
@@ -574,6 +579,7 @@ SPEC CHECKSUMS:
   EXFileSystem: 76875135b61708b9afa7e6a89b72a60ba0fdfa20
   EXHaptics: 5428b344a216ca5d9df6ca8f65720b2a1ad9f109
   EXImageLoader: 02ca02c9cd5cc8a97b423207a73a791e0a86bea5
+  EXInAppPurchases: f20d1ae0f899ef5f868c95033da6656282a41e68
   EXPermissions: 80ac3acbdb145930079810fe5b08c022b3428aa8
   EXStoreReview: 2b9bdb91b3ed4319b4f6a4cb4647ba48a6ab67c8
   FBLazyVector: 4aab18c93cd9546e4bfed752b4084585eca8b245

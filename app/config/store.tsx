@@ -14,6 +14,7 @@ export type State = {
   selectedLanguage: string
   isTranslated: boolean
   timesPlayed: number
+  hasPurchased: boolean
 }
 
 export type Translation = {
@@ -58,6 +59,7 @@ export const state = store<State>({
   isTranslated: false,
   showAllScores: false,
   timesPlayed: 0,
+  hasPurchased: false,
 })
 
 autoEffect(() => {
@@ -68,4 +70,9 @@ autoEffect(() => {
 autoEffect(() => {
   if (state.timesPlayed === 0) return
   AsyncStorage.setItem('@timesPlayed', JSON.stringify(state.timesPlayed))
+})
+
+autoEffect(() => {
+  if (state.hasPurchased === false) return
+  AsyncStorage.setItem('@hasPurchased', JSON.stringify(state.hasPurchased))
 })

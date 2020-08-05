@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React from 'react'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import * as StoreReview from 'expo-store-review'
 
@@ -8,6 +9,8 @@ import BigButton from 'app/components/BigButton'
 import Screen from 'app/components/Screen'
 import { state } from 'app/config/store'
 import { view } from '@risingstack/react-easy-state'
+import { Bold } from 'app/components'
+import { purchaseApp } from 'app/config/utils'
 
 function Front() {
   const navigation = useNavigation()
@@ -17,6 +20,9 @@ function Front() {
       StoreReview.requestReview()
     }
   }, 1000)
+  async function purchase() {
+    await purchaseApp()
+  }
 
   return (
     <Screen hideBackButton>
@@ -31,19 +37,42 @@ function Front() {
         onPress={() => navigation.navigate('Respond')}
         bgColor={colors.GREEN}
       />
-      <BigButton
+      {/* <BigButton
         title="Add question"
         onPress={() => navigation.navigate('Add')}
         bgColor={colors.RED}
-      />
+      /> */}
       <BigButton
         title="Settings"
         onPress={() => navigation.navigate('Settings')}
-        bgColor={colors.LAVENDEL}
-        color={colors.BLACK}
+        bgColor={colors.RED}
       />
+      {state.timesPlayed > 5 && !state.hasPurchased && (
+        <View style={{ alignItems: 'flex-start', marginTop: 30 }}>
+          <Bold>
+            You still haven't purchased the full app. No worries, you still have{' '}
+            {Math.max(0, 10 - state.timesPlayed)} games to play for free.
+          </Bold>
+
+          <TouchableOpacity style={styles.button} onPress={() => purchase()}>
+            <Bold>Purchase full app</Bold>
+          </TouchableOpacity>
+        </View>
+      )}
     </Screen>
   )
 }
+
+const styles = StyleSheet.create({
+  purchaseContainer: { marginTop: 20, padding: 20, alignItems: 'flex-start' },
+  purchaseHeader: { fontSize: 20, marginBottom: 10 },
+  button: {
+    paddingHorizontal: 30,
+    paddingVertical: 20,
+    backgroundColor: colors.GREEN,
+    marginTop: 20,
+    borderRadius: 30,
+  },
+})
 
 export default view(Front)

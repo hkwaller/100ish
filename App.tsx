@@ -2,6 +2,7 @@ import * as React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import AsyncStorage from '@react-native-community/async-storage'
+import * as InAppPurchases from 'expo-in-app-purchases'
 import 'react-native-gesture-handler'
 
 import Front from 'app/screens/Front'
@@ -85,10 +86,56 @@ function App() {
       const timesPlayed = (await AsyncStorage.getItem('@timesPlayed')) || '0'
       const selectedLanguage =
         (await AsyncStorage.getItem('@selectedLanguage')) || '0'
+      const hasPurchased =
+        (await AsyncStorage.getItem('@hasPurchased')) || 'false'
 
       state.player = JSON.parse(player)
       state.timesPlayed = JSON.parse(timesPlayed)
       state.selectedLanguage = JSON.parse(selectedLanguage)
+      state.hasPurchased = JSON.parse(hasPurchased)
+
+      console.log('hasPurchased: ', hasPurchased)
+      if (hasPurchased) {
+        const history = await InAppPurchases.connectAsync()
+        if (history.responseCode === InAppPurchases.IAPResponseCode.OK) {
+          history.results.forEach(result => {
+            console.log('result: ', result)
+            state.hasPurchased = true
+          })
+        } else {
+          console.log('shit failed yo')
+        }
+
+        await InAppPurchases.getProductsAsync(['premium'])
+
+        InAppPurchases.setPurchaseListener(
+          ({ responseCode, results, errorCode }) => {
+            if (responseCode === InAppPurchases.IAPResponseCode.OK) {
+              results.forEach(purchase => {
+                if (!purchase.acknowledged) {
+                  state.hasPurchased = true
+                  AsyncStorage.setItem('@hasPurchased', JSON.stringify(true))
+                  InAppPurchases.finishTransactionAsync(purchase, true)
+                }
+              })
+            }
+
+            if (responseCode === InAppPurchases.IAPResponseCode.USER_CANCELED) {
+              console.log('User canceled the transaction')
+            } else if (
+              responseCode === InAppPurchases.IAPResponseCode.DEFERRED
+            ) {
+              console.log(
+                'User does not have permissions to buy but requested parental approval (iOS only)'
+              )
+            } else {
+              console.warn(
+                `Something went wrong with the purchase. Received errorCode ${errorCode}`
+              )
+            }
+          }
+        )
+      }
     }
 
     getDataFromStorage()

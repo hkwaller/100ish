@@ -2727,6 +2727,11 @@ expo-image-loader@~1.1.1:
   resolved "https://registry.yarnpkg.com/expo-image-loader/-/expo-image-loader-1.1.1.tgz#6c65bd1a41761c8acb91575060579e4864b93394"
   integrity sha512-qI4opRO2D1MGRAbHxYnMBJ4LzKT17KfqbM5oTxNoMZCRNpzB0xsuJrWy5C+0UOkV0vnqQyjvCtynTSawhWnl9A==
 
+expo-in-app-purchases@^8.2.1:
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/expo-in-app-purchases/-/expo-in-app-purchases-8.2.1.tgz#9ca64b3769e47504671f32c39fd2e8225d388c02"
+  integrity sha512-K8EEzTba7/jEL54etlTL0cduvQ4GTJL0ozi9M8+Urd8O7DJHFj6iOH2ERTSyPTyjyZcllDr5KrSY0oBikCl5sw==
+
 expo-permissions@~9.0.1:
   version "9.0.1"
   resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-9.0.1.tgz#dc10b58654bbe39bbbed5827369942b01b08055e"

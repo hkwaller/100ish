@@ -16,6 +16,7 @@
     "@risingstack/react-easy-state": "6.3.0",
     "@sanity/client": "1.149.18",
     "expo-haptics": "8.2.1",
+    "expo-in-app-purchases": "^8.2.1",
     "expo-store-review": "2.1.2",
     "human-id": "2.0.1",
     "react": "16.11.0",
