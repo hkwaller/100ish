@@ -45,7 +45,7 @@ function Question({ question, updateVal, index, previous }: Props) {
         {state.game?.language !== 'en' && (
           <QuestionButton
             title={state.isTranslated ? 'Original' : 'Translated'}
-            backgroundColor={colors.YELLOW}
+            backgroundColor={colors.TURQUOISE}
             onPress={() => {
               state.isTranslated = !state.isTranslated
             }}
