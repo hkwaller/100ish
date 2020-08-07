@@ -1,44 +1,80 @@
 import React, { useState } from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, TextInput } from 'react-native'
+import { view } from '@risingstack/react-easy-state'
+import { useNavigation } from '@react-navigation/native'
+import humanId from 'human-id'
+
 import Screen from 'app/components/Screen'
 import Slider from 'app/components/Slider'
-import BottomButton from '../respond/components/BottomButton'
-import { getQuestions } from 'app/config/api'
-import { useNavigation } from '@react-navigation/native'
-import { PageHeader } from 'app/components'
-import { colors } from 'app/config/constants'
+import BottomButton from '../player/components/BottomButton'
+import { createGame } from 'app/config/api'
 import { state } from 'app/config/store'
-import { view } from '@risingstack/react-easy-state'
+import AnimatedCheckbox from './components/AnimatedCheckbox'
+import Languages from './components/Languages'
+import { colors, fonts } from 'app/config/constants'
+import { Bold } from 'app/components'
 
 function Setup() {
+  const [questions, setQuestions] = useState(5)
+  const [playerName, setPlayerName] = useState(state.player?.name || '')
   const navigation = useNavigation()
+
+  function updateQuestions(val: number) {
+    setQuestions(val)
+  }
 
   return (
     <>
-      <Screen>
-        <PageHeader>Setup</PageHeader>
-        <Slider header="Players" max={10} />
-        <Slider header="Questions" max={10} />
-        <TouchableOpacity
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: 24,
-            backgroundColor: state.isPlaying ? colors.RED : colors.GREY,
-          }}
-          onPress={() => (state.isPlaying = !state.isPlaying)}
-        >
-          <PageHeader>I wanna play to!</PageHeader>
-        </TouchableOpacity>
+      <Screen title="Setup">
+        <Bold style={{ marginBottom: 10 }}>Enter your name</Bold>
+        <TextInput
+          style={[styles.textInput, { marginBottom: 20 }]}
+          value={playerName}
+          onChangeText={(val: string) => setPlayerName(val)}
+          clearButtonMode="while-editing"
+          placeholder="Type your name"
+        />
+        <Slider
+          header="Questions"
+          max={10}
+          updateVal={val => updateQuestions(val)}
+        />
+        <AnimatedCheckbox
+          title="I wanna play too"
+          val={state.isPlaying}
+          toggle={() => (state.isPlaying = !state.isPlaying)}
+        />
+        <AnimatedCheckbox
+          title="Show questions to players"
+          val={state.showQuestions}
+          toggle={() => (state.showQuestions = !state.showQuestions)}
+        />
+        <AnimatedCheckbox
+          title="Show everyone's scores"
+          val={state.showAllScores}
+          toggle={() => (state.showAllScores = !state.showAllScores)}
+        />
+        <Languages />
       </Screen>
       <BottomButton
         title="Start game"
-        onPress={() => {
-          getQuestions(3)
-          navigation.navigate('Game')
+        onPress={async () => {
+          const id = humanId({ separator: '-', capitalize: false })
+          await createGame(questions, id, playerName)
+          navigation.navigate('WaitingRoom', { isWaiting: true })
         }}
       />
     </>
   )
 }
+
+const styles = StyleSheet.create({
+  textInput: {
+    backgroundColor: colors.WHITE,
+    padding: 20,
+    fontFamily: fonts.REGULAR,
+    fontSize: 20,
+  },
+})
+
 export default view(Setup)

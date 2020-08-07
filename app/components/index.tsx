@@ -1,6 +1,5 @@
 import styled from 'styled-components/native'
 import { fonts, colors } from 'app/config/constants'
-import Header from './Header'
 
 export const HeaderText = styled.Text`
   font-family: ${fonts.REGULAR};
@@ -16,14 +15,13 @@ export const Regular = styled.Text`
 
 export const QuestionText = styled.Text`
   font-family: ${fonts.BOLD};
-  font-size: 30px;
+  font-size: 24px;
   color: ${colors.WHITE};
 `
 
 export const PageHeader = styled.Text`
   font-family: ${fonts.BOLD};
   font-size: 30px;
-  margin-bottom: 20px;
 `
 
 export const Welcome = styled.Text`
@@ -34,7 +32,5 @@ export const Welcome = styled.Text`
 export const SliderHeader = styled.Text`
   font-family: ${fonts.BOLD};
   font-size: 30px;
-  color: ${colors.DARKGREY};
+  color: ${colors.BLACK};
 `
-
-export { Header }

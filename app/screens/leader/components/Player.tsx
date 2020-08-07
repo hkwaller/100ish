@@ -13,7 +13,7 @@ import { colors, screen } from 'app/config/constants'
 type Props = {
   name: string
   isFinished: boolean
-  toggle: () => void
+  toggle?: () => void
 }
 
 const AnimatedSvg = Animated.createAnimatedComponent(Svg)
@@ -32,7 +32,7 @@ function Player({ name, isFinished, toggle }: Props) {
   })
 
   return (
-    <TouchableWithoutFeedback onPress={() => toggle()}>
+    <TouchableWithoutFeedback onPress={() => toggle && toggle()}>
       <View style={styles.container}>
         <Bold style={{ marginRight: 15 }}>{name}</Bold>
         <View>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     alignItems: 'center',
-    width: screen.WIDTH / 2 - 40,
+    width: screen.WIDTH / 2 - 35,
   },
 })
 

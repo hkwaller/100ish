@@ -7,20 +7,55 @@ export default {
   icon,
   fields: [
     {
+      name: 'gamename',
+      title: 'Game name',
+      type: 'string',
+    },
+    {
       name: 'players',
       title: 'Players',
       type: 'array',
       of: [{ type: 'player' }],
     },
+    {
+      name: 'questions',
+      title: 'Questions',
+      type: 'array',
+      of: [{ type: 'question' }],
+    },
+    {
+      name: 'isReady',
+      title: 'Game is ready to play',
+      type: 'boolean',
+    },
+    {
+      name: 'isOpen',
+      title: 'Game is open to play',
+      type: 'boolean',
+    },
+    {
+      name: 'showQuestions',
+      title: 'Show questions',
+      type: 'boolean',
+    },
+    {
+      name: 'showAllScores',
+      title: 'Show all scores',
+      type: 'boolean',
+    },
+    {
+      name: 'language',
+      title: 'Language',
+      type: 'string',
+    },
   ],
   preview: {
     select: {
-      players: 'players',
-      id: '_id',
+      gamename: 'gamename',
     },
     prepare(selection) {
       return {
-        title: `${selection.id}`,
+        title: `${selection.gamename}`,
       }
     },
   },

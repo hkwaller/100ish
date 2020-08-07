@@ -9,6 +9,7 @@ export const colors = {
   GREY: '#F4F4F4',
   PURPLE: '#5718C6',
   TURQUOISE: '#00DCFD',
+  LAVENDEL: '#D9D0DE',
   WHITE: '#fff',
 }
 

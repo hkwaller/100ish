@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Bold, SliderHeader } from 'app/components'
 import { colors } from 'app/config/constants'
@@ -10,14 +10,19 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
   interpolate,
+  delay,
 } from 'react-native-reanimated'
+import * as Haptics from 'expo-haptics'
 
 type Props = {
   number?: number
-  updateVal: (val: number) => void
+  updateVal?: (val: number) => void
   header?: string
   min?: number
   max?: number
+  answer?: number
+  defaultValue?: number
+  setQuestionActiveCallback?: (isActive: boolean) => void
 }
 
 function clamp(x: number, min: number, max: number) {
@@ -29,42 +34,71 @@ function clamp(x: number, min: number, max: number) {
 
 const AnimatedBold = Animated.createAnimatedComponent(Bold)
 
-function Slider({ number, updateVal = () => {}, header, max }: Props) {
-  const [value, setValue] = useState((max && max / 2) || 50)
+function Slider({
+  number,
+  updateVal = () => {},
+  header,
+  max = 100,
+  answer,
+  defaultValue,
+  setQuestionActiveCallback = () => {},
+}: Props) {
+  const [value, setValue] = useState(max / 2)
+
+  const [isActive, setIsActive] = useState(false)
   const lineStart = useSharedValue(0)
   const lineEnd = useSharedValue(0)
   const numberY = useSharedValue(0)
+  const text = useSharedValue(0)
+
+  useEffect(() => {
+    text.value = value
+  }, [value])
 
   const x = useDerivedValue(() => {
-    return lineEnd.value / 2 - 10
+    return defaultValue
+      ? (lineEnd.value / 100) * defaultValue
+      : lineEnd.value / 2 - 10
+  })
+
+  const answerX = useDerivedValue(() => {
+    return (lineEnd.value / 100) * (answer || -1)
   })
 
   const gestureHandler = useAnimatedGestureHandler({
     onStart: (_, ctx) => {
       ctx.startX = x.value
       numberY.value = 1
+      setIsActive(true)
+      setQuestionActiveCallback(true)
     },
     onActive: (event, ctx) => {
+      if (answer) return
       const val = ctx.startX + event.translationX
       const clamped = clamp(val, lineStart.value, lineEnd.value)
       const percentageValue = interpolate(
         clamped,
         [lineStart.value, lineEnd.value],
-        [0, max || 100]
+        [0, max]
       )
+
+      if (Math.round(percentageValue) !== text.value) {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+      }
+
       setValue(Math.round(percentageValue))
       x.value = clamped
     },
     onEnd: _ => {
-      const clamped = clamp(x.value, lineStart.value, lineEnd.value)
       const percentageValue = interpolate(
-        clamped,
+        x.value,
         [lineStart.value, lineEnd.value],
-        [0, max || 100]
+        [0, max]
       )
       updateVal(Math.round(percentageValue))
-
+      setIsActive(false)
       numberY.value = 0
+      setQuestionActiveCallback(false)
     },
   })
 
@@ -98,23 +132,31 @@ function Slider({ number, updateVal = () => {}, header, max }: Props) {
     }
   })
 
+  const answerStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: delay(100, withSpring(answerX.value)) }],
+    }
+  })
+
   return (
     <View style={styles.outerContainer}>
       {header && (
-        <SliderHeader style={{ marginBottom: 10 }}>{header}</SliderHeader>
+        <SliderHeader
+          style={{
+            marginBottom: 10,
+            color: isActive ? colors.DARKGREY : colors.BLACK,
+          }}
+        >
+          {header}
+        </SliderHeader>
       )}
       <View style={styles.container}>
         {number && (
-          <Bold style={{ flex: 1, fontSize: 40, marginRight: 20 }}>
+          <Bold style={{ flex: 1, fontSize: 25, marginRight: 20 }}>
             #{number}
           </Bold>
         )}
-        <View
-          style={{
-            justifyContent: 'center',
-            flex: 3,
-          }}
-        >
+        <View style={styles.sliderContainer}>
           <View
             style={styles.line}
             onLayout={({
@@ -128,9 +170,22 @@ function Slider({ number, updateVal = () => {}, header, max }: Props) {
           />
           <PanGestureHandler onGestureEvent={gestureHandler}>
             <Animated.View style={[styles.circle, animatedStyle]}>
-              <AnimatedBold style={textStyle}>{value}</AnimatedBold>
+              <AnimatedBold style={textStyle}>
+                {defaultValue || value}
+              </AnimatedBold>
             </Animated.View>
           </PanGestureHandler>
+          {answer && (
+            <Animated.View
+              style={[
+                styles.circle,
+                answerStyle,
+                { backgroundColor: colors.GREEN },
+              ]}
+            >
+              <AnimatedBold style={textStyle}>{answer}</AnimatedBold>
+            </Animated.View>
+          )}
         </View>
       </View>
     </View>
@@ -145,19 +200,24 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: 'row',
-    minHeight: 50,
+    alignItems: 'center',
+  },
+  sliderContainer: {
+    justifyContent: 'center',
+    flex: 5,
+    alignItems: 'center',
   },
   line: {
     backgroundColor: colors.DARKGREY,
     height: 5,
-    width: '90%',
+    width: '100%',
+    marginVertical: 15,
   },
   circleContainer: {
     padding: 20,
   },
   circle: {
     ...StyleSheet.absoluteFillObject,
-    top: 5,
     width: 40,
     height: 40,
     borderRadius: 20,
