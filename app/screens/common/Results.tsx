@@ -1,19 +1,18 @@
 import React, { useEffect } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { view } from '@risingstack/react-easy-state'
 import { useNavigation } from '@react-navigation/native'
 
+import { Bold, PageHeader } from 'app/components'
 import Screen from 'app/components/Screen'
 import Slider from 'app/components/Slider'
+import Count from 'app/components/Count'
+import Loading from 'app/components/Loading'
 import { state, Player } from 'app/config/store'
 import { colors, screen } from 'app/config/constants'
-import { Bold, PageHeader } from 'app/components'
 import { getPlayerScore, getTranslatedTitle } from 'app/config/utils'
-import Count from 'app/components/Count'
 import BottomButton from '../player/components/BottomButton'
-import { stopListening } from 'app/config/api'
-import Loading from 'app/components/Loading'
-import AsyncStorage from '@react-native-community/async-storage'
+import { stopListening, getGame } from 'app/config/api'
 
 function Results() {
   const navigation = useNavigation()
@@ -37,6 +36,11 @@ function Results() {
           <View style={styles.waiting}>
             <Bold style={styles.waitingText}>Waiting for other players...</Bold>
             <Loading color={colors.RED} value={state.game.isOpen} />
+            <TouchableOpacity onPress={() => getGame(state.game?.gamename)}>
+              <Bold style={{ textAlign: 'center' }}>
+                Nothing happening? Tap here to refresh game
+              </Bold>
+            </TouchableOpacity>
           </View>
         ) : (
           <>
@@ -88,10 +92,10 @@ function Results() {
                         <View style={styles.descriptionContainer}>
                           <View style={styles.answerContainer}>
                             <Bold style={{ backgroundColor: colors.TURQUOISE }}>
-                              Your answer
+                              Your answer {answer}
                             </Bold>
                             <Bold style={styles.correctAnswer}>
-                              Correct answer
+                              Correct answer {correctAnswer}
                             </Bold>
                           </View>
                           <Bold style={{ fontSize: 24 }}>
