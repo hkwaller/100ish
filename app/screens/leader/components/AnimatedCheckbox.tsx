@@ -6,6 +6,7 @@ import Animated, {
   withSpring,
   useAnimatedGestureHandler,
 } from 'react-native-reanimated'
+import * as Haptics from 'expo-haptics'
 
 import { PageHeader } from 'app/components'
 import { colors } from 'app/config/constants'
@@ -60,7 +61,10 @@ function AnimatedCheckbox({ title, toggle, val }: Props) {
   return (
     <TapGestureHandler
       onHandlerStateChange={event => {
-        if (event.nativeEvent.state === State.END) toggle()
+        if (event.nativeEvent.state === State.END) {
+          toggle()
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+        }
         onGestureEvent
       }}
       onGestureEvent={onGestureEvent}

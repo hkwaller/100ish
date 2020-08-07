@@ -51,8 +51,8 @@ export async function replaceQuestion(index: number) {
 
   await client
     .patch(state.game?._id)
+    .insert('after', `questions[${index}]`, [newQuestion])
     .unset(questionToRemove)
-    .insert('before', `questions[${index}]`, [newQuestion])
     .commit()
     .then((updatedGame: Game) => {
       console.log(`question replaced`)
@@ -152,7 +152,6 @@ export async function getGame(gamename: string) {
     .then((game: Game[]) => {
       if (!game[0].isOpen) {
         state.error = 'This game is closed'
-        return
       }
       console.log(`got game with gamename ${game[0].gamename}`)
       state.game = game[0]

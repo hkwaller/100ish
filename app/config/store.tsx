@@ -78,3 +78,11 @@ autoEffect(() => {
   if (state.hasPurchased === false) return
   AsyncStorage.setItem('@hasPurchased', JSON.stringify(state.hasPurchased))
 })
+
+autoEffect(() => {
+  if (state.error.length > 0) {
+    setTimeout(() => {
+      state.error = ''
+    }, 3000)
+  }
+})
