@@ -17,16 +17,12 @@ import org.unimodules.adapters.react.ReactModuleRegistryProvider;
 import org.unimodules.core.interfaces.SingletonModule;
 
 import com.facebook.react.config.ReactFeatureFlags;
-import com.facebook.react.bridge.JSIModulePackage; 
-import com.swmansion.reanimated.ReanimatedJSIModulePackage;
+import com.facebook.react.bridge.JSIModulePackage; // <- add
+import com.swmansion.reanimated.ReanimatedJSIModulePackage; // <- add
 import com.hundredish.generated.BasePackageList;
 
 
 public class MainApplication extends Application implements ReactApplication {
-  static {
-    ReactFeatureFlags.useTurboModules = true; // <- add
-  }
-
   private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(new BasePackageList().getPackageList(), null);
 
   private final ReactNativeHost mReactNativeHost =
