@@ -89,11 +89,14 @@ function App() {
         (await AsyncStorage.getItem('@selectedLanguage')) || '0'
       const hasPurchased =
         (await AsyncStorage.getItem('@hasPurchased')) || 'false'
+      const hasSeenIntro =
+        (await AsyncStorage.getItem('@hasSeenIntro')) || 'false'
 
       state.player = JSON.parse(player)
       state.timesPlayed = JSON.parse(timesPlayed)
       state.selectedLanguage = JSON.parse(selectedLanguage)
       state.hasPurchased = JSON.parse(hasPurchased)
+      state.hasSeenIntro = JSON.parse(hasSeenIntro)
 
       if (!JSON.parse(hasPurchased)) {
         setupPurchases()
