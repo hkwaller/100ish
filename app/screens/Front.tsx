@@ -1,11 +1,5 @@
 import React, { useState } from 'react'
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Platform,
-  Linking,
-} from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import * as StoreReview from 'expo-store-review'
 import * as InAppPurchases from 'expo-in-app-purchases'
