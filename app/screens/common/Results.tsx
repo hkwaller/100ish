@@ -27,6 +27,7 @@ function Results() {
 
   useEffect(() => {
     stopListening()
+    ++state.timesPlayed
   }, [])
 
   return (
@@ -122,8 +123,7 @@ function Results() {
       <BottomButton
         isVisible={!state.game?.isOpen}
         title="Back to start"
-        onPress={async () => {
-          ++state.timesPlayed
+        onPress={() => {
           navigation.navigate('Home', { checkForReview: true })
         }}
       />

@@ -11,10 +11,11 @@ import Animated, {
   withSpring,
   useAnimatedStyle,
 } from 'react-native-reanimated'
-import { screen, colors } from 'app/config/constants'
-import { TapGestureHandler, State } from 'react-native-gesture-handler'
-import { PageHeader, Bold } from '.'
 import AsyncStorage from '@react-native-community/async-storage'
+import { TapGestureHandler, State } from 'react-native-gesture-handler'
+
+import { screen, colors } from 'app/config/constants'
+import { PageHeader, Bold } from '.'
 
 type Props = {
   isVisible: boolean
@@ -35,13 +36,14 @@ const slides = [
     image: require('../../assets/3.png'),
   },
 ]
+const initialHeight = screen.HEIGHT + 50
 
 function Intro({ isVisible, onPress }: Props) {
-  const translateY = useSharedValue(screen.HEIGHT + 50)
+  const translateY = useSharedValue(initialHeight)
 
   useEffect(() => {
     if (isVisible) translateY.value = 0
-    else translateY.value = screen.HEIGHT + 50
+    else translateY.value = initialHeight
   }, [isVisible])
 
   const style = useAnimatedStyle(() => {

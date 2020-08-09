@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import {
+  useNavigation,
+  useFocusEffect,
+  useRoute,
+} from '@react-navigation/native'
 import * as StoreReview from 'expo-store-review'
 import * as InAppPurchases from 'expo-in-app-purchases'
 
@@ -14,18 +18,21 @@ import { Bold } from 'app/components'
 import Intro from 'app/components/Intro'
 
 function Front() {
-  const [isVisible, setIsVisible] = useState(state.hasSeenIntro)
+  const [isVisible, setIsVisible] = useState(!state.hasSeenIntro)
   const navigation = useNavigation()
+  const route = useRoute()
 
-  setTimeout(() => {
-    if (
-      state.timesPlayed > 0 &&
-      state.timesPlayed % 5 === 0 &&
-      Platform.OS === 'ios'
-    ) {
-      StoreReview.requestReview()
-    }
-  }, 1000)
+  useFocusEffect(
+    React.useCallback(() => {
+      if (
+        state.timesPlayed > 0 &&
+        state.timesPlayed % 5 === 0 &&
+        Platform.OS === 'ios'
+      ) {
+        StoreReview.requestReview()
+      }
+    }, [route.params?.checkForReview])
+  )
 
   async function purchase() {
     await InAppPurchases.purchaseItemAsync('premium')
@@ -68,12 +75,14 @@ function Front() {
           </View>
         )}
       </Screen>
-      <Intro
-        isVisible={isVisible}
-        onPress={() => {
-          setIsVisible(false)
-        }}
-      />
+      {!state.hasSeenIntro && (
+        <Intro
+          isVisible={isVisible}
+          onPress={() => {
+            setIsVisible(false)
+          }}
+        />
+      )}
     </>
   )
 }

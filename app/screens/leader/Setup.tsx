@@ -37,7 +37,7 @@ function Setup() {
         <Slider
           header="Questions"
           max={10}
-          updateVal={val => updateQuestions(val)}
+          updateVal={(val: number) => updateQuestions(val)}
         />
         <AnimatedCheckbox
           title="I wanna play too"

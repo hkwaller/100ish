@@ -25,22 +25,23 @@ function validateQuestion(question: Question) {
   )
 }
 
+let questions: Question[] = []
 export async function getQuestions(): Promise<Question[]> {
+  if (questions.length > 0) return questions
+
   const query = `*[_type == "question"]`
   state.isLoading = true
 
-  const filteredQuestions = await client
-    .fetch(query)
-    .then((questions: Question[]) => {
-      return questions.filter((q: Question) => {
-        if (q.answer === 0 || !validateQuestion(q)) return
-        else return q
-      })
+  questions = await client.fetch(query).then((questions: Question[]) => {
+    return questions.filter((q: Question) => {
+      if (q.answer === 0 || !validateQuestion(q)) return
+      else return q
     })
+  })
 
   state.isLoading = false
 
-  return filteredQuestions
+  return questions
 }
 
 export async function replaceQuestion(index: number) {
@@ -73,7 +74,7 @@ export async function removeQuestion(id: string) {
 
 let subscription
 
-export async function stopListening() {
+export function stopListening() {
   subscription.unsubscribe()
 }
 
