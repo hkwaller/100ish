@@ -80,6 +80,11 @@ autoEffect(() => {
 })
 
 autoEffect(() => {
+  if (state.hasSeenIntro === false) return
+  AsyncStorage.setItem('@hasSeenIntro', JSON.stringify(true))
+})
+
+autoEffect(() => {
   if (state.error.length > 0) {
     setTimeout(() => {
       state.error = ''

@@ -34,14 +34,16 @@ function Question({ question, updateVal, index, previous }: Props) {
             await replaceQuestion(index)
           }}
         />
-        <QuestionButton
-          title="Remove"
-          backgroundColor={colors.BLACK}
-          onPress={async () => {
-            await removeQuestion(question._id)
-            await replaceQuestion(index)
-          }}
-        />
+        {__DEV__ && (
+          <QuestionButton
+            title="Remove"
+            backgroundColor={colors.BLACK}
+            onPress={async () => {
+              await removeQuestion(question._id)
+              await replaceQuestion(index)
+            }}
+          />
+        )}
         {state.game?.language !== 'en' && (
           <QuestionButton
             title={state.isTranslated ? 'Original' : 'Translated'}

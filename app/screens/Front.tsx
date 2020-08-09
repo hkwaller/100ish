@@ -1,10 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native'
-import {
-  useNavigation,
-  useFocusEffect,
-  useRoute,
-} from '@react-navigation/native'
+import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import * as StoreReview from 'expo-store-review'
 import * as InAppPurchases from 'expo-in-app-purchases'
 
@@ -18,9 +14,7 @@ import { Bold } from 'app/components'
 import Intro from 'app/components/Intro'
 
 function Front() {
-  const [isVisible, setIsVisible] = useState(!state.hasSeenIntro)
   const navigation = useNavigation()
-  const route = useRoute()
 
   useFocusEffect(
     React.useCallback(() => {
@@ -31,7 +25,7 @@ function Front() {
       ) {
         StoreReview.requestReview()
       }
-    }, [route.params?.checkForReview])
+    }, [])
   )
 
   async function purchase() {
@@ -77,9 +71,9 @@ function Front() {
       </Screen>
       {!state.hasSeenIntro && (
         <Intro
-          isVisible={isVisible}
+          isVisible={!state.hasSeenIntro}
           onPress={() => {
-            setIsVisible(false)
+            state.hasSeenIntro = true
           }}
         />
       )}

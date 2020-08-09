@@ -132,7 +132,7 @@ export async function createGame(
   const query = `*[_type == "game"]`
   const params = { _id: state.game?._id }
 
-  subscription = client.listen(query, params).subscribe(update => {
+  subscription = await client.listen(query, params).subscribe(update => {
     console.log('game live updated')
     state.game = update.result
   })
@@ -162,7 +162,7 @@ export async function getGame(gamename: string) {
       console.error('Oh no, the update failed: ', err.message)
     })
 
-  subscription = client.listen(query, params).subscribe(update => {
+  subscription = await client.listen(query, params).subscribe(update => {
     console.log('game live updated')
     state.game = update.result
   })
