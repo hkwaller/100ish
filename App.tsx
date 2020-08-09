@@ -2,7 +2,6 @@ import * as React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import AsyncStorage from '@react-native-community/async-storage'
-import * as InAppPurchases from 'expo-in-app-purchases'
 import 'react-native-gesture-handler'
 
 import Front from 'app/screens/Front'
@@ -89,13 +88,16 @@ function App() {
         (await AsyncStorage.getItem('@selectedLanguage')) || '0'
       const hasPurchased =
         (await AsyncStorage.getItem('@hasPurchased')) || 'false'
+      const hasSeenIntro =
+        (await AsyncStorage.getItem('@hasSeenIntro')) || 'true'
 
       state.player = JSON.parse(player)
       state.timesPlayed = JSON.parse(timesPlayed)
       state.selectedLanguage = JSON.parse(selectedLanguage)
       state.hasPurchased = JSON.parse(hasPurchased)
+      state.hasSeenIntro = JSON.parse(hasSeenIntro)
 
-      if (!JSON.parse(hasPurchased)) {
+      if (!state.hasPurchased) {
         setupPurchases()
       }
     }
