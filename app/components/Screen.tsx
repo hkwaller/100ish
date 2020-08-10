@@ -22,7 +22,10 @@ function Screen({ children, title, noPadding, hideBackButton }: Props) {
       <View style={styles.top} />
       <View style={styles.container}>
         <Logo title={title} hideBackButton={hideBackButton} />
-        <ScrollView contentContainerStyle={{ paddingBottom: 200 }}>
+        <ScrollView
+          contentContainerStyle={{ paddingBottom: 200 }}
+          showsVerticalScrollIndicator={false}
+        >
           <View
             style={[styles.innerContainer, { padding: noPadding ? 0 : 24 }]}
           >

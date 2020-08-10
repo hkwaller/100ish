@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { StyleSheet, TextInput } from 'react-native'
-import { view } from '@risingstack/react-easy-state'
+import { view, batch } from '@risingstack/react-easy-state'
 import { useNavigation } from '@react-navigation/native'
 import humanId from 'human-id'
 
 import Screen from 'app/components/Screen'
 import Slider from 'app/components/Slider'
 import BottomButton from '../player/components/BottomButton'
-import { createGame } from 'app/config/api'
+import { createGame, beautifyGamename, startListening } from 'app/config/api'
 import { state } from 'app/config/store'
 import AnimatedCheckbox from './components/AnimatedCheckbox'
 import Languages from './components/Languages'
@@ -21,6 +21,22 @@ function Setup() {
 
   function updateQuestions(val: number) {
     setQuestions(val)
+  }
+
+  async function create() {
+    const id = humanId({ separator: '-', capitalize: false })
+    const game = await createGame(questions, id, playerName)
+
+    batch(() => {
+      state.game = game
+      state.displayGameName = beautifyGamename(game.gamename)
+      state.isLoading = false
+      state.isTranslated = game.language !== 'en'
+
+      if (state.isPlaying) state.player = game.players[0]
+    })
+
+    await startListening()
   }
 
   return (
@@ -59,8 +75,7 @@ function Setup() {
       <BottomButton
         title="Start game"
         onPress={async () => {
-          const id = humanId({ separator: '-', capitalize: false })
-          await createGame(questions, id, playerName)
+          await create()
           navigation.navigate('WaitingRoom', { isWaiting: true })
         }}
       />

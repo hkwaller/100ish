@@ -16,11 +16,11 @@ function WaitingRoom() {
   const route = useRoute()
 
   useEffect(() => {
-    setIsWaiting(route.params?.isWaiting)
+    setIsWaiting(route.params?.isWaiting || false)
   }, [])
 
   function toggle(index: number) {
-    if (!state.game) return
+    if (!state.game || !state.game.players[index]) return
 
     state.game.players[index].isFinished = !state.game?.players[index]
       .isFinished
@@ -57,8 +57,8 @@ function WaitingRoom() {
       <BottomButton
         title={isWaiting ? 'Go to game' : 'Show Results'}
         isVisible={state.game?.players.every(p => p.isFinished) || isWaiting}
-        onPress={() => {
-          isWaiting ? readyGame() : inactivateGame()
+        onPress={async () => {
+          isWaiting ? await readyGame() : await inactivateGame()
           navigation.navigate(isWaiting ? 'Game' : 'Results')
         }}
       />

@@ -16,6 +16,7 @@ export type State = {
   timesPlayed: number
   hasPurchased: boolean
   hasSeenIntro: boolean
+  hasAsked: boolean
 }
 
 export type Translation = {
@@ -62,6 +63,7 @@ export const state = store<State>({
   timesPlayed: 0,
   hasPurchased: false,
   hasSeenIntro: false,
+  hasAsked: false,
 })
 
 autoEffect(() => {

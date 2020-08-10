@@ -27,13 +27,15 @@ function Question({ question, updateVal, index, previous }: Props) {
         <Slider number={index + 1} updateVal={val => updateVal(val)} />
       )}
       <View style={styles.buttonContainer}>
-        <QuestionButton
-          title="Replace"
-          backgroundColor={colors.RED}
-          onPress={async () => {
-            await replaceQuestion(index)
-          }}
-        />
+        {__DEV__ && (
+          <QuestionButton
+            title="Replace"
+            backgroundColor={colors.RED}
+            onPress={async () => {
+              await replaceQuestion(index)
+            }}
+          />
+        )}
         {__DEV__ && (
           <QuestionButton
             title="Remove"

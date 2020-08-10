@@ -3,13 +3,13 @@ import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import * as StoreReview from 'expo-store-review'
 import * as InAppPurchases from 'expo-in-app-purchases'
+import { view } from '@risingstack/react-easy-state'
 
 import { colors } from 'app/config/constants'
 import { Welcome } from 'app/components'
 import BigButton from 'app/components/BigButton'
 import Screen from 'app/components/Screen'
 import { state } from 'app/config/store'
-import { view } from '@risingstack/react-easy-state'
 import { Bold } from 'app/components'
 import Intro from 'app/components/Intro'
 
@@ -21,9 +21,11 @@ function Front() {
       if (
         state.timesPlayed > 0 &&
         state.timesPlayed % 5 === 0 &&
+        !state.hasAsked &&
         Platform.OS === 'ios'
       ) {
         StoreReview.requestReview()
+        state.hasAsked = true
       }
     }, [])
   )
@@ -32,35 +34,45 @@ function Front() {
     await InAppPurchases.purchaseItemAsync('premium')
   }
 
+  const limited = !state.hasPurchased && state.timesPlayed > 10
+
   return (
     <>
       <Screen hideBackButton>
         <Welcome style={{ marginBottom: 20 }}>Welcome</Welcome>
-        <BigButton
-          title="I’m the game master"
-          onPress={() => navigation.navigate('Leader')}
-          bgColor={colors.PURPLE}
-        />
-        <BigButton
-          title="I’m participating"
-          onPress={() => navigation.navigate('Respond')}
-          bgColor={colors.GREEN}
-        />
+        {!limited && (
+          <>
+            <BigButton
+              title="I’m the game master"
+              onPress={() => navigation.navigate('Leader')}
+              bgColor={colors.PURPLE}
+            />
+            <BigButton
+              title="I’m participating"
+              onPress={() => navigation.navigate('Respond')}
+              bgColor={colors.GREEN}
+            />
+            <BigButton
+              title="Settings"
+              onPress={() => navigation.navigate('Settings')}
+              bgColor={colors.RED}
+            />
+          </>
+        )}
         {/* <BigButton
         title="Add question"
         onPress={() => navigation.navigate('Add')}
         bgColor={colors.RED}
       /> */}
-        <BigButton
-          title="Settings"
-          onPress={() => navigation.navigate('Settings')}
-          bgColor={colors.RED}
-        />
         {state.timesPlayed > 5 && !state.hasPurchased && (
           <View style={{ alignItems: 'flex-start', marginTop: 30 }}>
             <Bold>
-              You still haven't purchased the full app. No worries, you still
-              have {Math.max(0, 10 - state.timesPlayed)} games to play for free.
+              {limited
+                ? 'In order to continue you need to purchase the app. Thank you for trying it out, and I hope to see you again.'
+                : `You still haven't purchased the full app. No worries, you still have ${Math.max(
+                    0,
+                    10 - state.timesPlayed
+                  )} games to play for free.`}
             </Bold>
 
             <TouchableOpacity style={styles.button} onPress={() => purchase()}>
@@ -69,14 +81,7 @@ function Front() {
           </View>
         )}
       </Screen>
-      {!state.hasSeenIntro && (
-        <Intro
-          isVisible={!state.hasSeenIntro}
-          onPress={() => {
-            state.hasSeenIntro = true
-          }}
-        />
-      )}
+      {!state.hasSeenIntro && <Intro />}
     </>
   )
 }

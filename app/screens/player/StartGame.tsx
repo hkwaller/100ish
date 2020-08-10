@@ -5,16 +5,16 @@ import {
   TextInput,
   View,
   LayoutAnimation,
+  ScrollView,
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { view } from '@risingstack/react-easy-state'
 
 import Screen from 'app/components/Screen'
 import { Bold } from 'app/components'
-import { colors, fonts, screen } from 'app/config/constants'
+import { colors, fonts } from 'app/config/constants'
 import BottomButton from './components/BottomButton'
-import { getGame, addPlayer, listenToGameUpdates } from 'app/config/api'
+import { getGame, addPlayer, startListening } from 'app/config/api'
 import { state } from 'app/config/store'
 import { validateGameWord } from 'app/config/utils'
 
@@ -32,18 +32,22 @@ function StartGame() {
     }
   }, [gameName])
 
-  useEffect(() => {
-    if (state.error.length > 0) {
-      setTimeout(() => {
-        state.error = ''
-      }, 3000)
+  async function get() {
+    state.isLoading = true
+    const game = await getGame(gameName)
+
+    if (!game.isOpen) {
+      state.error = 'This game is closed'
     }
-  }, [state.error])
+    console.log(`got game with gamename ${game.gamename}`)
+    state.game = game
+    state.isTranslated = game.language !== 'en'
+  }
 
   return (
     <>
       <Screen title="Join">
-        <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Bold style={{ fontSize: 30, marginBottom: 20 }}>
             Enter your name
           </Bold>
@@ -72,7 +76,7 @@ function StartGame() {
             </Bold>
           )}
           <View style={{ marginVertical: 20 }} />
-        </KeyboardAwareScrollView>
+        </ScrollView>
       </Screen>
       <BottomButton
         title="Go to quiz"
@@ -83,15 +87,16 @@ function StartGame() {
             return
           }
 
-          state.isLoading = true
-          await getGame(gameName)
+          await get()
+
           if (state.error.length === 0) {
-            await listenToGameUpdates()
+            await startListening()
             await addPlayer(playerName)
             navigation.navigate('Lounge')
           } else {
             LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
           }
+
           state.isLoading = false
         }}
       />

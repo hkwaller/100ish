@@ -74,8 +74,17 @@ export async function removeQuestion(id: string) {
 
 let subscription
 
-export function stopListening() {
+export async function stopListening() {
   subscription.unsubscribe()
+}
+
+export async function startListening() {
+  const query = `*[_type == "game"]`
+  const params = { _id: state.game?._id }
+  subscription = await client.listen(query, params).subscribe(update => {
+    console.log('game live updated')
+    state.game = update.result
+  })
 }
 
 export async function createGame(
@@ -114,28 +123,15 @@ export async function createGame(
     showAllScores: state.showAllScores,
   }
 
-  await client
+  return await client
     .create(game)
     .then((res: Game) => {
       console.log(`Game was created with name ${res.gamename}`)
-      state.displayGameName = beautifyGamename(res.gamename)
-      state.game = res
-      state.isLoading = false
-      state.isTranslated = res.language !== 'en'
-
-      if (state.isPlaying) state.player = res.players[0]
+      return res
     })
     .catch((e: Error) => {
       console.log('couldnt create game', e.message)
     })
-
-  const query = `*[_type == "game"]`
-  const params = { _id: state.game?._id }
-
-  subscription = await client.listen(query, params).subscribe(update => {
-    console.log('game live updated')
-    state.game = update.result
-  })
 }
 
 export async function getGame(gamename: string) {
@@ -148,24 +144,14 @@ export async function getGame(gamename: string) {
 
   state.displayGameName = uglyGamename
 
-  await client
+  return await client
     .fetch(query, params)
     .then((game: Game[]) => {
-      if (!game[0].isOpen) {
-        state.error = 'This game is closed'
-      }
-      console.log(`got game with gamename ${game[0].gamename}`)
-      state.game = game[0]
-      state.isTranslated = game[0].language !== 'en'
+      return game[0]
     })
     .catch((err: Error) => {
       console.error('Oh no, the update failed: ', err.message)
     })
-
-  subscription = await client.listen(query, params).subscribe(update => {
-    console.log('game live updated')
-    state.game = update.result
-  })
 }
 
 export async function getNewestGame() {
@@ -189,17 +175,17 @@ export async function getNewestGame() {
 
   const params = { _id: state.game?._id }
 
-  subscription = client.listen(query, params).subscribe(update => {
+  subscription = await client.listen(query, params).subscribe(update => {
     console.log('game live updated')
     state.game = update.result
   })
 }
 
-export function listenToGameUpdates() {
+export async function listenToGameUpdates() {
   const query = `*[_type == "game"]`
   const params = { _id: state.game?._id }
 
-  subscription = client.listen(query, params).subscribe(update => {
+  subscription = await client.listen(query, params).subscribe(update => {
     console.log('game live updated')
     state.game = update.result
   })
@@ -230,6 +216,9 @@ export async function inactivateGame() {
       console.log(`game closed`)
 
       state.game = updatedGame
+    })
+    .catch((e: Error) => {
+      console.log('couldnt inactivate game', e.message)
     })
 }
 
@@ -284,14 +273,14 @@ export function submitAnswers(answers: number[]) {
     })
 }
 
-function beautifyGamename(gamename: string) {
+export function beautifyGamename(gamename: string) {
   return gamename
     .split('-')
     .map(g => capitalise(g))
     .join(' ')
 }
 
-function uglifyGamename(gamename: string) {
+export function uglifyGamename(gamename: string) {
   return gamename
     .split(' ')
     .map(g => g.toLowerCase())

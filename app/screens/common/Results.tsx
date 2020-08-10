@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native'
 import { Bold, PageHeader } from 'app/components'
 import Screen from 'app/components/Screen'
 import Slider from 'app/components/Slider'
-import Count from 'app/components/Count'
 import Loading from 'app/components/Loading'
 import { state, Player } from 'app/config/store'
 import { colors, screen } from 'app/config/constants'
@@ -26,7 +25,10 @@ function Results() {
     : state.game?.players.filter(p => p.name === state.player?.name) || []
 
   useEffect(() => {
-    stopListening()
+    async function stop() {
+      await stopListening()
+    }
+    stop()
     ++state.timesPlayed
   }, [])
 
@@ -44,7 +46,7 @@ function Results() {
             </TouchableOpacity>
           </View>
         ) : (
-          <>
+          <View>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
               <PageHeader style={{ marginBottom: 15 }}>
                 Player scores
@@ -64,9 +66,9 @@ function Results() {
                     style={[styles.scoreContainer, { ...margins }]}
                   >
                     <Bold style={{ fontSize: 14, marginTop: 10 }}>
-                      {player.name}
+                      {player.name || 'Unknown'}
                     </Bold>
-                    <Count to={score} />
+                    <Bold style={{ fontSize: 24 }}>{score}</Bold>
                   </View>
                 )
               })}
@@ -117,7 +119,7 @@ function Results() {
                 </View>
               )
             })}
-          </>
+          </View>
         )}
       </Screen>
       <BottomButton

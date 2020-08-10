@@ -13,38 +13,47 @@ import Animated, {
 } from 'react-native-reanimated'
 import AsyncStorage from '@react-native-community/async-storage'
 import { TapGestureHandler, State } from 'react-native-gesture-handler'
+import { view } from '@risingstack/react-easy-state'
 
 import { screen, colors } from 'app/config/constants'
 import { PageHeader, Bold } from '.'
+import { state } from 'app/config/store'
 
-type Props = {
-  isVisible: boolean
-  onPress: () => void
-}
+const imgOne = require('../../assets/1.png')
+const imgTwo = require('../../assets/2.png')
+const imgThree = require('../../assets/3.png')
+const imgFour = require('../../assets/4.png')
 
 const slides = [
   {
-    title: 'Set up a game or join one, your call.',
-    image: require('../../assets/1.png'),
+    title:
+      'Firstly, select a game master who will be running the game. This person taps the big purple button.',
+    image: imgOne,
   },
   {
-    title: 'The game leader is responsible of reading out the questions.',
-    image: require('../../assets/2.png'),
+    title:
+      "After that, he/she/it reads out the game room name to the other players. Here it's Proud Dragons Accept.",
+    image: imgFour,
   },
   {
-    title: 'When done, find out the scores and see who wins.',
-    image: require('../../assets/3.png'),
+    title:
+      'The game master reads out the questions and lets the others respond. And, if the game master elected to be part of the game, responds themselves.',
+    image: imgTwo,
+  },
+  {
+    title: 'When everyone is finished, find out the scores and see who wins.',
+    image: imgThree,
   },
 ]
 const initialHeight = screen.HEIGHT + 50
 
-function Intro({ isVisible, onPress }: Props) {
+function Intro() {
   const translateY = useSharedValue(initialHeight)
 
   useEffect(() => {
-    if (isVisible) translateY.value = 0
+    if (!state.hasSeenIntro) translateY.value = 0
     else translateY.value = initialHeight
-  }, [isVisible])
+  }, [state.hasSeenIntro])
 
   const style = useAnimatedStyle(() => {
     return {
@@ -59,7 +68,7 @@ function Intro({ isVisible, onPress }: Props) {
       <TapGestureHandler
         onHandlerStateChange={event => {
           if (event.nativeEvent.state === State.END) {
-            onPress()
+            state.hasSeenIntro = true
           }
         }}
       >
@@ -102,7 +111,7 @@ function Intro({ isVisible, onPress }: Props) {
                     width: screen.WIDTH - 100,
                   }}
                   resizeMode="contain"
-                ></Image>
+                />
               </View>
             )
           })}
@@ -111,7 +120,7 @@ function Intro({ isVisible, onPress }: Props) {
           style={styles.button}
           onPress={() => {
             AsyncStorage.setItem('@hasSeenIntro', 'true')
-            onPress()
+            state.hasSeenIntro = true
           }}
         >
           <Bold>I know all this, show me the app!</Bold>
@@ -153,4 +162,4 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
 })
-export default Intro
+export default view(Intro)
