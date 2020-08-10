@@ -89,7 +89,7 @@ function App() {
       const hasPurchased =
         (await AsyncStorage.getItem('@hasPurchased')) || 'false'
       const hasSeenIntro =
-        (await AsyncStorage.getItem('@hasSeenIntro')) || 'true'
+        (await AsyncStorage.getItem('@hasSeenIntro')) || 'false'
 
       state.player = JSON.parse(player)
       state.timesPlayed = JSON.parse(timesPlayed)
@@ -98,7 +98,7 @@ function App() {
       state.hasSeenIntro = JSON.parse(hasSeenIntro)
 
       if (!state.hasPurchased) {
-        setupPurchases()
+        await setupPurchases()
       }
     }
 
