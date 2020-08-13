@@ -28,6 +28,7 @@ export async function reportQuestion(question: Question) {
       state.isLoading = false
     })
 }
+
 function validateQuestion(question: Question) {
   return (
     typeof question.title === 'string' && typeof question.answer === 'number'
@@ -128,7 +129,7 @@ export async function createGame(
     players: players,
     isOpen: true,
     showQuestions: state.showQuestions,
-    language: state.selectedLanguage,
+    language: state.selectedLanguage || 'en',
     showAllScores: state.showAllScores,
   }
 
