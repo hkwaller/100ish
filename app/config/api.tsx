@@ -62,12 +62,12 @@ export async function replaceQuestion(index: number) {
 
   await client
     .patch(state.game?._id)
-    .insert('after', `questions[${index}]`, [newQuestion])
+    .insert('after', `questions[${index - 1}]`, [newQuestion])
     .unset(questionToRemove)
     .commit()
     .then((updatedGame: Game) => {
       console.log(`question replaced`)
-      state.game = updatedGame
+      state.game = { ...state.game, questions: updatedGame.questions }
     })
 }
 
