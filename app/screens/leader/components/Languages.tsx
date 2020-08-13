@@ -67,6 +67,10 @@ function Languages() {
             )
           })}
         </View>
+        <Bold style={{ padding: 20 }}>
+          Translations from english are provided by Google Translate, so please
+          bear in mind wildly varying results.
+        </Bold>
       </View>
     </>
   )
