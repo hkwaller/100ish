@@ -90,7 +90,9 @@ function Results() {
                     return (
                       <View key={index}>
                         <Bold style={{ marginBottom: 15 }}>
-                          {getTranslatedTitle(state.game?.questions[index])}
+                          {getTranslatedTitle(
+                            state.game?.questions[index]
+                          ).replace(/&quot;/g, '"')}
                         </Bold>
                         <View style={styles.descriptionContainer}>
                           <View style={styles.answerContainer}>
