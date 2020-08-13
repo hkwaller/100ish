@@ -8,6 +8,7 @@ import question from './question'
 import player from './player'
 import game from './game'
 import translation from './translation'
+import report from './report'
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -22,5 +23,6 @@ export default createSchema({
     player,
     game,
     translation,
+    report,
   ]),
 })
