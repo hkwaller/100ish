@@ -14,7 +14,7 @@ import { submitAnswers } from 'app/config/api'
 function Game() {
   const [activeIndex, setActiveIndex] = useState(0)
   const [answers, setAnswers] = useState(
-    (state.game?.questions || []).map(_ => 0)
+    (state.game?.questions || []).map(_ => 50)
   )
 
   const [buttonText, setButtonText] = useState<string>('Next')
