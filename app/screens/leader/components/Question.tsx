@@ -6,7 +6,7 @@ import { view } from '@risingstack/react-easy-state'
 import { screen, colors } from 'app/config/constants'
 import { QuestionText } from 'app/components'
 import Slider from 'app/components/Slider'
-import { replaceQuestion, removeQuestion } from 'app/config/api'
+import { replaceQuestion, removeQuestion, reportQuestion } from 'app/config/api'
 import QuestionButton from './QuestionButton'
 import { getTranslatedTitle } from 'app/config/utils'
 
@@ -46,6 +46,13 @@ function Question({ question, updateVal, index, previous }: Props) {
             }}
           />
         )}
+        <QuestionButton
+          title="Report"
+          backgroundColor={colors.BLACK}
+          onPress={async () => {
+            await reportQuestion(question)
+          }}
+        />
         {state.game?.language !== 'en' && (
           <QuestionButton
             title={state.isTranslated ? 'Original' : 'Translated'}

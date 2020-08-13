@@ -19,6 +19,15 @@ export async function createQuestion(question: Question) {
   })
 }
 
+export async function reportQuestion(question: Question) {
+  state.isLoading = true
+  await client
+    .create({ _type: 'report', title: question.title, question: question })
+    .then(res => {
+      console.log(`Question was reported with id ${res._id}`, res)
+      state.isLoading = false
+    })
+}
 function validateQuestion(question: Question) {
   return (
     typeof question.title === 'string' && typeof question.answer === 'number'
