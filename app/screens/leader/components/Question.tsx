@@ -46,6 +46,15 @@ function Question({ question, updateVal, index, previous }: Props) {
             }}
           />
         )}
+        {index !== 0 && (
+          <QuestionButton
+            title="Previous"
+            backgroundColor={colors.GREEN}
+            onPress={() => {
+              previous && previous()
+            }}
+          />
+        )}
         <QuestionButton
           title="Report"
           backgroundColor={colors.BLACK}
@@ -59,16 +68,6 @@ function Question({ question, updateVal, index, previous }: Props) {
             backgroundColor={colors.TURQUOISE}
             onPress={() => {
               state.isTranslated = !state.isTranslated
-            }}
-          />
-        )}
-
-        {index !== 0 && (
-          <QuestionButton
-            title="Previous"
-            backgroundColor={colors.GREEN}
-            onPress={() => {
-              previous && previous()
             }}
           />
         )}
