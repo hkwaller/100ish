@@ -108,9 +108,8 @@ self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegi
 - (std::unique_ptr<facebook::react::JSExecutorFactory>)jsExecutorFactoryForBridge:(RCTBridge *)bridge
 {
   _bridge_reanimated = bridge;
-  _turboModuleManager = [[RCTTurboModuleManager alloc] initWithBridge:bridge
-                                                                delegate:self
-                                                               jsInvoker:bridge.jsCallInvoker];
+    _turboModuleManager = [[RCTTurboModuleManager alloc] initWithBridge:bridge delegate:self];
+
   #if RCT_DEV
   [_turboModuleManager moduleForName:"RCTDevMenu"]; // <- add
  #endif
