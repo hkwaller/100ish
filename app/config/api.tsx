@@ -6,7 +6,7 @@ const sanityClient = require('@sanity/client')
 
 const client = sanityClient({
   projectId: 'xljurv9v',
-  dataset: 'production',
+  dataset: __DEV__ ? 'dev' : 'production',
   token: token,
   useCdn: false,
 })
