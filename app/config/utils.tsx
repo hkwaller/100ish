@@ -66,7 +66,7 @@ export async function setupPurchases() {
   const history = await InAppPurchases.connectAsync()
   if (history.responseCode === InAppPurchases.IAPResponseCode.OK) {
     history.results.forEach(result => {
-      console.log('result: ', result)
+      if (result.productId === 'premium') state.hasPurchased = true
     })
   } else {
     console.log('shit failed yo')
