@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import {
   StyleSheet,
   View,
   Image,
   ScrollView,
   TouchableOpacity,
+  FlatList,
 } from 'react-native'
 import Animated, {
   useSharedValue,
@@ -48,6 +49,8 @@ const slides = [
 const initialHeight = screen.HEIGHT + 50
 
 function Intro() {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const list = useRef<FlatList>(null)
   const translateY = useSharedValue(initialHeight)
 
   useEffect(() => {
@@ -76,54 +79,46 @@ function Intro() {
       </TapGestureHandler>
       <View style={[styles.container]}>
         <PageHeader style={{ marginTop: 40 }}>Welcome to 100ish!</PageHeader>
-        <ScrollView
+        <FlatList
+          ref={list}
           horizontal
+          keyExtractor={item => item._id}
           showsHorizontalScrollIndicator={false}
-          pagingEnabled
           contentContainerStyle={{
-            paddingTop: 40,
-            width: (screen.WIDTH - 40) * slides.length,
+            width: screen.WIDTH * slides.length,
+            marginTop: 20,
           }}
-        >
-          {slides.map((slide, index) => {
+          data={slides}
+          pagingEnabled
+          renderItem={({ item, index }) => {
             return (
-              <View
-                key={index}
-                style={{
-                  width: screen.WIDTH - 40,
-                  alignItems: 'center',
-                  justifyContent: 'flex-start',
-                }}
-              >
-                <Bold
-                  style={{
-                    marginBottom: 40,
-                    marginHorizontal: 40,
-                    textAlign: 'center',
-                  }}
-                >
-                  {slide.title}
-                </Bold>
+              <View key={index} style={styles.slideContainer}>
+                <Bold style={styles.slideText}>{item.title}</Bold>
                 <Image
-                  source={slide.image}
-                  style={{
-                    height: screen.WIDTH - 100,
-                    width: screen.WIDTH - 100,
-                  }}
+                  source={item.image}
+                  style={styles.slideImage}
                   resizeMode="contain"
                 />
               </View>
             )
-          })}
-        </ScrollView>
+          }}
+        />
+
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            AsyncStorage.setItem('@hasSeenIntro', 'true')
-            state.hasSeenIntro = true
+            if (activeIndex < 3) {
+              setActiveIndex(prev => prev + 1)
+              list?.current.scrollToIndex({ index: activeIndex + 1 })
+            } else {
+              AsyncStorage.setItem('@hasSeenIntro', 'true')
+              state.hasSeenIntro = true
+            }
           }}
         >
-          <Bold>I know all this, show me the app!</Bold>
+          <Bold style={{ textAlign: 'center' }}>
+            {activeIndex < 3 ? 'Next' : 'I know all this, show me the app!'}
+          </Bold>
         </TouchableOpacity>
       </View>
     </Animated.View>
@@ -160,6 +155,21 @@ const styles = StyleSheet.create({
     marginTop: 60,
     borderRadius: 30,
     marginBottom: 40,
+    minWidth: 150,
+  },
+  slideContainer: {
+    width: screen.WIDTH - 40,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  slideText: {
+    marginBottom: 40,
+    marginHorizontal: 40,
+    textAlign: 'center',
+  },
+  slideImage: {
+    height: screen.WIDTH - 100,
+    width: screen.WIDTH - 100,
   },
 })
 export default view(Intro)
