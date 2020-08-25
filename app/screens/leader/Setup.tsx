@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, TextInput } from 'react-native'
+import { StyleSheet, TextInput, LayoutAnimation } from 'react-native'
 import { view, batch } from '@risingstack/react-easy-state'
 import { useNavigation } from '@react-navigation/native'
 import humanId from 'human-id'
@@ -50,6 +50,11 @@ function Setup() {
           clearButtonMode="while-editing"
           placeholder="Type your name"
         />
+        {state.error.length > 0 && (
+          <Bold style={{ color: colors.RED, marginTop: -15, marginBottom: 15 }}>
+            {state.error}
+          </Bold>
+        )}
         <Slider
           header="Questions"
           max={10}
@@ -66,15 +71,20 @@ function Setup() {
           toggle={() => (state.showQuestions = !state.showQuestions)}
         />
         <AnimatedCheckbox
-          title="Show everyone's scores"
-          val={state.showAllScores}
-          toggle={() => (state.showAllScores = !state.showAllScores)}
+          title="Cap wrong answers at 25"
+          val={state.capWrongAnswers}
+          toggle={() => (state.capWrongAnswers = !state.capWrongAnswers)}
         />
         <Languages />
       </Screen>
       <BottomButton
         title="Start game"
         onPress={async () => {
+          if (playerName.length === 0) {
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+            return (state.error = 'You need to write your name')
+          }
+
           await create()
           navigation.navigate('WaitingRoom', { isWaiting: true })
         }}

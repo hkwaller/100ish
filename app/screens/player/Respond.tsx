@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View } from 'react-native'
 import { view } from '@risingstack/react-easy-state'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 import Screen from 'app/components/Screen'
 import BottomButton from './components/BottomButton'
@@ -15,6 +15,7 @@ function Respond() {
     (state.game?.questions || []).map(_ => 0)
   )
 
+  const route = useRoute()
   const navigation = useNavigation()
 
   return (
@@ -27,6 +28,13 @@ function Respond() {
               key={index}
               number={index + 1}
               title={getTranslatedTitle(q).replace(/&quot;/g, '"')}
+              defaultValue={
+                route.params?.isLoadedFromCache
+                  ? state.game?.players.filter(
+                      p => p.name === state.player?.name
+                    )[0].answers[index]
+                  : undefined
+              }
               updateVal={val => {
                 const updatedAnswers = answers
                 updatedAnswers[index] = val

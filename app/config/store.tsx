@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 export type State = {
   isPlaying: boolean
   showQuestions: boolean
-  showAllScores: boolean
+  capWrongAnswers: boolean
   game?: Game
   player?: Player
   questions: Question[]
@@ -39,8 +39,8 @@ export type Game = {
   isReady: boolean
   isOpen: boolean
   showQuestions: boolean
-  showAllScores: boolean
   language: string
+  capWrongAnswers: boolean
 }
 
 export type Question = {
@@ -59,16 +59,21 @@ export const state = store<State>({
   isLoading: false,
   selectedLanguage: 'en',
   isTranslated: false,
-  showAllScores: false,
   timesPlayed: 0,
   hasPurchased: false,
   hasSeenIntro: false,
   hasAsked: false,
+  capWrongAnswers: false,
 })
 
 autoEffect(() => {
   if (!state.player) return
   AsyncStorage.setItem('@player', JSON.stringify(state.player))
+})
+
+autoEffect(() => {
+  if (!state.game) return
+  AsyncStorage.setItem('@game', JSON.stringify(state.game))
 })
 
 autoEffect(() => {

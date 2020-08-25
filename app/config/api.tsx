@@ -83,9 +83,12 @@ export async function removeQuestion(id: string) {
 }
 
 let subscription
-
 export async function stopListening() {
-  subscription.unsubscribe()
+  try {
+    subscription.unsubscribe()
+  } catch (e) {
+    console.log('e', e)
+  }
 }
 
 export async function startListening() {
@@ -129,8 +132,8 @@ export async function createGame(
     players: players,
     isOpen: true,
     showQuestions: state.showQuestions,
+    capWrongAnswers: state.capWrongAnswers,
     language: state.selectedLanguage || 'en',
-    showAllScores: state.showAllScores,
   }
 
   return await client

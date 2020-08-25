@@ -39,13 +39,12 @@ function Slider({
   updateVal = () => {},
   header,
   max = 100,
-  answer,
   defaultValue,
   setQuestionActiveCallback = () => {},
 }: Props) {
-  const [value, setValue] = useState(max / 2)
-
+  const [value, setValue] = useState(defaultValue || max / 2)
   const [isActive, setIsActive] = useState(false)
+
   const lineStart = useSharedValue(0)
   const lineEnd = useSharedValue(0)
   const numberY = useSharedValue(0)
@@ -61,10 +60,6 @@ function Slider({
       : lineEnd.value / 2 - 10
   })
 
-  const answerX = useDerivedValue(() => {
-    return (lineEnd.value / 100) * (answer || -1)
-  })
-
   const gestureHandler = useAnimatedGestureHandler({
     onStart: (_, ctx) => {
       ctx.startX = x.value
@@ -73,7 +68,6 @@ function Slider({
       setQuestionActiveCallback(true)
     },
     onActive: (event, ctx) => {
-      if (answer) return
       const val = ctx.startX + event.translationX
       const clamped = clamp(val, lineStart.value, lineEnd.value)
       const percentageValue = interpolate(
@@ -132,12 +126,6 @@ function Slider({
     }
   })
 
-  const answerStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateX: delay(100, withSpring(answerX.value)) }],
-    }
-  })
-
   return (
     <View style={styles.outerContainer}>
       {header && (
@@ -170,22 +158,9 @@ function Slider({
           />
           <PanGestureHandler onGestureEvent={gestureHandler}>
             <Animated.View style={[styles.circle, animatedStyle]}>
-              <AnimatedBold style={textStyle}>
-                {defaultValue || value}
-              </AnimatedBold>
+              <AnimatedBold style={textStyle}>{value}</AnimatedBold>
             </Animated.View>
           </PanGestureHandler>
-          {answer && (
-            <Animated.View
-              style={[
-                styles.circle,
-                answerStyle,
-                { backgroundColor: colors.GREEN },
-              ]}
-            >
-              <AnimatedBold style={textStyle}>{answer}</AnimatedBold>
-            </Animated.View>
-          )}
         </View>
       </View>
     </View>

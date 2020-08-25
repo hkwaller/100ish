@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react'
-import { View, TouchableOpacity, StyleSheet } from 'react-native'
+import { TouchableOpacity, StyleSheet } from 'react-native'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated'
+import { hasNotch } from 'react-native-device-info'
+import { view } from '@risingstack/react-easy-state'
 
 import { colors } from 'app/config/constants'
 import { Bold } from 'app/components'
-import { view } from '@risingstack/react-easy-state'
 import { state } from 'app/config/store'
-import Loading from 'app/components/Loading'
 
 type Props = {
   onPress: () => void
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    paddingBottom: 40,
+    paddingBottom: hasNotch() ? 40 : 20,
     position: 'absolute',
     bottom: 0,
   },

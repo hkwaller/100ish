@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useRef, useLayoutEffect } from 'react'
 import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native'
-import { useNavigation, useFocusEffect } from '@react-navigation/native'
+import {
+  useNavigation,
+  useFocusEffect,
+  useRoute,
+} from '@react-navigation/native'
 import * as StoreReview from 'expo-store-review'
 import * as InAppPurchases from 'expo-in-app-purchases'
 import { view } from '@risingstack/react-easy-state'
@@ -12,9 +16,22 @@ import Screen from 'app/components/Screen'
 import { state } from 'app/config/store'
 import { Bold } from 'app/components'
 import Intro from 'app/components/Intro'
+import {
+  Transitioning,
+  Transition,
+  TransitioningView,
+} from 'react-native-reanimated'
+import { listenToGameUpdates } from 'app/config/api'
 
+const transition = (
+  <Transition.Together>
+    <Transition.In interpolation="easeInOut" type="slide-right" delayMs={300} />
+  </Transition.Together>
+)
 function Front() {
   const navigation = useNavigation()
+  const route = useRoute()
+  const restoreButtonRef = useRef<TransitioningView>(null)
 
   useFocusEffect(
     React.useCallback(() => {
@@ -22,13 +39,24 @@ function Front() {
         state.timesPlayed > 0 &&
         state.timesPlayed % 5 === 0 &&
         !state.hasAsked &&
-        Platform.OS === 'ios'
+        Platform.OS === 'ios' &&
+        route.params?.checkForReview
       ) {
-        StoreReview.requestReview()
+        review()
         state.hasAsked = true
       }
-    }, [])
+    }, [route.params?.checkForReview])
   )
+
+  useLayoutEffect(() => {
+    if (state.game) {
+      restoreButtonRef.current?.animateNextTransition()
+    }
+  }, [state.game])
+
+  async function review() {
+    await StoreReview.requestReview()
+  }
 
   async function purchase() {
     await InAppPurchases.purchaseItemAsync('premium')
@@ -41,7 +69,7 @@ function Front() {
       <Screen hideBackButton>
         <Welcome style={{ marginBottom: 20 }}>Welcome</Welcome>
         {!limited && (
-          <>
+          <View style={{ overflow: 'hidden' }}>
             <BigButton
               title="I’m the game master"
               onPress={() => navigation.navigate('Leader')}
@@ -57,7 +85,32 @@ function Front() {
               onPress={() => navigation.navigate('Settings')}
               bgColor={colors.RED}
             />
-          </>
+            {state.game && (
+              <Transitioning.View
+                ref={restoreButtonRef}
+                transition={transition}
+              >
+                <BigButton
+                  title="Restore previous game"
+                  bgColor={colors.TURQUOISE}
+                  onPress={() => {
+                    listenToGameUpdates()
+                    if (state.game?.players[0].name === state.player?.name) {
+                      navigation.navigate('Leader', {
+                        screen: 'Game',
+                        params: { isLoadedFromCache: true },
+                      })
+                    } else {
+                      navigation.navigate('Respond', {
+                        screen: 'Respond',
+                        params: { isLoadedFromCache: true },
+                      })
+                    }
+                  }}
+                />
+              </Transitioning.View>
+            )}
+          </View>
         )}
         {/* <BigButton
         title="Add question"

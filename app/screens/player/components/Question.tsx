@@ -10,9 +10,10 @@ type Props = {
   title: string
   updateVal: (val: number) => void
   number: number
+  defaultValue: number | undefined
 }
 
-function Question({ title, updateVal, number }: Props) {
+function Question({ title, updateVal, number, defaultValue }: Props) {
   const [isActive, setIsActive] = useState(false)
 
   return (
@@ -33,6 +34,7 @@ function Question({ title, updateVal, number }: Props) {
         number={number}
         setQuestionActiveCallback={isActive => setIsActive(isActive)}
         updateVal={(val: number) => updateVal(val)}
+        defaultValue={defaultValue || undefined}
       />
     </View>
   )

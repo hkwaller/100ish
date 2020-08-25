@@ -90,13 +90,16 @@ function App() {
         (await AsyncStorage.getItem('@hasPurchased')) || 'false'
       const hasSeenIntro =
         (await AsyncStorage.getItem('@hasSeenIntro')) || 'false'
+      const game = await AsyncStorage.getItem('@game')
 
       state.player = JSON.parse(player)
       state.timesPlayed = JSON.parse(timesPlayed)
       state.selectedLanguage = JSON.parse(selectedLanguage)
-      state.hasPurchased = JSON.parse(hasPurchased)
+      state.hasPurchased = __DEV__ ? true : JSON.parse(hasPurchased)
       state.hasSeenIntro = JSON.parse(hasSeenIntro)
-
+      if (game) {
+        state.game = JSON.parse(game)
+      }
       if (!state.hasPurchased) {
         await setupPurchases()
       }

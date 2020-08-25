@@ -15,27 +15,37 @@ type Props = {
   updateVal: (answer: number) => void
   index: number
   previous?: () => void
+  isLoadedFromCache: boolean
+  defaultValue: number | undefined
 }
 
-function Question({ question, updateVal, index, previous }: Props) {
+function Question({
+  question,
+  updateVal,
+  index,
+  previous,
+  defaultValue,
+}: Props) {
   return (
     <View style={styles.outerContainer}>
       <QuestionText style={styles.question}>
         {getTranslatedTitle(question).replace(/&quot;/g, '"')}
       </QuestionText>
       {state.isPlaying && (
-        <Slider number={index + 1} updateVal={val => updateVal(val)} />
+        <Slider
+          number={index + 1}
+          updateVal={val => updateVal(val)}
+          defaultValue={defaultValue || undefined}
+        />
       )}
       <View style={styles.buttonContainer}>
-        {__DEV__ && (
-          <QuestionButton
-            title="Replace"
-            backgroundColor={colors.RED}
-            onPress={async () => {
-              await replaceQuestion(index)
-            }}
-          />
-        )}
+        <QuestionButton
+          title="Replace"
+          backgroundColor={colors.RED}
+          onPress={async () => {
+            await replaceQuestion(index)
+          }}
+        />
         {__DEV__ && (
           <QuestionButton
             title="Remove"

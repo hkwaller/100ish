@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { View, FlatList } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { view } from '@risingstack/react-easy-state'
 
 import Screen from 'app/components/Screen'
@@ -13,6 +13,8 @@ import { submitAnswers } from 'app/config/api'
 
 function Game() {
   const [activeIndex, setActiveIndex] = useState(0)
+  const route = useRoute()
+
   const [answers, setAnswers] = useState(
     (state.game?.questions || []).map(_ => 50)
   )
@@ -22,14 +24,14 @@ function Game() {
   const navigation = useNavigation()
 
   useEffect(() => {
-    if (state.game && activeIndex === state.game.questions.length - 1)
+    if (state.game && activeIndex === state.game?.questions.length - 1)
       setButtonText('Continue')
   }, [activeIndex])
 
   function nextPressed() {
     setActiveIndex(prev => ++prev)
 
-    if (state.game && activeIndex < state.game.questions.length - 1) {
+    if (state.game && activeIndex < state.game?.questions.length - 1) {
       list.current?.scrollToIndex({ index: activeIndex + 1 })
     } else {
       state.isPlaying && submitAnswers(answers)
@@ -79,6 +81,13 @@ function Game() {
                 index={index}
                 updateVal={val => updateValue(val, index)}
                 previous={() => previousPressed()}
+                defaultValue={
+                  route.params?.isLoadedFromCache
+                    ? state.game?.players.filter(
+                        p => p.name === state.player?.name
+                      )[0].answers[index]
+                    : undefined
+                }
               />
             )
           }}

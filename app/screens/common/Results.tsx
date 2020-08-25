@@ -1,28 +1,31 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { view } from '@risingstack/react-easy-state'
 import { useNavigation } from '@react-navigation/native'
+import AsyncStorage from '@react-native-community/async-storage'
 
 import { Bold, PageHeader } from 'app/components'
 import Screen from 'app/components/Screen'
-import Slider from 'app/components/Slider'
 import Loading from 'app/components/Loading'
-import { state, Player } from 'app/config/store'
+import { state, Player, Question } from 'app/config/store'
 import { colors, screen } from 'app/config/constants'
 import { getPlayerScore, getTranslatedTitle } from 'app/config/utils'
 import BottomButton from '../player/components/BottomButton'
 import { stopListening, getGame } from 'app/config/api'
 
+const backgroundColors = [
+  colors.TURQUOISE,
+  colors.RED,
+  colors.YELLOW,
+  colors.LAVENDEL,
+  colors.DARKGREY,
+  colors.GREY,
+]
+
 function Results() {
   const navigation = useNavigation()
-
-  const scoresForPlayers = state.game?.showAllScores
-    ? state.game.players.sort((a, b) => {
-        if (a.name === state.player?.name) return -1
-        else if (b.name === state.player?.name) return 1
-        else return 0
-      })
-    : state.game?.players.filter(p => p.name === state.player?.name) || []
+  const [width, setWidth] = useState(0)
+  const [scoresForPlayers, setScoresForPlayers] = useState([])
 
   useEffect(() => {
     async function stop() {
@@ -30,6 +33,14 @@ function Results() {
     }
     stop()
     ++state.timesPlayed
+
+    const sortedPlayers = state.game?.players.sort((a, b) => {
+      if (a.name === state.player?.name) return -1
+      else if (b.name === state.player?.name) return 1
+      else return 0
+    })
+
+    setScoresForPlayers(sortedPlayers)
   }, [])
 
   return (
@@ -38,7 +49,7 @@ function Results() {
         {state.game?.isOpen ? (
           <View style={styles.waiting}>
             <Bold style={styles.waitingText}>Waiting for other players...</Bold>
-            <Loading color={colors.RED} value={state.game.isOpen} />
+            <Loading color={colors.RED} value={state.game?.isOpen} />
             <TouchableOpacity onPress={() => getGame(state.game?.gamename)}>
               <Bold style={{ textAlign: 'center' }}>
                 Nothing happening? Tap here to refresh game
@@ -52,7 +63,7 @@ function Results() {
                 Player scores
               </PageHeader>
 
-              {state.game?.players.map((player: Player, index: number) => {
+              {scoresForPlayers.map((player: Player, index: number) => {
                 const score = getPlayerScore(player.answers)
                 const marginVal = index % 2 === 0
                 const margins = {
@@ -61,63 +72,130 @@ function Results() {
                 }
 
                 return (
-                  <View
-                    key={index}
-                    style={[styles.scoreContainer, { ...margins }]}
-                  >
-                    <Bold style={{ fontSize: 14, marginTop: 10 }}>
-                      {player.name || 'Unknown'}
-                    </Bold>
-                    <Bold style={{ fontSize: 24 }}>{score}</Bold>
+                  <View key={index}>
+                    <View style={[styles.scoreContainer, { ...margins }]}>
+                      <Bold style={{ fontSize: 14, marginTop: 10 }}>
+                        {player.name || 'Unknown'}
+                      </Bold>
+                      <Bold style={{ fontSize: 24 }}>{score}</Bold>
+                    </View>
+                    <View
+                      style={{
+                        backgroundColor: colors.WHITE,
+                        padding: 10,
+                        ...margins,
+                      }}
+                    >
+                      {player.answers.map((answer, playerAnswerIndex) => {
+                        const untouchedScore = Math.abs(
+                          state.game?.questions[playerAnswerIndex].answer -
+                            answer
+                        )
+
+                        const scoreForQuestion = state.game?.capWrongAnswers
+                          ? Math.min(untouchedScore, 25)
+                          : untouchedScore
+
+                        return (
+                          <View
+                            style={{
+                              justifyContent: 'space-between',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}
+                          >
+                            <Bold>#{index + 1}</Bold>
+                            <Bold style={{ fontSize: 18 }}>
+                              {scoreForQuestion}
+                            </Bold>
+                          </View>
+                        )
+                      })}
+                    </View>
                   </View>
                 )
               })}
             </View>
             <View style={{ marginVertical: 25 }} />
-            {scoresForPlayers.map((p, index) => {
-              const header =
-                p.name === state.player?.name ? 'Your' : `${p.name}s`
+            <PageHeader>Details</PageHeader>
+            {state.game?.questions.map((question: Question, index: number) => {
+              const correctAnswer = question.answer || 0
 
               return (
-                <View key={index} style={{ marginVertical: 20 }}>
-                  <PageHeader style={{ marginBottom: 15 }}>
-                    {header} scores
-                  </PageHeader>
-                  {p.answers.map((answer, index) => {
-                    const correctAnswer =
-                      state.game?.questions[index].answer || 0
-
-                    return (
-                      <View key={index}>
-                        <Bold style={{ marginBottom: 15 }}>
-                          {getTranslatedTitle(
-                            state.game?.questions[index]
-                          ).replace(/&quot;/g, '"')}
+                <View>
+                  <Bold style={{ marginVertical: 15 }}>
+                    {getTranslatedTitle(question).replace(/&quot;/g, '"')}
+                  </Bold>
+                  <View style={styles.answerContainer}>
+                    {scoresForPlayers.map((p: Player, playerIndex: number) => {
+                      return (
+                        <Bold
+                          style={[
+                            styles.playerScoresText,
+                            {
+                              backgroundColor:
+                                backgroundColors[playerIndex] ||
+                                colors.TURQUOISE,
+                            },
+                          ]}
+                        >
+                          {p.name} answer {p.answers[index]}
                         </Bold>
-                        <View style={styles.descriptionContainer}>
-                          <View style={styles.answerContainer}>
-                            <Bold style={{ backgroundColor: colors.TURQUOISE }}>
-                              Your answer {answer}
-                            </Bold>
-                            <Bold style={styles.correctAnswer}>
-                              Correct answer {correctAnswer}
-                            </Bold>
-                          </View>
-                          <Bold style={{ fontSize: 24 }}>
-                            {answer === correctAnswer
-                              ? '-10'
-                              : Math.abs(answer - correctAnswer)}
-                          </Bold>
-                        </View>
-                        <Slider
-                          key={index}
-                          defaultValue={answer}
-                          number={index + 1}
-                          answer={state.game?.questions[index].answer}
-                        />
+                      )
+                    })}
+                    <Bold style={{ backgroundColor: colors.GREEN }}>
+                      Correct answer {correctAnswer}
+                    </Bold>
+                  </View>
+                  <View style={styles.inlineScoreContainer}>
+                    <View
+                      style={styles.line}
+                      onLayout={({
+                        nativeEvent: {
+                          layout: { width },
+                        },
+                      }) => {
+                        setWidth(width)
+                      }}
+                    />
+                    <View style={styles.circleContainer}>
+                      {state.game?.players.map(
+                        (player: Player, playerIndex: number) => {
+                          const playerAnswer = player.answers[index]
+                          const zIndex =
+                            100 -
+                            Math.abs(player.answers[index] - correctAnswer)
+
+                          return (
+                            <View
+                              style={[
+                                styles.answerCircle,
+                                {
+                                  left: (width / 100) * playerAnswer - 10,
+                                  zIndex: zIndex,
+                                  backgroundColor:
+                                    backgroundColors[playerIndex],
+                                },
+                              ]}
+                            >
+                              <Bold>{playerAnswer}</Bold>
+                            </View>
+                          )
+                        }
+                      )}
+                      <View
+                        style={[
+                          styles.answerCircle,
+                          {
+                            backgroundColor: colors.GREEN,
+                            left: (width / 100) * correctAnswer - 10,
+                          },
+                        ]}
+                      >
+                        <Bold style={{ fontSize: 15 }}>{correctAnswer}</Bold>
                       </View>
-                    )
-                  })}
+                    </View>
+                  </View>
                 </View>
               )
             })}
@@ -127,7 +205,9 @@ function Results() {
       <BottomButton
         isVisible={!state.game?.isOpen}
         title="Back to start"
-        onPress={() => {
+        onPress={async () => {
+          await AsyncStorage.removeItem('@game')
+          state.game = undefined
           navigation.navigate('Home', { checkForReview: true })
         }}
       />
@@ -145,24 +225,52 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingBottom: 15,
   },
+  inlineScoreContainer: {
+    height: 80,
+    paddingHorizontal: 20,
+    backgroundColor: colors.WHITE,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   descriptionContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 10,
   },
-  answerContainer: {
+  circleContainer: {
     flexDirection: 'row',
+    width: '100%',
+  },
+  answerContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: screen.WIDTH - 40,
+  },
+  answerCircle: {
+    zIndex: 101,
+    padding: 10,
+    borderRadius: 50,
+    position: 'absolute',
+    top: -18,
+    minWidth: 40,
     alignItems: 'center',
   },
-  correctAnswer: {
-    backgroundColor: colors.GREEN,
-    marginLeft: 10,
+  line: {
+    width: '100%',
+    height: 5,
+    position: 'absolute',
+    backgroundColor: colors.BLACK,
   },
   waiting: {
     padding: 20,
     alignItems: 'center',
   },
   waitingText: { marginBottom: 40, fontSize: 20, textAlign: 'center' },
+  playerScoresText: {
+    marginRight: 10,
+    marginBottom: 10,
+  },
 })
 
 export default view(Results)
