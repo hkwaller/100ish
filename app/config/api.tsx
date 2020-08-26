@@ -155,8 +155,6 @@ export async function getGame(gamename: string) {
     gamename: uglyGamename,
   }
 
-  state.displayGameName = uglyGamename
-
   return await client
     .fetch(query, params)
     .then((game: Game[]) => {
@@ -173,7 +171,6 @@ export async function getNewestGame() {
   await client
     .fetch(query)
     .then((games: Game[]) => {
-      console.log('game: ', games[0].gamename)
       state.game = games[0]
       state.isTranslated = games[0].language !== 'en'
 

@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { view } from '@risingstack/react-easy-state'
 
 import Screen from 'app/components/Screen'
 import Player from '../leader/components/Player'
 import { state } from 'app/config/store'
-import { listenToGameUpdates } from 'app/config/api'
+import { listenToGameUpdates, getGame } from 'app/config/api'
 import BottomButton from './components/BottomButton'
+import { Bold } from 'app/components'
 
 function Lounge() {
   const navigation = useNavigation()
@@ -24,6 +25,22 @@ function Lounge() {
             return <Player key={index} name={p.name} isFinished={true} />
           })}
         </View>
+        <TouchableOpacity
+          style={{ alignItems: 'center' }}
+          onPress={async () => {
+            state.game = await getGame(state.game?.gamename)
+          }}
+        >
+          <Bold
+            style={{
+              borderBottomWidth: 2,
+              paddingBottom: 2,
+              borderBottomColor: '#000',
+            }}
+          >
+            Nothing happening? Tap here to reload
+          </Bold>
+        </TouchableOpacity>
       </Screen>
       <BottomButton
         title="Start playing"

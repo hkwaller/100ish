@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import AsyncStorage from '@react-native-community/async-storage'
 import 'react-native-gesture-handler'
+import { YellowBox } from 'react-native'
 
 import Front from 'app/screens/Front'
 import StartGame from 'app/screens/player/StartGame'
@@ -21,7 +22,7 @@ import { view } from '@risingstack/react-easy-state'
 import { setupPurchases } from 'app/config/utils'
 
 require('react-native').unstable_enableLogBox()
-
+YellowBox.ignoreWarnings(['Setting a timer'])
 const Stack = createStackNavigator()
 
 function PlayerStack() {
@@ -82,26 +83,30 @@ function SettingsStack() {
 function App() {
   React.useEffect(() => {
     async function getDataFromStorage() {
-      const player = (await AsyncStorage.getItem('@player')) || '{}'
-      const timesPlayed = (await AsyncStorage.getItem('@timesPlayed')) || '0'
-      const selectedLanguage =
-        (await AsyncStorage.getItem('@selectedLanguage')) || '0'
-      const hasPurchased =
-        (await AsyncStorage.getItem('@hasPurchased')) || 'false'
-      const hasSeenIntro =
-        (await AsyncStorage.getItem('@hasSeenIntro')) || 'false'
-      const game = await AsyncStorage.getItem('@game')
+      try {
+        const player = (await AsyncStorage.getItem('@player')) || '{}'
+        const timesPlayed = (await AsyncStorage.getItem('@timesPlayed')) || '0'
+        const selectedLanguage =
+          (await AsyncStorage.getItem('@selectedLanguage')) || '0'
+        const hasPurchased =
+          (await AsyncStorage.getItem('@hasPurchased')) || 'false'
+        const hasSeenIntro =
+          (await AsyncStorage.getItem('@hasSeenIntro')) || 'false'
+        const game = await AsyncStorage.getItem('@game')
 
-      state.player = JSON.parse(player)
-      state.timesPlayed = JSON.parse(timesPlayed)
-      state.selectedLanguage = JSON.parse(selectedLanguage)
-      state.hasPurchased = __DEV__ ? true : JSON.parse(hasPurchased)
-      state.hasSeenIntro = JSON.parse(hasSeenIntro)
-      if (game) {
-        state.game = JSON.parse(game)
-      }
-      if (!state.hasPurchased) {
-        await setupPurchases()
+        state.player = JSON.parse(player)
+        state.timesPlayed = JSON.parse(timesPlayed)
+        state.selectedLanguage = JSON.parse(selectedLanguage)
+        state.hasPurchased = __DEV__ ? true : JSON.parse(hasPurchased)
+        state.hasSeenIntro = JSON.parse(hasSeenIntro)
+        if (game) {
+          state.game = JSON.parse(game)
+        }
+        if (!state.hasPurchased) {
+          await setupPurchases()
+        }
+      } catch (e) {
+        console.log('e: ', e)
       }
     }
 

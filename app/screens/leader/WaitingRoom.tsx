@@ -4,11 +4,12 @@ import Screen from 'app/components/Screen'
 import { view } from '@risingstack/react-easy-state'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
-import { readyGame, inactivateGame } from 'app/config/api'
+import { readyGame, inactivateGame, getGame } from 'app/config/api'
 import { state } from 'app/config/store'
 import { PageHeader, Bold } from 'app/components'
 import Player from './components/Player'
 import BottomButton from '../player/components/BottomButton'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 
 function WaitingRoom() {
   const [isWaiting, setIsWaiting] = useState(false)
@@ -53,6 +54,22 @@ function WaitingRoom() {
             )
           })}
         </View>
+        <TouchableOpacity
+          style={{ alignItems: 'center' }}
+          onPress={async () => {
+            state.game = await getGame(state.game?.gamename)
+          }}
+        >
+          <Bold
+            style={{
+              borderBottomWidth: 2,
+              paddingBottom: 2,
+              borderBottomColor: '#000',
+            }}
+          >
+            Nothing happening? Tap here to reload
+          </Bold>
+        </TouchableOpacity>
       </Screen>
       <BottomButton
         title={isWaiting ? 'Go to game' : 'Show Results'}
