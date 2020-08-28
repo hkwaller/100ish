@@ -1,6 +1,12 @@
 import { state, Question } from './store'
 import { nouns, adjectives, verbs } from 'human-id'
-import * as InAppPurchases from 'expo-in-app-purchases'
+import {
+  setPurchaseListener,
+  connectAsync,
+  getProductsAsync,
+  IAPResponseCode,
+  finishTransactionAsync,
+} from 'expo-in-app-purchases'
 import AsyncStorage from '@react-native-community/async-storage'
 
 export function capitalise(word: string) {
@@ -68,31 +74,33 @@ export function getTranslatedTitle(q: Question) {
 }
 
 export async function setupPurchases() {
-  const history = await InAppPurchases.connectAsync()
-  if (history.responseCode === InAppPurchases.IAPResponseCode.OK) {
-    history.results.forEach(result => {
+  const history = await connectAsync()
+  if (history.responseCode === IAPResponseCode.OK) {
+    history.results?.forEach(result => {
       if (result.productId === 'premium') state.hasPurchased = true
     })
   } else {
     console.log('shit failed yo')
   }
 
-  await InAppPurchases.getProductsAsync(['premium'])
+  await getProductsAsync(['premium'])
+}
 
-  InAppPurchases.setPurchaseListener(({ responseCode, results, errorCode }) => {
-    if (responseCode === InAppPurchases.IAPResponseCode.OK) {
+export async function setupPurchaseListener() {
+  setPurchaseListener(({ responseCode, results, errorCode }) => {
+    if (responseCode === IAPResponseCode.OK) {
       results.forEach(purchase => {
         if (!purchase.acknowledged) {
           state.hasPurchased = true
           AsyncStorage.setItem('@hasPurchased', JSON.stringify(true))
-          InAppPurchases.finishTransactionAsync(purchase, true)
+          finishTransactionAsync(purchase, false)
         }
       })
     }
 
-    if (responseCode === InAppPurchases.IAPResponseCode.USER_CANCELED) {
+    if (responseCode === IAPResponseCode.USER_CANCELED) {
       console.log('User canceled the transaction')
-    } else if (responseCode === InAppPurchases.IAPResponseCode.DEFERRED) {
+    } else if (responseCode === IAPResponseCode.DEFERRED) {
       console.log(
         'User does not have permissions to buy but requested parental approval (iOS only)'
       )
@@ -102,4 +110,15 @@ export async function setupPurchases() {
       )
     }
   })
+}
+
+export async function restorePurchases() {
+  const history = await connectAsync()
+  if (history.responseCode === IAPResponseCode.OK) {
+    history.results?.forEach(result => {
+      if (result.productId === 'premium') {
+        state.hasPurchased = true
+      }
+    })
+  }
 }

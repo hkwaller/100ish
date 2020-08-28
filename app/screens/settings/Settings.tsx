@@ -1,23 +1,33 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import Screen from 'app/components/Screen'
-import * as InAppPurchases from 'expo-in-app-purchases'
+import {
+  connectAsync,
+  IAPResponseCode,
+  purchaseItemAsync,
+} from 'expo-in-app-purchases'
 
 import { view } from '@risingstack/react-easy-state'
 import Languages from '../leader/components/Languages'
 import { Bold } from 'app/components'
 import { state } from 'app/config/store'
 import { colors } from 'app/config/constants'
+import { setupPurchaseListener, restorePurchases } from 'app/config/utils'
 
 function Settings() {
   async function purchase() {
-    await InAppPurchases.purchaseItemAsync('premium')
+    await setupPurchaseListener()
+    await purchaseItemAsync('premium')
+  }
+
+  async function restore() {
+    await restorePurchases()
   }
 
   return (
     <Screen title="Settings">
       <Languages />
-      {!state.hasPurchased && (
+      {state.hasPurchased && (
         <View style={styles.purchaseContainer}>
           <Bold style={styles.purchaseHeader}>Unlock everything</Bold>
           <Text>
@@ -25,7 +35,13 @@ function Settings() {
             play {Math.max(0, 10 - state.timesPlayed)} games for free.
           </Text>
           <TouchableOpacity style={styles.button} onPress={() => purchase()}>
-            <Bold>Purchase full app</Bold>
+            <Bold style={{ fontSize: 18 }}>Purchase full app</Bold>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: colors.SLATE }]}
+            onPress={() => restore()}
+          >
+            <Bold style={{ fontSize: 18 }}>Restore previous purchases</Bold>
           </TouchableOpacity>
         </View>
       )}
