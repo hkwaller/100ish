@@ -27,7 +27,7 @@ function Settings() {
   return (
     <Screen title="Settings">
       <Languages />
-      {state.hasPurchased && (
+      {!state.hasPurchased && (
         <View style={styles.purchaseContainer}>
           <Bold style={styles.purchaseHeader}>Unlock everything</Bold>
           <Text>
