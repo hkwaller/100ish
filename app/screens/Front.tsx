@@ -8,6 +8,11 @@ import {
 import * as StoreReview from 'expo-store-review'
 import * as InAppPurchases from 'expo-in-app-purchases'
 import { view } from '@risingstack/react-easy-state'
+import {
+  Transitioning,
+  Transition,
+  TransitioningView,
+} from 'react-native-reanimated'
 
 import { colors } from 'app/config/constants'
 import { Welcome } from 'app/components'
@@ -16,13 +21,8 @@ import Screen from 'app/components/Screen'
 import { state } from 'app/config/store'
 import { Bold } from 'app/components'
 import Intro from 'app/components/Intro'
-import {
-  Transitioning,
-  Transition,
-  TransitioningView,
-} from 'react-native-reanimated'
 import { listenToGameUpdates } from 'app/config/api'
-import { setupPurchases } from 'app/config/utils'
+import { setupPurchases, setupPurchaseListener } from 'app/config/utils'
 
 const transition = (
   <Transition.Together>
@@ -60,6 +60,8 @@ function Front() {
   }
 
   async function purchase() {
+    await setupPurchases()
+    await setupPurchaseListener()
     await InAppPurchases.purchaseItemAsync('premium')
   }
 

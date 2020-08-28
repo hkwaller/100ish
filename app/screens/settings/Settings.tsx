@@ -1,11 +1,7 @@
 import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import Screen from 'app/components/Screen'
-import {
-  connectAsync,
-  IAPResponseCode,
-  purchaseItemAsync,
-} from 'expo-in-app-purchases'
+import { purchaseItemAsync } from 'expo-in-app-purchases'
 
 import { view } from '@risingstack/react-easy-state'
 import Languages from '../leader/components/Languages'
