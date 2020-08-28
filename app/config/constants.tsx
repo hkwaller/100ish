@@ -11,6 +11,7 @@ export const colors = {
   TURQUOISE: '#00DCFD',
   LAVENDEL: '#D9D0DE',
   WHITE: '#fff',
+  SLATE: '#706BE9',
 }
 
 export const fonts = {
