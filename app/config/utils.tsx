@@ -82,11 +82,11 @@ export async function setupPurchases() {
   } else {
     console.log('shit failed yo')
   }
-
-  await getProductsAsync(['premium'])
 }
 
 export async function setupPurchaseListener() {
+  await getProductsAsync(['premium'])
+
   setPurchaseListener(({ responseCode, results, errorCode }) => {
     if (responseCode === IAPResponseCode.OK) {
       results.forEach(purchase => {
@@ -110,15 +110,4 @@ export async function setupPurchaseListener() {
       )
     }
   })
-}
-
-export async function restorePurchases() {
-  const history = await connectAsync()
-  if (history.responseCode === IAPResponseCode.OK) {
-    history.results?.forEach(result => {
-      if (result.productId === 'premium') {
-        state.hasPurchased = true
-      }
-    })
-  }
 }

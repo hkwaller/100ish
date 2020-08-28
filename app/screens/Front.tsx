@@ -22,6 +22,7 @@ import {
   TransitioningView,
 } from 'react-native-reanimated'
 import { listenToGameUpdates } from 'app/config/api'
+import { setupPurchases } from 'app/config/utils'
 
 const transition = (
   <Transition.Together>
@@ -60,6 +61,10 @@ function Front() {
 
   async function purchase() {
     await InAppPurchases.purchaseItemAsync('premium')
+  }
+
+  async function restore() {
+    await setupPurchases()
   }
 
   const limited = !state.hasPurchased && state.timesPlayed > 10
@@ -130,6 +135,12 @@ function Front() {
 
             <TouchableOpacity style={styles.button} onPress={() => purchase()}>
               <Bold>Purchase full app</Bold>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: colors.SLATE }]}
+              onPress={() => restore()}
+            >
+              <Bold>Restore purchases</Bold>
             </TouchableOpacity>
           </View>
         )}

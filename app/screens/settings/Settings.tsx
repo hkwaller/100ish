@@ -12,16 +12,17 @@ import Languages from '../leader/components/Languages'
 import { Bold } from 'app/components'
 import { state } from 'app/config/store'
 import { colors } from 'app/config/constants'
-import { setupPurchaseListener, restorePurchases } from 'app/config/utils'
+import { setupPurchaseListener, setupPurchases } from 'app/config/utils'
 
 function Settings() {
   async function purchase() {
+    await setupPurchases()
     await setupPurchaseListener()
     await purchaseItemAsync('premium')
   }
 
   async function restore() {
-    await restorePurchases()
+    await setupPurchases()
   }
 
   return (
@@ -41,7 +42,7 @@ function Settings() {
             style={[styles.button, { backgroundColor: colors.SLATE }]}
             onPress={() => restore()}
           >
-            <Bold style={{ fontSize: 18 }}>Restore previous purchases</Bold>
+            <Bold style={{ fontSize: 18 }}>Restore purchases</Bold>
           </TouchableOpacity>
         </View>
       )}

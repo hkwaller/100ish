@@ -82,7 +82,7 @@ function Intro() {
         <FlatList
           ref={list}
           horizontal
-          keyExtractor={item => item._id}
+          keyExtractor={(_, index) => `${index}`}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
             width: screen.WIDTH * slides.length,

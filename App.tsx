@@ -19,7 +19,6 @@ import AddQuestion from 'app/screens/add-question/AddQuestion'
 import Settings from 'app/screens/settings/Settings'
 import { state } from 'app/config/store'
 import { view } from '@risingstack/react-easy-state'
-import { setupPurchases } from 'app/config/utils'
 
 require('react-native').unstable_enableLogBox()
 YellowBox.ignoreWarnings(['Setting a timer'])
@@ -97,13 +96,10 @@ function App() {
         state.player = JSON.parse(player)
         state.timesPlayed = JSON.parse(timesPlayed)
         state.selectedLanguage = JSON.parse(selectedLanguage)
-        state.hasPurchased = __DEV__ ? true : JSON.parse(hasPurchased)
+        state.hasPurchased = JSON.parse(hasPurchased)
         state.hasSeenIntro = JSON.parse(hasSeenIntro)
         if (game) {
           state.game = JSON.parse(game)
-        }
-        if (!state.hasPurchased) {
-          await setupPurchases()
         }
       } catch (e) {
         console.log('e: ', e)
