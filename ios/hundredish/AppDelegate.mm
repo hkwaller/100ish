@@ -14,7 +14,7 @@
 #import <React/RCTGIFImageDecoder.h>
 #import <React/RCTImageLoader.h>
 #import <React/JSCExecutorFactory.h>
-#import <RNReanimated/RETurboModuleProvider.h>
+#import <RNReanimated/REATurboModuleProvider.h>
 #import <RNReanimated/REAModule.h>
 
 #import <UMCore/UMModuleRegistry.h>
@@ -110,7 +110,7 @@ self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegi
   _bridge_reanimated = bridge;
     _turboModuleManager = [[RCTTurboModuleManager alloc] initWithBridge:bridge delegate:self];
 
-  #if RCT_DEV
+ #if RCT_DEV
   [_turboModuleManager moduleForName:"RCTDevMenu"]; // <- add
  #endif
  __weak __typeof(self) weakSelf = self;
@@ -127,20 +127,20 @@ self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegi
 
 - (Class)getModuleClassFromName:(const char *)name
 {
- return facebook::react::RETurboModuleClassProvider(name);
+ return facebook::react::REATurboModuleClassProvider(name);
 }
 
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const std::string &)name
                                                      jsInvoker:(std::shared_ptr<facebook::react::CallInvoker>)jsInvoker
 {
- return facebook::react::RETurboModuleProvider(name, jsInvoker);
+ return facebook::react::REATurboModuleProvider(name, jsInvoker);
 }
 
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const std::string &)name
                                                       instance:(id<RCTTurboModule>)instance
                                                      jsInvoker:(std::shared_ptr<facebook::react::CallInvoker>)jsInvoker
 {
- return facebook::react::RETurboModuleProvider(name, instance, jsInvoker);
+ return facebook::react::REATurboModuleProvider(name, instance, jsInvoker);
 }
 
 - (id<RCTTurboModule>)getModuleInstanceFromClass:(Class)moduleClass
@@ -162,5 +162,6 @@ self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegi
  }
  return [moduleClass new];
 }
+
 
 @end
