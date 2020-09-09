@@ -84,12 +84,13 @@ function Intro() {
           horizontal
           keyExtractor={(_, index) => `${index}`}
           showsHorizontalScrollIndicator={false}
+          data={slides}
+          pagingEnabled
+          scrollEnabled={false}
           contentContainerStyle={{
             width: screen.WIDTH * slides.length,
             marginTop: 20,
           }}
-          data={slides}
-          pagingEnabled
           renderItem={({ item, index }) => {
             return (
               <View key={index} style={styles.slideContainer}>
