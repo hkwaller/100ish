@@ -23,9 +23,6 @@ import com.hundredish.generated.BasePackageList;
 
 
 public class MainApplication extends Application implements ReactApplication {
-  static {
-    ReactFeatureFlags.useTurboModules = true; // <- add
-  }
 
   private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(new BasePackageList().getPackageList(), null);
 
