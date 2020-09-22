@@ -100,6 +100,75 @@ export async function startListening() {
   })
 }
 
+export async function getNewGame() {
+  const updatedPlayers = state.game?.players?.map(p => {
+    return { ...p, answers: [], isFinished: false }
+  })
+
+  const id = state.wordsForGameName
+    ? humanId({ separator: '-', capitalize: false })
+    : useLetterGameName()
+
+  const newGame = await createGame(
+    state.game?.questions.length || 5,
+    id,
+    state.game?.players[0].name || 'Leader'
+  )
+
+  const sessionId = state.game?.sessionId
+    ? state.game?.sessionId
+    : humanId({ separator: '-', capitalize: false })
+
+  await client
+    .patch(state.game?._id)
+    .set({
+      sessionId: sessionId,
+      newGameName: newGame.gamename,
+    })
+    .commit()
+    .then((updatedGame: Game) => {
+      state.game = updatedGame
+    })
+
+  return client
+    .patch(newGame._id)
+    .set({
+      players: updatedPlayers,
+      sessionId: sessionId,
+    })
+    .commit()
+    .then((updatedGame: Game) => {
+      state.game = updatedGame
+      state.isLoading = false
+      listenToGameUpdates()
+    })
+}
+
+export async function replaceQuestionsForGame() {
+  const questions = await getQuestions()
+  let shuffledQuestions = shuffle(questions).slice(
+    0,
+    state.game?.questions.length
+  )
+
+  const players = state.game?.players
+  const updatedPlayers = players?.map(p => {
+    return { ...p, answers: [], isFinished: false }
+  })
+
+  return client
+    .patch(state.game?._id)
+    .set({
+      questions: shuffledQuestions,
+      players: updatedPlayers,
+      isOpen: true,
+    })
+    .commit()
+    .then((updatedGame: Game) => {
+      state.game = updatedGame
+    })
+}
+
 export async function createGame(
   numberOfQuestions: number,
   gameName: string,
