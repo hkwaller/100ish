@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Bold, SliderHeader } from 'app/components'
-import { colors } from 'app/config/constants'
 import { PanGestureHandler } from 'react-native-gesture-handler'
 import Animated, {
   useAnimatedGestureHandler,
@@ -10,9 +8,10 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
   interpolate,
-  delay,
 } from 'react-native-reanimated'
 import * as Haptics from 'expo-haptics'
+import { Bold, SliderHeader } from 'app/components'
+import { colors } from 'app/config/constants'
 
 type Props = {
   number?: number
