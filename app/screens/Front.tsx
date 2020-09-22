@@ -92,6 +92,11 @@ function Front() {
               onPress={() => navigation.navigate('Settings')}
               bgColor={colors.RED}
             />
+            <BigButton
+              title="History"
+              onPress={() => navigation.navigate('MyModal')}
+              bgColor={colors.SLATE}
+            />
             {state.game && (
               <Transitioning.View
                 ref={restoreButtonRef}

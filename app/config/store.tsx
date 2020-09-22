@@ -17,6 +17,7 @@ export type State = {
   hasPurchased: boolean
   hasSeenIntro: boolean
   hasAsked: boolean
+  history: Game[]
 }
 
 export type Translation = {
@@ -41,6 +42,8 @@ export type Game = {
   showQuestions: boolean
   language: string
   capWrongAnswers: boolean
+  newGameName: string
+  sessionId: string
 }
 
 export type Question = {
@@ -64,6 +67,7 @@ export const state = store<State>({
   hasSeenIntro: false,
   hasAsked: false,
   capWrongAnswers: false,
+  history: [],
 })
 
 autoEffect(() => {

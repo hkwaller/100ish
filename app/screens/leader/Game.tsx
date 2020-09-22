@@ -19,7 +19,7 @@ function Game() {
     (state.game?.questions || []).map(_ => 50)
   )
 
-  const [buttonText, setButtonText] = useState<string>('Next')
+  const [buttonText, setButtonText] = useState('Next')
   const list = useRef<FlatList>(null)
   const navigation = useNavigation()
 
@@ -35,6 +35,8 @@ function Game() {
       list.current?.scrollToIndex({ index: activeIndex + 1 })
     } else {
       state.isPlaying && submitAnswers(answers)
+      setActiveIndex(0)
+      list.current?.scrollToIndex({ index: 0 })
       navigation.navigate('ResultsWaitingRoom')
     }
   }

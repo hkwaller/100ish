@@ -12,7 +12,7 @@ import { getTranslatedTitle } from 'app/config/utils'
 
 function Respond() {
   const [answers, setAnswers] = useState(
-    (state.game?.questions || []).map(_ => 0)
+    (state.game?.questions || []).map(_ => 50)
   )
 
   const route = useRoute()

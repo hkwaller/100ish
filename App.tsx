@@ -1,9 +1,10 @@
 import * as React from 'react'
+import { View, YellowBox, Text } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import AsyncStorage from '@react-native-community/async-storage'
 import 'react-native-gesture-handler'
-import { YellowBox } from 'react-native'
+import { view } from '@risingstack/react-easy-state'
 
 import Front from 'app/screens/Front'
 import StartGame from 'app/screens/player/StartGame'
@@ -15,14 +16,17 @@ import Game from 'app/screens/leader/Game'
 import WaitingRoom from 'app/screens/leader/WaitingRoom'
 import Results from 'app/screens/common/Results'
 
+import History from 'app/screens/history/History'
+
 import AddQuestion from 'app/screens/add-question/AddQuestion'
 import Settings from 'app/screens/settings/Settings'
 import { state } from 'app/config/store'
-import { view } from '@risingstack/react-easy-state'
 
 require('react-native').unstable_enableLogBox()
 YellowBox.ignoreWarnings(['Setting a timer'])
+
 const Stack = createStackNavigator()
+const RootStack = createStackNavigator()
 
 function PlayerStack() {
   return (
@@ -79,6 +83,23 @@ function SettingsStack() {
   )
 }
 
+function MainStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="Home" component={Front} />
+      <Stack.Screen name="Respond" component={PlayerStack} />
+      <Stack.Screen name="Leader" component={GameLeaderStack} />
+      <Stack.Screen name="Add" component={AddQuestionAstack} />
+      <Stack.Screen name="Settings" component={SettingsStack} />
+      <Stack.Screen name="History" component={History} />
+    </Stack.Navigator>
+  )
+}
+
 function App() {
   React.useEffect(() => {
     async function getDataFromStorage() {
@@ -96,7 +117,7 @@ function App() {
         state.player = JSON.parse(player)
         state.timesPlayed = JSON.parse(timesPlayed)
         state.selectedLanguage = JSON.parse(selectedLanguage)
-        state.hasPurchased = JSON.parse(hasPurchased)
+        state.hasPurchased = __DEV__ ? true : JSON.parse(hasPurchased)
         state.hasSeenIntro = JSON.parse(hasSeenIntro)
         if (game) {
           state.game = JSON.parse(game)
@@ -111,17 +132,18 @@ function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="Home" component={Front} />
-        <Stack.Screen name="Respond" component={PlayerStack} />
-        <Stack.Screen name="Leader" component={GameLeaderStack} />
-        <Stack.Screen name="Add" component={AddQuestionAstack} />
-        <Stack.Screen name="Settings" component={SettingsStack} />
-      </Stack.Navigator>
+      <RootStack.Navigator mode="modal">
+        <RootStack.Screen
+          name="Main"
+          component={MainStack}
+          options={{ headerShown: false }}
+        />
+        <RootStack.Screen
+          options={{ headerShown: false }}
+          name="MyModal"
+          component={History}
+        />
+      </RootStack.Navigator>
     </NavigationContainer>
   )
 }
