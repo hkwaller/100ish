@@ -111,3 +111,7 @@ export async function setupPurchaseListener() {
     }
   })
 }
+
+export function isGameLeader() {
+  return state.player?.name === state.game?.players[0].name
+}

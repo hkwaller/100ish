@@ -89,7 +89,7 @@ function Results() {
                 <ResultsButton
                   title="Play again"
                   backgroundColor={colors.SLATE}
-                  style={{ marginRight: 10 }}
+                  style={{ marginRight: 10, width: screen.WIDTH / 2 - 10 - 20 }}
                   onPress={async () => {
                     if (isGameLeader()) {
                       await getNewGame()
@@ -100,6 +100,7 @@ function Results() {
               {state.history.length > 0 && isGameLeader() && (
                 <ResultsButton
                   title="Total scores"
+                  style={{ width: screen.WIDTH / 2 - 10 - 20 }}
                   backgroundColor={colors.RED}
                   onPress={() => {
                     navigation.navigate('MyModal')

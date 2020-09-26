@@ -7,7 +7,7 @@ import { getPlayerScore } from 'app/config/utils'
 
 function TotalScores() {
   return (
-    <>
+    <View>
       <PageHeader style={{ marginBottom: 15 }}>Player scores</PageHeader>
 
       {state.game?.players.map((player: Player, index: number) => {
@@ -19,7 +19,12 @@ function TotalScores() {
         }
 
         return (
-          <View key={index}>
+          <View
+            key={index}
+            style={{
+              width: screen.WIDTH / 2 - 48,
+            }}
+          >
             <View style={[styles.scoreContainer, { ...margins }]}>
               <Bold style={{ fontSize: 14, marginTop: 10 }}>
                 {player.name || 'Unknown'}
@@ -65,7 +70,7 @@ function TotalScores() {
           </View>
         )
       })}
-    </>
+    </View>
   )
 }
 
@@ -74,7 +79,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: screen.WIDTH / 2 - 48,
     backgroundColor: colors.WHITE,
     padding: 10,
     paddingBottom: 15,

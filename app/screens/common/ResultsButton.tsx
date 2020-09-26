@@ -1,9 +1,7 @@
 import React from 'react'
 import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native'
 import { Bold } from 'app/components'
-import { getNewGame } from 'app/config/api'
 import { colors } from 'app/config/constants'
-import { isGameLeader } from 'app/config/utils'
 
 type Props = {
   title: string
@@ -19,14 +17,14 @@ function ResultsButton({ title, backgroundColor, style, onPress }: Props) {
       style={[
         {
           backgroundColor: backgroundColor,
-          paddingHorizontal: 30,
-          paddingVertical: 20,
+          paddingVertical: 15,
           marginTop: 20,
+          alignItems: 'center',
         },
         style,
       ]}
     >
-      <Bold style={{ color: colors.WHITE, fontSize: 20 }}>{title}</Bold>
+      <Bold style={{ color: colors.WHITE, fontSize: 16 }}>{title}</Bold>
     </TouchableOpacity>
   )
 }
