@@ -43,7 +43,7 @@
     "@typescript-eslint/parser": "2.27.0",
     "babel-jest": "24.9.0",
     "eslint": "6.5.1",
-    "hermes-engine": "0.4.2-rc1",
+    "hermes-engine": "0.11.0",
     "metro-react-native-babel-preset": "0.58.0",
     "prettier": "1.19.0",
     "react-test-renderer": "16.11.0",
